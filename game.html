@@ -5805,6 +5805,14 @@
             startBtn.classList.remove('is-hidden');
             startBtn.classList.add('pop-in');
             vibrate(60);
+            if (net.role === 'host' && net.roomCode) {
+              // Multiplayer: don't make the host hunt for a second button —
+              // proceed straight into round 1 once friends can see the draft.
+              startBtn.disabled = true;
+              statusEl.textContent = 'Матч починається…';
+              const t3 = setTimeout(() => { if (tournamentActive) startTournamentRound(); }, 900);
+              drawTimers.push(t3);
+            }
           }, 300);
           drawTimers.push(t2);
         }
