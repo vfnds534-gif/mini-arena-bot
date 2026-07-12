@@ -4944,7 +4944,7 @@
 
   function renderLobbyHost() {
     document.getElementById('lobby-host-code').textContent = net.roomCode || '-----';
-    document.getElementById('lobby-host-link').value = net.roomCode ? `https://t.me/MiniArena1_bot?startapp=${net.roomCode}` : '';
+    document.getElementById('lobby-host-link').value = net.roomCode ? `https://t.me/MiniArena1_bot?start=${net.roomCode}` : '';
     renderLobbyRoster(document.getElementById('lobby-host-roster'), net.roster, -1);
   }
 
