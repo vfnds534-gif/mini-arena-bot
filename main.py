@@ -44,6 +44,11 @@ BUILD_VERSION = _compute_build_version()
 async def serve_game(request):
     with open(GAME_PATH, "r", encoding="utf-8") as f:
         content = f.read()
+    # Lets the client detect a stale cached Telegram WebView session (one
+    # that was never re-fetched) by comparing this against what the /ws
+    # connection reports back on identify — see the `identify` handler.
+    version_tag = f'<script>window.__BUILD_VERSION__ = "{BUILD_VERSION}";</script>'
+    content = content.replace("</head>", version_tag + "</head>", 1)
     return web.Response(
         body=content.encode("utf-8"),
         content_type="text/html",
@@ -78,7 +83,10 @@ async def handle_relay_message(ws, data):
             return
         user = await friends.get_or_create_user(telegram_id, name)
         presence_registry.mark_online(telegram_id, ws)
-        await send_json(ws, {"type": "identified", "tag": user["tag"], "telegramId": telegram_id})
+        await send_json(ws, {
+            "type": "identified", "tag": user["tag"], "telegramId": telegram_id,
+            "buildVersion": BUILD_VERSION,
+        })
         return
 
     if msg_type == "get_friends":
@@ -132,6 +140,11 @@ async def handle_relay_message(ws, data):
             await send_json(ws, {"type": "invite_result", "ok": False, "reason": "unavailable"})
             return
         inviter_name = data.get("inviterName") or "Друг"
+
+        # Two independent notification channels — a Telegram DM failure
+        # (blocked bot, invalid chat id, etc.) must not suppress the live
+        # in-app push to a friend who's currently online, and vice versa.
+        dm_ok = False
         try:
             kb = InlineKeyboardMarkup(inline_keyboard=[[
                 InlineKeyboardButton(
@@ -144,10 +157,19 @@ async def handle_relay_message(ws, data):
                 f"🎮 {inviter_name} запрошує тебе зіграти в Mini Arena!",
                 reply_markup=kb,
             )
-            await send_json(ws, {"type": "invite_result", "ok": True})
+            dm_ok = True
         except Exception as e:
             logger.warning(f"Не вдалося надіслати запрошення {friend_id}: {e}")
-            await send_json(ws, {"type": "invite_result", "ok": False, "reason": "send_failed"})
+
+        live_targets = presence_registry.get_sockets(friend_id)
+        for target_ws in live_targets:
+            await send_json(target_ws, {
+                "type": "room_invite",
+                "roomCode": conn.room_code,
+                "inviterName": inviter_name,
+            })
+
+        await send_json(ws, {"type": "invite_result", "ok": dm_ok or bool(live_targets)})
         return
 
     if msg_type == "create_room":
