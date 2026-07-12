@@ -4927,6 +4927,7 @@
     networkInputs = {};
     guestBotSources = [];
     prevSnapshot = null; lastSnapshot = null;
+    guestLoopRunning = false;
   }
 
   function renderLobbyRoster(containerEl, roster, selfSlot, hostLabel) {
@@ -5077,14 +5078,22 @@
     document.getElementById('lobby-guest-status').textContent = 'Хост готує гру…';
   }
 
+  let guestLoopRunning = false;
   function applyRoundStartToGuestGame(payload) {
-    const isFirstRound = !game || game.mode !== payload.mode;
-    if (isFirstRound) {
+    // startRound() fires this on every internal colorPanic round too, not
+    // just once per tournament stage. Only rebuild (fresh bot positions,
+    // screen transition) when we're not already mid-match, matching how
+    // the host itself only rebuilds bots between tournament rounds.
+    const alreadyPlaying = document.getElementById('screen-game').classList.contains('active');
+    if (!alreadyPlaying) {
       beginGuestRound(payload.mode);
       showScreen('game');
       resizeCanvas();
       game.lastTs = performance.now();
-      requestAnimationFrame(loop);
+      if (!guestLoopRunning) {
+        guestLoopRunning = true;
+        requestAnimationFrame(loop);
+      }
     }
     game.round = payload.round;
     game.timeLimit = payload.timeLimit;
@@ -5119,6 +5128,7 @@
     game.round = payload.round;
   }
 
+  let guestTournamentFinished = false;
   function handleHostPayload(payload) {
     if (!payload) return;
     if (payload.type === 'start_match') startGuestMatch(payload);
@@ -5127,7 +5137,43 @@
       prevSnapshot = lastSnapshot; prevSnapshotAt = lastSnapshotAt;
       lastSnapshot = payload; lastSnapshotAt = performance.now();
       applySnapshotToGuestGame(payload);
+    } else if (payload.type === 'round_result') {
+      applyRoundResultToGuest(payload);
     }
+  }
+
+  function applyRoundResultToGuest(payload) {
+    document.getElementById('tourney-standings-title').textContent = payload.title;
+    document.getElementById('tourney-standings-sub').textContent = payload.sub;
+    const listEl = document.getElementById('tourney-standings-list');
+    listEl.innerHTML = '';
+    payload.standings.forEach((c, idx) => {
+      const place = idx + 1;
+      const medal = place === 1 ? '🥇' : place === 2 ? '🥈' : place === 3 ? '🥉' : place;
+      const isMe = c.userId && c.userId === net.selfId;
+      const row = document.createElement('div');
+      row.className = 'tourney-row' + (isMe ? ' me' : '');
+      row.innerHTML =
+        `<span class="tourney-rank">${medal}</span>` +
+        `<span class="tourney-dot" style="background:${c.color}"></span>` +
+        `<span class="tourney-name">${escapeHtml(c.name)}${isMe ? ' (ти)' : ''}</span>` +
+        `<span class="tourney-round-pts">+${c.lastPts}</span>` +
+        `<span class="tourney-total">${c.total}</span>`;
+      listEl.appendChild(row);
+    });
+    const rewardEl = document.getElementById('tourney-reward');
+    const btn = document.getElementById('btn-tourney-next');
+    guestTournamentFinished = !!payload.finished;
+    if (payload.finished) {
+      rewardEl.textContent = 'Матч завершено — дякуємо за гру!';
+      btn.textContent = 'В меню';
+      btn.disabled = false;
+    } else {
+      rewardEl.textContent = '';
+      btn.textContent = 'Хост продовжує…';
+      btn.disabled = true;
+    }
+    showScreen('tourneyStandings');
   }
 
   // Guest never runs the real physics update() — it just smoothly glides
@@ -5167,6 +5213,12 @@
 
   // ---------- Game state ----------
   let game = null;
+  window.__miniArenaDebug = () => ({
+    role: net.role, roomCode: net.roomCode, selfId: net.selfId, selfSlot: net.selfSlot,
+    activeScreen: document.querySelector('.screen.active') ? document.querySelector('.screen.active').id : null,
+    player: game ? { x: game.player.x, y: game.player.y, alive: game.player.alive, alpha: game.player.alpha } : null,
+    bots: game ? game.bots.map(b => ({ name: b.name, controlType: b.controlType, networkUserId: b.networkUserId, x: b.x, y: b.y, alive: b.alive })) : null,
+  });
 
   // Build a fully-specified bot "brain" from a random archetype.
   function makeBotBrain() {
@@ -5661,14 +5713,19 @@
     const player = t.competitors.find(c => c.isPlayer);
     const rivals = t.competitors.filter(c => !c.isPlayer);
     const aliveState = Array.isArray(r.botAlive) ? r.botAlive : rivals.map(() => true);
+    const eliminatedAt = Array.isArray(r.botEliminatedAtRound) ? r.botEliminatedAtRound : rivals.map(() => 0);
 
     // Surviving bots are always ranked above eliminated bots. Within each
-    // group, stable skill plus small round form decides their order.
+    // group, whoever actually lasted more rounds ranks higher — this is
+    // real gameplay data for modes that track it (colorPanic); for modes
+    // that don't yet, roundReached is 0 for everyone and the tiebreaker
+    // below (stable skill + a little noise) decides order same as before.
     const orderedBots = rivals.map((c, i) => ({
       c,
       alive: aliveState[i] !== false,
-      form: c.skill + (Math.random() - 0.5) * 0.18,
-    })).sort((a, b) => Number(b.alive) - Number(a.alive) || b.form - a.form);
+      roundReached: eliminatedAt[i] || 0,
+      tiebreak: c.skill + (Math.random() - 0.5) * 0.06,
+    })).sort((a, b) => Number(b.alive) - Number(a.alive) || b.roundReached - a.roundReached || b.tiebreak - a.tiebreak);
 
     let playerPlace;
     if (r.win) {
@@ -5702,6 +5759,44 @@
     const finished = t.index >= t.sequence.length;
     renderTournamentStandings(finished);
     showScreen('tourneyStandings');
+    broadcastRoundResult(finished);
+    standingsAdvanced = false;
+    if (net.role === 'host' && net.roomCode) {
+      const t4 = setTimeout(advanceTournamentAfterStandings, 3500);
+      drawTimers.push(t4);
+    }
+  }
+
+  let standingsAdvanced = false;
+  function advanceTournamentAfterStandings() {
+    if (standingsAdvanced) return;
+    standingsAdvanced = true;
+    if (!tournament) { cancelTournament(); return; }
+    if (tournament.index >= tournament.sequence.length) finishTournament();
+    else startTournamentRound();
+  }
+
+  function broadcastRoundResult(finished) {
+    if (net.role !== 'host' || !net.roomCode) return;
+    const t = tournament;
+    const sorted = t.competitors.slice().sort((a, b) => b.total - a.total || b.lastPts - a.lastPts);
+    const standings = sorted.map(c => ({
+      name: c.isPlayer ? myIdentity.name : c.name, isPlayer: c.isPlayer,
+      userId: c.networkUserId || null,
+      color: c.color, lastPts: c.lastPts, total: c.total,
+    }));
+    const playedName = MODE_NAMES[t.lastMode] || t.lastMode;
+    let title, sub;
+    if (finished) {
+      const meRank = sorted.findIndex(c => c.isPlayer) + 1;
+      title = meRank === 1 ? '🏆 Хост переміг!' : 'Турнір завершено';
+      sub = `${playedName} — остання гра.`;
+    } else {
+      const next = MODE_NAMES[t.sequence[t.index]] || t.sequence[t.index];
+      title = `Раунд ${t.index} / ${TOURNEY_ROUNDS} завершено`;
+      sub = `${playedName} зіграно. Далі: ${next}`;
+    }
+    sendRelay({ type: 'to_guests', payload: { type: 'round_result', title, sub, standings, finished } });
   }
 
   let drawTimers = [];
@@ -6051,6 +6146,7 @@
     g.pendingResult = {
       mode: g.mode, win, metric, botsEliminated, xpGained, coinsGained,
       botAlive: g.bots.map(bot => bot.alive),
+      botEliminatedAtRound: g.bots.map(bot => bot.eliminatedAtRound || g.round),
     };
     g.phase = 'gameover';
     g.phaseTime = 0;
@@ -6210,6 +6306,7 @@
       const ratio = survivalRatio(bot.x, bot.y, BOT_RADIUS, isSafe);
       if (ratio < SAFE_OVERLAP_THRESHOLD) {
         bot.alive = false;
+        bot.eliminatedAtRound = g.round;
         g.floatingTexts.push({ x: bot.x, y: bot.y, alpha: 1, vy: 0.18, text: 'OUT', color: '#ff5252' });
         spawnBotEliminationParticles(g, bot.x, bot.y, bot.color);
       }
@@ -9655,9 +9752,11 @@
   const autoJoinCode = getStartParam();
   if (autoJoinCode) joinRoomByCode(autoJoinCode);
   document.getElementById('btn-tourney-next').addEventListener('click', () => {
-    if (!tournament) { cancelTournament(); return; }
-    if (tournament.index >= tournament.sequence.length) finishTournament();
-    else startTournamentRound();
+    if (net.role === 'guest') {
+      if (guestTournamentFinished) { leaveMultiplayer(); renderMenu(); showScreen('menu'); }
+      return;
+    }
+    advanceTournamentAfterStandings();
   });
 
   btnSkinsBack.addEventListener('click', () => { previewAccOverride = null; renderMenu(); showScreen('menu'); });
