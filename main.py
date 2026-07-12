@@ -1,4 +1,5 @@
 import asyncio
+import hashlib
 import json
 import logging
 import os
@@ -22,6 +23,17 @@ logger = logging.getLogger(__name__)
 
 GAME_PATH = os.path.join(os.path.dirname(__file__), "game.html")
 room_registry = RoomRegistry()
+
+
+def _compute_build_version():
+    # Telegram's in-app WebView can keep serving a stale copy of the Mini
+    # App across restarts unless the URL itself changes, so every deploy
+    # needs a fresh cache-busting query param regardless of HTTP headers.
+    with open(GAME_PATH, "rb") as f:
+        return hashlib.sha1(f.read()).hexdigest()[:10]
+
+
+BUILD_VERSION = _compute_build_version()
 
 
 async def serve_game(request):
@@ -180,7 +192,7 @@ async def cmd_start(message: Message, command: CommandObject):
     web_url = os.getenv("WEB_URL", "").strip()
     if web_url and web_url.startswith("https://"):
         room_code = command.args
-        url = f"{web_url}?room={room_code}" if room_code else web_url
+        url = f"{web_url}?room={room_code}&v={BUILD_VERSION}" if room_code else f"{web_url}?v={BUILD_VERSION}"
         kb = InlineKeyboardMarkup(inline_keyboard=[[
             InlineKeyboardButton(text="🎮 Грати", web_app=WebAppInfo(url=url))
         ]])
