@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>Mini Arena</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
   :root {
     --bg1: #0b0d13;
@@ -585,6 +586,18 @@
   .is-hidden { visibility: hidden; opacity: 0; }
   .pop-in { animation: lockPop 0.45s cubic-bezier(0.2, 1.4, 0.4, 1) both; }
 
+  .lobby-head { display:flex; flex-direction:column; align-items:center; padding:24px 20px 10px; text-align:center; }
+  .lobby-code-box { font-size:34px; font-weight:900; letter-spacing:6px; color:#fff; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1); border-radius:16px; padding:14px 22px; margin:14px 0 10px; }
+  .lobby-link-row { display:flex; gap:8px; width:100%; max-width:360px; margin-bottom:18px; }
+  .lobby-link-input { flex:1; min-width:0; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1); border-radius:10px; color:var(--text); font-size:12px; padding:10px 12px; }
+  .lobby-roster { width:100%; max-width:360px; display:flex; flex-direction:column; gap:8px; margin-bottom:18px; }
+  .lobby-slot { display:flex; align-items:center; gap:10px; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.08); border-radius:14px; padding:10px 14px; }
+  .lobby-slot-dot { width:10px; height:10px; border-radius:50%; background:#4a5261; flex-shrink:0; }
+  .lobby-slot.filled .lobby-slot-dot { background:#4cd964; }
+  .lobby-slot-name { flex:1; font-size:13px; font-weight:700; color:var(--text); }
+  .lobby-slot-tag { font-size:10px; font-weight:800; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; }
+  .lobby-join-input { width:100%; max-width:280px; text-align:center; font-size:20px; letter-spacing:4px; font-weight:800; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.12); border-radius:12px; color:var(--text); padding:12px; margin-bottom:14px; text-transform:uppercase; }
+
   .tourney-table {
     width: 100%; max-width: 360px; margin-bottom: 14px;
   }
@@ -1152,6 +1165,17 @@
   .achievement-toast:empty { display: none; }
   @keyframes toastPop { 0% { opacity: 0; transform: scale(0.9); } 100% { opacity: 1; transform: scale(1); } }
 
+  .net-toast {
+    position: fixed; left: 50%; bottom: 26px; transform: translateX(-50%) translateY(12px);
+    font-size: 13px; font-weight: 700; color: #0b0d13;
+    background: linear-gradient(135deg, #ffd740, #ffb300);
+    max-width: 320px; padding: 10px 18px; border-radius: 14px; text-align: center;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+    opacity: 0; pointer-events: none; transition: opacity 0.25s, transform 0.25s;
+    z-index: 999;
+  }
+  .net-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
   .result-buttons {
     display: flex; flex-direction: column; gap: 10px;
     width: 100%; max-width: 300px;
@@ -1228,6 +1252,7 @@
 </style>
 </head>
 <body>
+<div id="net-toast" class="net-toast"></div>
 <div id="app">
 
   <div id="screen-menu" class="screen screen--with-nav active">
@@ -1286,6 +1311,15 @@
           <div class="mode-card-desc">5 випадкових ігор поспіль. Збирай очки й борись за 1 місце!</div>
         </div>
         <button class="mode-card-play wide-play" data-mode="tournament">Старт</button>
+      </div>
+
+      <div class="mode-card mode-card--tourney mode-card--wide" id="mode-card-friends">
+        <div class="wide-content">
+          <div class="mode-card-badge">Живий мультиплеєр</div>
+          <div class="mode-card-title">Грати з друзями</div>
+          <div class="mode-card-desc">Запроси друзів у свою арену. Порожні місця — боти.</div>
+        </div>
+        <button class="mode-card-play wide-play" id="btn-open-friends">Грати</button>
       </div>
 
       <div class="mode-card mode-card--colorpanic selected" data-mode="colorPanic">
@@ -1635,6 +1669,50 @@
     <div class="tourney-reward" id="tourney-reward"></div>
     <div class="result-buttons">
       <button id="btn-tourney-next" class="btn-primary">Наступна гра</button>
+    </div>
+  </div>
+
+  <div id="screen-lobby-mode" class="screen">
+    <div class="lobby-head">
+      <h1 class="draft-title">Грати з друзями</h1>
+      <p class="draft-sub">Створи кімнату й запроси друзів, або приєднайся за кодом. Порожні місця займуть боти.</p>
+    </div>
+    <div class="result-buttons">
+      <button id="btn-lobby-create" class="btn-primary">Створити кімнату</button>
+    </div>
+    <input id="lobby-join-code" class="lobby-join-input" maxlength="5" placeholder="КОД КІМНАТИ" autocomplete="off">
+    <div class="result-buttons">
+      <button id="btn-lobby-join" class="btn-secondary">Приєднатися за кодом</button>
+      <button id="btn-lobby-mode-back" class="btn-secondary">Назад</button>
+    </div>
+  </div>
+
+  <div id="screen-lobby-host" class="screen">
+    <div class="lobby-head">
+      <h1 class="draft-title">Кімната створена</h1>
+      <p class="draft-sub">Скинь друзям посилання — вони одразу приєднаються.</p>
+      <div class="lobby-code-box" id="lobby-host-code">-----</div>
+      <div class="lobby-link-row">
+        <input id="lobby-host-link" class="lobby-link-input" readonly>
+        <button id="btn-lobby-copy-link" class="btn-secondary">Копіювати</button>
+      </div>
+    </div>
+    <div class="lobby-roster" id="lobby-host-roster"></div>
+    <div class="result-buttons">
+      <button id="btn-lobby-host-start" class="btn-primary">Почати</button>
+      <button id="btn-lobby-host-cancel" class="btn-secondary">Скасувати</button>
+    </div>
+  </div>
+
+  <div id="screen-lobby-guest" class="screen">
+    <div class="lobby-head">
+      <h1 class="draft-title">Очікуємо старту</h1>
+      <p class="draft-sub" id="lobby-guest-status">Хост зараз почне гру…</p>
+      <div class="lobby-code-box" id="lobby-guest-code">-----</div>
+    </div>
+    <div class="lobby-roster" id="lobby-guest-roster"></div>
+    <div class="result-buttons">
+      <button id="btn-lobby-guest-leave" class="btn-secondary">Вийти</button>
     </div>
   </div>
 
@@ -2471,6 +2549,30 @@
 
   let profile = loadProfile();
 
+  // ---------- Telegram WebApp / player identity ----------
+  const tg = window.Telegram && window.Telegram.WebApp;
+  if (tg) { try { tg.ready(); tg.expand(); } catch (e) {} }
+
+  function getPlayerIdentity() {
+    if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+      const u = tg.initDataUnsafe.user;
+      return { id: 'tg_' + u.id, name: u.first_name || u.username || 'Гравець' };
+    }
+    let guestId = localStorage.getItem('miniArenaGuestId');
+    if (!guestId) {
+      guestId = 'guest_' + Math.random().toString(36).slice(2, 10);
+      localStorage.setItem('miniArenaGuestId', guestId);
+    }
+    return { id: guestId, name: profile.playerName || 'Ти' };
+  }
+  const myIdentity = getPlayerIdentity();
+
+  function getStartParam() {
+    if (tg && tg.initDataUnsafe && tg.initDataUnsafe.start_param) return tg.initDataUnsafe.start_param;
+    const qp = new URLSearchParams(location.search);
+    return qp.get('room') || null;
+  }
+
   function levelForXp(xp) { return Math.floor(xp / XP_PER_LEVEL) + 1; }
   function xpIntoLevel(xp) { return xp % XP_PER_LEVEL; }
 
@@ -2507,6 +2609,9 @@
     shop: document.getElementById('screen-shop'),
     tourneyIntro: document.getElementById('screen-tourney-intro'),
     tourneyStandings: document.getElementById('screen-tourney-standings'),
+    lobbyMode: document.getElementById('screen-lobby-mode'),
+    lobbyHost: document.getElementById('screen-lobby-host'),
+    lobbyGuest: document.getElementById('screen-lobby-guest'),
   };
   const NAV_SCREENS = new Set(['menu', 'skins', 'achievements', 'leaderboard', 'shop']);
   const bottomNavEl = document.getElementById('bottom-nav');
@@ -4743,6 +4848,317 @@
     return safeCount / total;
   }
 
+  // ---------- Multiplayer / Networking ----------
+  const HOST_TICK_HZ = 18;
+  const GUEST_INPUT_HZ = 20;
+  let net = {
+    ws: null, role: null, roomCode: null, selfId: null, selfSlot: null,
+    roster: [], hostName: null, connected: false,
+  };
+  let networkInputs = {};      // host-only: userId -> {x, y}
+  let guestBotSources = [];    // guest-only: bots[] index -> 'host' | slot number
+  let prevSnapshot = null, lastSnapshot = null, lastSnapshotAt = 0, prevSnapshotAt = 0; // guest-only
+  let hostBroadcastTimer = 0;  // host-only
+  let guestInputTimer = 0;     // guest-only
+
+  function emptyRoster() {
+    const arr = [];
+    for (let i = 0; i < BOT_COUNT; i++) arr.push({ slot: i, userId: null, name: null, controlType: 'bot', connected: false });
+    return arr;
+  }
+
+  function wsUrl() {
+    return (location.protocol === 'https:' ? 'wss://' : 'ws://') + location.host + '/ws';
+  }
+
+  function sendRelay(obj) {
+    if (net.ws && net.ws.readyState === 1) net.ws.send(JSON.stringify(obj));
+  }
+
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str == null ? '' : str;
+    return div.innerHTML;
+  }
+
+  let netToastTimer = null;
+  function toastNetworkMessage(text) {
+    const el = document.getElementById('net-toast');
+    if (!el) return;
+    el.textContent = text;
+    el.classList.add('show');
+    if (netToastTimer) clearTimeout(netToastTimer);
+    netToastTimer = setTimeout(() => el.classList.remove('show'), 2200);
+  }
+
+  function connectRelay(onOpen) {
+    if (net.ws) { try { net.ws.close(); } catch (e) {} }
+    const ws = new WebSocket(wsUrl());
+    net.ws = ws;
+    ws.onopen = () => { net.connected = true; if (onOpen) onOpen(); };
+    ws.onmessage = (evt) => {
+      let data;
+      try { data = JSON.parse(evt.data); } catch (e) { return; }
+      handleRelayMessage(data);
+    };
+    ws.onclose = () => {
+      const wasActive = !!net.role;
+      net.connected = false;
+      if (wasActive) {
+        toastNetworkMessage(net.role === 'guest' ? "З'єднання з хостом втрачено" : "З'єднання втрачено");
+        leaveMultiplayer();
+        renderMenu();
+        showScreen('menu');
+      }
+    };
+  }
+
+  function createRoom() {
+    connectRelay(() => sendRelay({ type: 'create_room', userId: myIdentity.id, name: myIdentity.name }));
+  }
+
+  function joinRoomByCode(code) {
+    connectRelay(() => sendRelay({ type: 'join_room', code: (code || '').toUpperCase(), userId: myIdentity.id, name: myIdentity.name }));
+  }
+
+  function leaveMultiplayer() {
+    if (net.ws) { try { sendRelay({ type: 'leave_room' }); net.ws.close(); } catch (e) {} }
+    net = { ws: null, role: null, roomCode: null, selfId: null, selfSlot: null, roster: [], hostName: null, connected: false };
+    networkInputs = {};
+    guestBotSources = [];
+    prevSnapshot = null; lastSnapshot = null;
+  }
+
+  function renderLobbyRoster(containerEl, roster, selfSlot) {
+    containerEl.innerHTML = '';
+    roster.forEach(slot => {
+      const row = document.createElement('div');
+      const isMe = slot.slot === selfSlot;
+      row.className = 'lobby-slot' + (slot.connected ? ' filled' : '');
+      const nameLabel = slot.connected ? escapeHtml(slot.name) + (isMe ? ' (ти)' : '') : 'AI Бот';
+      const tag = slot.connected ? 'Друг' : 'Бот';
+      row.innerHTML = `<span class="lobby-slot-dot"></span><span class="lobby-slot-name">${nameLabel}</span><span class="lobby-slot-tag">${tag}</span>`;
+      containerEl.appendChild(row);
+    });
+  }
+
+  function renderLobbyHost() {
+    document.getElementById('lobby-host-code').textContent = net.roomCode || '-----';
+    document.getElementById('lobby-host-link').value = net.roomCode ? `https://t.me/MiniArena1_bot?startapp=${net.roomCode}` : '';
+    renderLobbyRoster(document.getElementById('lobby-host-roster'), net.roster, -1);
+  }
+
+  function renderLobbyGuest() {
+    document.getElementById('lobby-guest-code').textContent = net.roomCode || '-----';
+    renderLobbyRoster(document.getElementById('lobby-guest-roster'), net.roster, net.selfSlot);
+  }
+
+  function handleRelayMessage(msg) {
+    switch (msg.type) {
+      case 'room_created':
+        net.role = 'host'; net.roomCode = msg.code; net.selfId = msg.selfId;
+        net.roster = emptyRoster();
+        renderLobbyHost();
+        showScreen('lobbyHost');
+        break;
+      case 'joined':
+        net.role = 'guest'; net.roomCode = msg.code; net.selfId = msg.selfId;
+        net.selfSlot = msg.slot; net.roster = msg.roster;
+        renderLobbyGuest();
+        showScreen('lobbyGuest');
+        break;
+      case 'join_error': {
+        const reasons = { full: 'Кімната заповнена', already_started: 'Матч уже почався', not_found: 'Кімнату не знайдено' };
+        toastNetworkMessage(reasons[msg.reason] || 'Не вдалося приєднатись');
+        leaveMultiplayer();
+        break;
+      }
+      case 'roster':
+        net.roster = msg.roster;
+        if (net.role === 'host') renderLobbyHost();
+        else if (net.role === 'guest') renderLobbyGuest();
+        break;
+      case 'room_closed':
+        toastNetworkMessage('Хост завершив кімнату');
+        leaveMultiplayer();
+        renderMenu();
+        showScreen('menu');
+        break;
+      case 'from_guest':
+        if (net.role === 'host' && msg.payload && msg.payload.type === 'input') {
+          networkInputs[msg.fromId] = { x: msg.payload.x, y: msg.payload.y };
+        }
+        break;
+      case 'from_host':
+        if (net.role === 'guest') handleHostPayload(msg.payload);
+        break;
+    }
+  }
+
+  // ---- Host: broadcasting authoritative state to guests ----
+  function broadcastRoundStart(g) {
+    if (net.role !== 'host' || !net.roomCode) return;
+    sendRelay({
+      type: 'to_guests',
+      payload: {
+        type: 'mode_start',
+        mode: g.mode,
+        round: g.round,
+        timeLimit: g.timeLimit,
+        targetColor: g.targetColor,
+        tiles: g.tiles.map(t => ({ color: t.color })),
+      },
+    });
+  }
+
+  function broadcastSnapshot(g) {
+    if (net.role !== 'host' || !net.roomCode) return;
+    sendRelay({
+      type: 'to_guests',
+      payload: {
+        type: 'snapshot',
+        mode: g.mode,
+        phase: g.phase,
+        round: g.round,
+        timeRemaining: g.timeRemaining,
+        player: { x: g.player.x, y: g.player.y, alpha: g.player.alpha },
+        bots: g.bots.map((b, i) => ({ slot: i, x: b.x, y: b.y, alive: b.alive, alpha: b.alpha })),
+      },
+    });
+  }
+
+  function hostStartMultiplayerMatch() {
+    startTournament(net.roster);
+    sendRelay({
+      type: 'start_match',
+      payload: {
+        type: 'start_match',
+        roster: net.roster,
+        hostName: myIdentity.name,
+        sequence: tournament.sequence,
+      },
+    });
+  }
+
+  // ---- Guest: mirroring host's authoritative state ----
+  function beginGuestRound(mode) {
+    game = createGame(mode);
+    game.bots.forEach((bot, i) => {
+      const src = guestBotSources[i];
+      if (src === 'host') {
+        bot.name = net.hostName || 'Хост';
+        bot.controlType = 'host';
+        bot.networkUserId = null;
+      } else {
+        const slotInfo = net.roster.find(r => r.slot === src);
+        if (slotInfo && slotInfo.connected) {
+          bot.name = slotInfo.name;
+          bot.controlType = 'network';
+          bot.networkUserId = slotInfo.userId;
+        } else {
+          bot.controlType = 'bot';
+        }
+      }
+    });
+  }
+
+  function startGuestMatch(payload) {
+    net.roster = payload.roster;
+    net.hostName = payload.hostName;
+    guestBotSources = ['host'];
+    for (let slot = 0; slot < BOT_COUNT; slot++) {
+      if (slot !== net.selfSlot) guestBotSources.push(slot);
+    }
+    document.getElementById('lobby-guest-status').textContent = 'Хост готує гру…';
+  }
+
+  function applyRoundStartToGuestGame(payload) {
+    const isFirstRound = !game || game.mode !== payload.mode;
+    if (isFirstRound) {
+      beginGuestRound(payload.mode);
+      showScreen('game');
+      resizeCanvas();
+      game.lastTs = performance.now();
+      requestAnimationFrame(loop);
+    }
+    game.round = payload.round;
+    game.timeLimit = payload.timeLimit;
+    game.timeRemaining = payload.timeLimit;
+    game.targetColor = payload.targetColor;
+    game.phase = 'playing';
+    game.phaseTime = 0;
+    if (payload.tiles && game.tiles && payload.tiles.length === game.tiles.length) {
+      game.tiles.forEach((t, i) => { t.color = payload.tiles[i].color; t.alive = true; t.alpha = 1; t.scale = 1; });
+    }
+    updateHud(game);
+  }
+
+  function applySnapshotToGuestGame(payload) {
+    if (!game) return;
+    const meSrc = payload.bots.find(b => b.slot === net.selfSlot);
+    if (meSrc) {
+      game.player.targetX = meSrc.x; game.player.targetY = meSrc.y;
+      game.player.alpha = meSrc.alpha;
+    }
+    guestBotSources.forEach((src, i) => {
+      const bot = game.bots[i];
+      if (!bot) return;
+      const data = src === 'host' ? payload.player : payload.bots.find(b => b.slot === src);
+      if (!data) return;
+      bot.netTargetX = data.x; bot.netTargetY = data.y;
+      bot.alive = data.alive;
+      bot.alpha = data.alpha !== undefined ? data.alpha : (data.alive ? 1 : 0);
+    });
+    game.timeRemaining = payload.timeRemaining;
+    game.round = payload.round;
+  }
+
+  function handleHostPayload(payload) {
+    if (!payload) return;
+    if (payload.type === 'start_match') startGuestMatch(payload);
+    else if (payload.type === 'mode_start') applyRoundStartToGuestGame(payload);
+    else if (payload.type === 'snapshot') {
+      prevSnapshot = lastSnapshot; prevSnapshotAt = lastSnapshotAt;
+      lastSnapshot = payload; lastSnapshotAt = performance.now();
+      applySnapshotToGuestGame(payload);
+    }
+  }
+
+  // Guest never runs the real physics update() — it just smoothly glides
+  // every entity toward the latest network target each frame and renders.
+  function guestTick(ts) {
+    if (!game) { requestAnimationFrame(loop); return; }
+    const dt = Math.min(0.05, (ts - game.lastTs) / 1000);
+    game.lastTs = ts;
+
+    guestInputTimer += dt;
+    if (guestInputTimer >= 1 / GUEST_INPUT_HZ) {
+      guestInputTimer = 0;
+      const input = getInputVector();
+      sendRelay({ type: 'to_host', payload: { type: 'input', x: input.x, y: input.y } });
+    }
+
+    const glide = Math.min(1, dt * 14);
+    if (game.player.targetX !== undefined) {
+      game.player.x += (game.player.targetX - game.player.x) * glide;
+      game.player.y += (game.player.targetY - game.player.y) * glide;
+    }
+    game.bots.forEach(bot => {
+      if (bot.netTargetX !== undefined) {
+        bot.x += (bot.netTargetX - bot.x) * glide;
+        bot.y += (bot.netTargetY - bot.y) * glide;
+      }
+    });
+
+    updateFloatingTexts(game, dt);
+    updateBotFades(game, dt);
+    updateParticles(game, dt);
+    const pct = (game.timeRemaining / game.timeLimit) * 100;
+    timerBarEl.style.width = clamp(pct, 0, 100) + '%';
+    render(game);
+    requestAnimationFrame(loop);
+  }
+
   // ---------- Game state ----------
   let game = null;
 
@@ -4818,6 +5234,8 @@
       bot.reactionDelay = brain.reactionMin;
       bot.mistakeChance = brain.mistakeChance;
       bot.panicChance = brain.panicChance;
+      bot.controlType = rival.controlType || 'bot';
+      bot.networkUserId = rival.networkUserId || null;
     });
     return true;
   }
@@ -5073,6 +5491,7 @@
     });
 
     updateHud(g);
+    broadcastRoundStart(g);
   }
 
   function updateHud(g) {
@@ -5153,7 +5572,7 @@
     return a;
   }
 
-  function startTournament() {
+  function startTournament(friendRoster) {
     const sequence = shuffled(TOURNEY_MODE_POOL).slice(0, TOURNEY_ROUNDS);
     const names = shuffled(TOURNEY_BOT_NAMES);
     const rosterSkins = shuffled(SKINS.filter(s => s.id !== profile.activeSkin));
@@ -5163,14 +5582,18 @@
       total: 0, lastPts: 0, lastPlace: 0, color: activeSkinDef().color,
     }];
     for (let i = 0; i < BOT_COUNT; i++) {
+      const friendSlot = friendRoster && friendRoster[i];
+      const isFriend = friendSlot && friendSlot.controlType === 'network' && friendSlot.connected;
       const brain = makeBotBrain();
       const skin = rosterSkins[i % rosterSkins.length] || null;
       competitors.push({
-        id: 'bot' + i, name: names[i], isPlayer: false,
+        id: 'bot' + i, name: isFriend ? friendSlot.name : names[i], isPlayer: false,
         skill: brain.skill, brain, skin,
         accessory: rosterAccessories[i % rosterAccessories.length] || null,
         total: 0, lastPts: 0, lastPlace: 0,
         color: skin ? skin.color : BOT_COLORS[i % BOT_COLORS.length],
+        controlType: isFriend ? 'network' : 'bot',
+        networkUserId: isFriend ? friendSlot.userId : null,
       });
     }
     tournament = { sequence, index: 0, competitors, lastMode: null, finalReward: null, meRank: 0, playerRoundPlaces: [], rankAfterThree: 0 };
@@ -8604,10 +9027,27 @@
     return true;
   }
 
+  // Moves a network-controlled bot using the latest input received from its
+  // real player, instead of AI decision logic. Skips the AI's hesitation/
+  // imprecision machinery entirely, since that exists to simulate human
+  // error and would just add lag to an actually-human input.
+  function driveNetworkBot(bot, dt) {
+    if (bot.vx === undefined) { bot.vx = 0; bot.vy = 0; }
+    const input = networkInputs[bot.networkUserId] || { x: 0, y: 0 };
+    const speed = bot.speed || BOT_BASE_SPEED;
+    const targetVX = input.x * speed, targetVY = input.y * speed;
+    const smooth = Math.min(1, dt * 12);
+    bot.vx += (targetVX - bot.vx) * smooth;
+    bot.vy += (targetVY - bot.vy) * smooth;
+    bot.x = clamp(bot.x + bot.vx * dt, BOT_RADIUS, 1 - BOT_RADIUS);
+    bot.y = clamp(bot.y + bot.vy * dt, BOT_RADIUS, 1 - BOT_RADIUS);
+  }
+
   function updateColorPanicPlaying(g, dt) {
     const mistakeMul = roundMistakeMultiplier(g.round);
     g.bots.forEach(bot => {
       if (!bot.alive) return;
+      if (bot.controlType === 'network') { driveNetworkBot(bot, dt); return; }
 
       if (g.timeRemaining < 1.0 && !bot.panicRolled) {
         bot.panicRolled = true;
@@ -9115,11 +9555,19 @@
 
   // ---------- Loop ----------
   function loop(ts) {
+    if (net.role === 'guest' && net.roomCode) { guestTick(ts); return; }
     if (!game) return;
     const dt = Math.min(0.05, (ts - game.lastTs) / 1000);
     game.lastTs = ts;
     update(game, dt);
     if (!game) return;
+    if (net.role === 'host' && net.roomCode) {
+      hostBroadcastTimer += dt;
+      if (hostBroadcastTimer >= 1 / HOST_TICK_HZ) {
+        hostBroadcastTimer = 0;
+        broadcastSnapshot(game);
+      }
+    }
     const pct = (game.timeRemaining / game.timeLimit) * 100;
     timerBarEl.style.width = clamp(pct, 0, 100) + '%';
     render(game);
@@ -9137,6 +9585,38 @@
 
   document.getElementById('btn-tourney-start').addEventListener('click', startTournamentRound);
   document.getElementById('btn-tourney-cancel').addEventListener('click', cancelTournament);
+
+  // ---- Multiplayer lobby wiring ----
+  document.getElementById('btn-open-friends').addEventListener('click', () => {
+    document.getElementById('lobby-join-code').value = '';
+    showScreen('lobbyMode');
+  });
+  document.getElementById('btn-lobby-mode-back').addEventListener('click', () => { renderMenu(); showScreen('menu'); });
+  document.getElementById('btn-lobby-create').addEventListener('click', createRoom);
+  document.getElementById('btn-lobby-join').addEventListener('click', () => {
+    const code = document.getElementById('lobby-join-code').value.trim();
+    if (code) joinRoomByCode(code);
+  });
+  document.getElementById('btn-lobby-copy-link').addEventListener('click', () => {
+    const linkEl = document.getElementById('lobby-host-link');
+    linkEl.select();
+    try { navigator.clipboard.writeText(linkEl.value); } catch (e) { document.execCommand('copy'); }
+    toastNetworkMessage('Посилання скопійовано');
+  });
+  document.getElementById('btn-lobby-host-start').addEventListener('click', hostStartMultiplayerMatch);
+  document.getElementById('btn-lobby-host-cancel').addEventListener('click', () => {
+    leaveMultiplayer();
+    renderMenu();
+    showScreen('menu');
+  });
+  document.getElementById('btn-lobby-guest-leave').addEventListener('click', () => {
+    leaveMultiplayer();
+    renderMenu();
+    showScreen('menu');
+  });
+
+  const autoJoinCode = getStartParam();
+  if (autoJoinCode) joinRoomByCode(autoJoinCode);
   document.getElementById('btn-tourney-next').addEventListener('click', () => {
     if (!tournament) { cancelTournament(); return; }
     if (tournament.index >= tournament.sequence.length) finishTournament();
