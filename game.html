@@ -598,6 +598,13 @@
   .lobby-slot-tag { font-size:10px; font-weight:800; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; }
   .lobby-join-input { width:100%; max-width:280px; text-align:center; font-size:20px; letter-spacing:4px; font-weight:800; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.12); border-radius:12px; color:var(--text); padding:12px; margin-bottom:14px; text-transform:uppercase; }
 
+  .friends-tag-box { font-size:22px; font-weight:900; letter-spacing:4px; color:var(--accent); background:rgba(42,171,238,.1); border:1px solid rgba(42,171,238,.25); border-radius:14px; padding:10px 20px; margin:10px 0; }
+  .friends-add-row { display:flex; gap:8px; width:100%; max-width:340px; margin:0 auto 14px; padding:0 20px; }
+  .friends-requests-link { position:relative; margin:0 0 14px; }
+  .req-badge { display:inline-flex; align-items:center; justify-content:center; min-width:18px; height:18px; padding:0 5px; margin-left:6px; border-radius:999px; background:var(--danger); color:#fff; font-size:10px; font-weight:900; }
+  .friends-section-label { width:100%; max-width:360px; margin:14px auto 6px; padding:0 4px; color:var(--muted); font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.5px; }
+  .btn-sm { min-width:0 !important; min-height:0 !important; padding:8px 14px !important; font-size:12px !important; border-radius:12px !important; flex-shrink:0; }
+
   .tourney-table {
     width: 100%; max-width: 360px; margin-bottom: 14px;
   }
@@ -1716,6 +1723,36 @@
     </div>
   </div>
 
+  <div id="screen-friends" class="screen screen--with-nav">
+    <div class="lobby-head">
+      <h1 class="draft-title">Друзі</h1>
+      <p class="draft-sub">Твій тег — покажи його другу, щоб він міг тебе додати.</p>
+      <div class="friends-tag-box" id="friends-my-tag">----</div>
+    </div>
+    <div class="friends-add-row">
+      <input id="friends-add-input" class="lobby-link-input" maxlength="4" placeholder="ТЕГ ДРУГА" autocomplete="off">
+      <button id="btn-friends-add" class="btn-secondary">Додати</button>
+    </div>
+    <div class="result-buttons friends-requests-link">
+      <button id="btn-friends-requests" class="btn-secondary">Заявки в друзі<span class="req-badge is-hidden" id="friends-requests-badge"></span></button>
+    </div>
+    <div class="friends-section-label">Твої друзі</div>
+    <div class="lobby-roster" id="friends-list" style="max-width:360px;margin:0 auto 20px;"></div>
+  </div>
+
+  <div id="screen-friend-requests" class="screen">
+    <div class="lobby-head">
+      <h1 class="draft-title">Заявки в друзі</h1>
+    </div>
+    <div class="friends-section-label">Вхідні</div>
+    <div class="lobby-roster" id="friend-requests-incoming" style="max-width:360px;margin:0 auto;"></div>
+    <div class="friends-section-label">Надіслані</div>
+    <div class="lobby-roster" id="friend-requests-outgoing" style="max-width:360px;margin:0 auto 20px;"></div>
+    <div class="result-buttons">
+      <button id="btn-friend-requests-back" class="btn-secondary">Назад</button>
+    </div>
+  </div>
+
   <div id="bottom-nav">
     <button class="nav-item active" data-target="menu">
       <span class="nav-icon">
@@ -1747,6 +1784,17 @@
         </svg>
       </span>
       <span class="nav-label">Досягнення</span>
+    </button>
+    <button class="nav-item" data-target="friends">
+      <span class="nav-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="9" cy="8" r="3.2"/>
+          <path d="M3.5 20c0-3.5 2.5-6 5.5-6s5.5 2.5 5.5 6"/>
+          <circle cx="17" cy="8.5" r="2.4"/>
+          <path d="M15.5 14.3c2.4.4 4 2.5 4 5.7"/>
+        </svg>
+      </span>
+      <span class="nav-label">Друзі</span>
     </button>
   </div>
 
@@ -2612,8 +2660,10 @@
     lobbyMode: document.getElementById('screen-lobby-mode'),
     lobbyHost: document.getElementById('screen-lobby-host'),
     lobbyGuest: document.getElementById('screen-lobby-guest'),
+    friends: document.getElementById('screen-friends'),
+    friendRequests: document.getElementById('screen-friend-requests'),
   };
-  const NAV_SCREENS = new Set(['menu', 'skins', 'achievements', 'leaderboard', 'shop']);
+  const NAV_SCREENS = new Set(['menu', 'skins', 'achievements', 'leaderboard', 'shop', 'friends']);
   const bottomNavEl = document.getElementById('bottom-nav');
   const navItems = Array.from(document.querySelectorAll('.nav-item'));
 
@@ -2736,6 +2786,7 @@
       else if (target === 'achievements') { renderAchievementsScreen(); showScreen('achievements'); }
       else if (target === 'leaderboard') { renderLeaderboardScreen(); showScreen('leaderboard'); }
       else if (target === 'shop') { renderShopScreen(); showScreen('shop'); }
+      else if (target === 'friends') { sendRelay({ type: 'get_friends' }); showScreen('friends'); }
     });
   });
 
@@ -4854,6 +4905,7 @@
   let net = {
     ws: null, role: null, roomCode: null, selfId: null, selfSlot: null,
     roster: [], hostName: null, connected: false,
+    myTag: null, friends: [], incomingRequests: [], outgoingRequests: [],
   };
   let networkInputs = {};      // host-only: userId -> {x, y}
   let guestBotSources = [];    // guest-only: bots[] index -> 'host' | slot number
@@ -4871,8 +4923,13 @@
     return (location.protocol === 'https:' ? 'wss://' : 'ws://') + location.host + '/ws';
   }
 
+  let relayQueue = [];
   function sendRelay(obj) {
-    if (net.ws && net.ws.readyState === 1) net.ws.send(JSON.stringify(obj));
+    if (net.ws && net.ws.readyState === 1) {
+      net.ws.send(JSON.stringify(obj));
+    } else {
+      relayQueue.push(obj);
+    }
   }
 
   function escapeHtml(str) {
@@ -4891,39 +4948,49 @@
     netToastTimer = setTimeout(() => el.classList.remove('show'), 2200);
   }
 
-  function connectRelay(onOpen) {
-    if (net.ws) { try { net.ws.close(); } catch (e) {} }
+  // A single WebSocket is opened once at app launch and kept open for the
+  // whole session — it now carries both room-relay traffic (multiplayer
+  // matches) and friends/presence traffic, which needs to work even when
+  // the player isn't hosting or in a room at all.
+  function connectRelay() {
     const ws = new WebSocket(wsUrl());
     net.ws = ws;
-    ws.onopen = () => { net.connected = true; if (onOpen) onOpen(); };
+    ws.onopen = () => {
+      net.connected = true;
+      sendRelay({ type: 'identify', telegramId: myIdentity.id, name: myIdentity.name });
+      const queued = relayQueue;
+      relayQueue = [];
+      queued.forEach(m => sendRelay(m));
+    };
     ws.onmessage = (evt) => {
       let data;
       try { data = JSON.parse(evt.data); } catch (e) { return; }
       handleRelayMessage(data);
     };
     ws.onclose = () => {
-      const wasActive = !!net.role;
       net.connected = false;
-      if (wasActive) {
+      if (net.roomCode) {
         toastNetworkMessage(net.role === 'guest' ? "З'єднання з хостом втрачено" : "З'єднання втрачено");
         leaveMultiplayer();
         renderMenu();
         showScreen('menu');
+      } else {
+        setTimeout(() => { if (!net.connected) connectRelay(); }, 2000);
       }
     };
   }
 
   function createRoom() {
-    connectRelay(() => sendRelay({ type: 'create_room', userId: myIdentity.id, name: myIdentity.name }));
+    sendRelay({ type: 'create_room', userId: myIdentity.id, name: myIdentity.name });
   }
 
   function joinRoomByCode(code) {
-    connectRelay(() => sendRelay({ type: 'join_room', code: (code || '').toUpperCase(), userId: myIdentity.id, name: myIdentity.name }));
+    sendRelay({ type: 'join_room', code: (code || '').toUpperCase(), userId: myIdentity.id, name: myIdentity.name });
   }
 
   function leaveMultiplayer() {
-    if (net.ws) { try { sendRelay({ type: 'leave_room' }); net.ws.close(); } catch (e) {} }
-    net = { ws: null, role: null, roomCode: null, selfId: null, selfSlot: null, roster: [], hostName: null, connected: false };
+    if (net.roomCode) { try { sendRelay({ type: 'leave_room' }); } catch (e) {} }
+    net.role = null; net.roomCode = null; net.selfSlot = null; net.roster = []; net.hostName = null;
     networkInputs = {};
     guestBotSources = [];
     prevSnapshot = null; lastSnapshot = null;
@@ -4958,6 +5025,89 @@
     renderLobbyRoster(document.getElementById('lobby-guest-roster'), net.roster, net.selfSlot, net.hostName || 'Хост');
   }
 
+  let pendingInviteFriendId = null;
+  function inviteFriendToPlay(friendTelegramId) {
+    if (net.role === 'host' && net.roomCode) {
+      sendRelay({ type: 'invite_friend', friendTelegramId, inviterName: myIdentity.name });
+    } else {
+      pendingInviteFriendId = friendTelegramId;
+      createRoom();
+    }
+  }
+
+  function formatLastSeen(iso) {
+    if (!iso) return 'давно';
+    const diffMs = Date.now() - new Date(iso).getTime();
+    const min = Math.floor(diffMs / 60000);
+    if (min < 1) return 'щойно';
+    if (min < 60) return `${min} хв тому`;
+    const hrs = Math.floor(min / 60);
+    if (hrs < 24) return `${hrs} год тому`;
+    const days = Math.floor(hrs / 24);
+    return `${days} дн тому`;
+  }
+
+  function renderFriendsScreen() {
+    document.getElementById('friends-my-tag').textContent = net.myTag || '----';
+    const reqCount = net.incomingRequests.length;
+    const badgeEl = document.getElementById('friends-requests-badge');
+    badgeEl.textContent = reqCount > 0 ? String(reqCount) : '';
+    badgeEl.classList.toggle('is-hidden', reqCount === 0);
+
+    const listEl = document.getElementById('friends-list');
+    listEl.innerHTML = '';
+    if (net.friends.length === 0) {
+      const empty = document.createElement('div');
+      empty.className = 'lobby-slot';
+      empty.innerHTML = `<span class="lobby-slot-name">Ще немає друзів — додай за тегом вище</span>`;
+      listEl.appendChild(empty);
+    }
+    net.friends.forEach(f => {
+      const row = document.createElement('div');
+      row.className = 'lobby-slot' + (f.online ? ' filled' : '');
+      const status = f.online ? '🟢 Онлайн' : `був у мережі ${formatLastSeen(f.last_seen)}`;
+      row.innerHTML =
+        `<span class="lobby-slot-dot"></span>` +
+        `<span class="lobby-slot-name">${escapeHtml(f.name)}<br><small style="color:var(--muted);font-weight:600;">${status}</small></span>` +
+        `<button class="btn-secondary btn-sm friend-play-btn">Грати разом</button>`;
+      row.querySelector('.friend-play-btn').addEventListener('click', () => inviteFriendToPlay(f.telegram_id));
+      listEl.appendChild(row);
+    });
+  }
+
+  function renderFriendRequestsScreen() {
+    const incomingEl = document.getElementById('friend-requests-incoming');
+    incomingEl.innerHTML = '';
+    if (net.incomingRequests.length === 0) {
+      incomingEl.innerHTML = '<div class="lobby-slot"><span class="lobby-slot-name">Немає нових заявок</span></div>';
+    }
+    net.incomingRequests.forEach(r => {
+      const row = document.createElement('div');
+      row.className = 'lobby-slot filled';
+      row.innerHTML =
+        `<span class="lobby-slot-dot"></span>` +
+        `<span class="lobby-slot-name">${escapeHtml(r.name)} <small style="color:var(--muted);">#${r.tag}</small></span>` +
+        `<button class="btn-primary btn-sm req-accept-btn">✓</button>` +
+        `<button class="btn-secondary btn-sm req-decline-btn">✕</button>`;
+      row.querySelector('.req-accept-btn').addEventListener('click', () => {
+        sendRelay({ type: 'respond_friend_request', requestId: r.id, accept: true });
+      });
+      row.querySelector('.req-decline-btn').addEventListener('click', () => {
+        sendRelay({ type: 'respond_friend_request', requestId: r.id, accept: false });
+      });
+      incomingEl.appendChild(row);
+    });
+
+    const outgoingEl = document.getElementById('friend-requests-outgoing');
+    outgoingEl.innerHTML = '';
+    net.outgoingRequests.forEach(r => {
+      const row = document.createElement('div');
+      row.className = 'lobby-slot';
+      row.innerHTML = `<span class="lobby-slot-dot"></span><span class="lobby-slot-name">${escapeHtml(r.name)} <small style="color:var(--muted);">#${r.tag}</small></span><span class="lobby-slot-tag">Очікує</span>`;
+      outgoingEl.appendChild(row);
+    });
+  }
+
   function handleRelayMessage(msg) {
     switch (msg.type) {
       case 'room_created':
@@ -4965,6 +5115,10 @@
         net.roster = emptyRoster();
         renderLobbyHost();
         showScreen('lobbyHost');
+        if (pendingInviteFriendId) {
+          sendRelay({ type: 'invite_friend', friendTelegramId: pendingInviteFriendId, inviterName: myIdentity.name });
+          pendingInviteFriendId = null;
+        }
         break;
       case 'joined':
         net.role = 'guest'; net.roomCode = msg.code; net.selfId = msg.selfId;
@@ -4997,6 +5151,42 @@
         break;
       case 'from_host':
         if (net.role === 'guest') handleHostPayload(msg.payload);
+        break;
+      case 'identified':
+        net.myTag = msg.tag;
+        break;
+      case 'friends_data':
+        net.friends = msg.friends || [];
+        net.incomingRequests = msg.incoming || [];
+        net.outgoingRequests = msg.outgoing || [];
+        renderFriendsScreen();
+        break;
+      case 'add_friend_result': {
+        if (msg.ok) {
+          toastNetworkMessage('Заявку надіслано');
+          sendRelay({ type: 'get_friends' });
+        } else {
+          const reasons = {
+            self: 'Це твій власний тег', not_found: 'Гравця з таким тегом не знайдено',
+            already_friends: 'Ви вже друзі', already_pending: 'Заявку вже надіслано',
+          };
+          toastNetworkMessage(reasons[msg.reason] || 'Не вдалося додати друга');
+        }
+        break;
+      }
+      case 'respond_friend_request_result':
+        if (msg.ok) sendRelay({ type: 'get_friends' });
+        break;
+      case 'friend_request_received':
+        toastNetworkMessage('Нова заявка в друзі!');
+        sendRelay({ type: 'get_friends' });
+        break;
+      case 'friend_request_responded':
+        toastNetworkMessage(msg.accepted ? 'Заявку прийнято!' : 'Заявку відхилено');
+        sendRelay({ type: 'get_friends' });
+        break;
+      case 'invite_result':
+        toastNetworkMessage(msg.ok ? 'Запрошення надіслано!' : 'Не вдалося надіслати запрошення');
         break;
     }
   }
@@ -9749,6 +9939,26 @@
     showScreen('menu');
   });
 
+  // ---- Friends wiring ----
+  document.getElementById('btn-friends-add').addEventListener('click', () => {
+    const tag = document.getElementById('friends-add-input').value.trim();
+    if (tag.length === 4) {
+      sendRelay({ type: 'add_friend', tag });
+      document.getElementById('friends-add-input').value = '';
+    } else {
+      toastNetworkMessage('Тег складається з 4 символів');
+    }
+  });
+  document.getElementById('btn-friends-requests').addEventListener('click', () => {
+    renderFriendRequestsScreen();
+    showScreen('friendRequests');
+  });
+  document.getElementById('btn-friend-requests-back').addEventListener('click', () => {
+    sendRelay({ type: 'get_friends' });
+    showScreen('friends');
+  });
+
+  connectRelay();
   const autoJoinCode = getStartParam();
   if (autoJoinCode) joinRoomByCode(autoJoinCode);
   document.getElementById('btn-tourney-next').addEventListener('click', () => {
