@@ -1321,6 +1321,172 @@
     background: rgba(255,255,255,0.4);
     box-shadow: 0 4px 12px rgba(0,0,0,0.35);
   }
+  /* ===== Home 2026: polished arena lobby ===== */
+  #screen-menu {
+    --home-cyan:#32c5ff; --home-blue:#3b82f6; --home-violet:#8b5cf6;
+    width:100%; padding:22px 18px calc(100px + env(safe-area-inset-bottom));
+    background:
+      radial-gradient(90% 38% at 50% -5%,rgba(50,197,255,.13),transparent 70%),
+      linear-gradient(180deg,#0c121c 0%,#090c12 62%);
+  }
+  #screen-menu::before { content:""; position:absolute; inset:0; pointer-events:none; opacity:.18; background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px); background-size:32px 32px; mask-image:linear-gradient(to bottom,#000,transparent 45%); }
+  #screen-menu > * { position:relative; z-index:1; }
+  #screen-menu .brandline { width:100%; max-width:440px; margin:0 0 18px; }
+  #screen-menu .brandmark { display:flex; align-items:center; font-size:20px; letter-spacing:4px; text-shadow:0 0 24px rgba(50,197,255,.18); }
+  #screen-menu .brandmark::before { content:""; width:9px; height:9px; margin-right:10px; border:3px solid var(--home-cyan); border-radius:3px; transform:rotate(45deg); box-shadow:0 0 16px rgba(50,197,255,.65); }
+  #screen-menu .brandmark-accent { background:linear-gradient(90deg,var(--home-cyan),#7dd3fc); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  #screen-menu .hud-gear { width:42px; height:42px; border-radius:14px; background:rgba(255,255,255,.055); border-color:rgba(255,255,255,.1); box-shadow:inset 0 1px 0 rgba(255,255,255,.05); transition:.18s ease; }
+  #screen-menu .hud-gear:hover { background:rgba(50,197,255,.1); border-color:rgba(50,197,255,.25); }
+  #screen-menu .hud-card { width:100%; max-width:440px; margin:0 0 12px; padding:18px; border-radius:24px; border:1px solid rgba(125,211,252,.16); background:radial-gradient(120% 140% at 100% 0,rgba(59,130,246,.19),transparent 52%),linear-gradient(145deg,rgba(27,37,53,.98),rgba(15,20,30,.98)); box-shadow:0 24px 60px -32px #000, inset 0 1px 0 rgba(255,255,255,.055); }
+  #screen-menu .hud-top { gap:14px; }
+  #screen-menu .hud-avatar-wrap { width:72px; height:72px; }
+  #screen-menu .hud-ring { background:conic-gradient(from 210deg,var(--home-cyan),var(--home-violet),#f472b6,var(--home-cyan)); box-shadow:0 0 26px rgba(50,197,255,.15); }
+  #screen-menu .hud-avatar { inset:5px; border:4px solid #111a27; }
+  #screen-menu .hud-lvl-badge { bottom:-4px; padding:3px 9px; font-size:8px; color:#061018; background:linear-gradient(135deg,#67e8f9,#38bdf8); box-shadow:0 5px 16px rgba(14,165,233,.32); }
+  #screen-menu .hud-name-row { margin-bottom:10px; }
+  #screen-menu .hud-name { font-size:19px; font-weight:900; }
+  #screen-menu .cur-chip { min-height:28px; padding:3px 9px 3px 6px; background:rgba(4,9,17,.34); border-color:rgba(255,255,255,.09); }
+  #screen-menu .hud-xp-bar-wrap { height:7px; background:rgba(0,0,0,.28); box-shadow:inset 0 1px 3px rgba(0,0,0,.4); }
+  #screen-menu .hud-xp-bar { background:linear-gradient(90deg,var(--home-cyan),var(--home-blue),var(--home-violet)); box-shadow:0 0 12px rgba(59,130,246,.42); }
+  #screen-menu .hud-xp-text { display:flex; justify-content:flex-end; font-size:10px; color:#8997aa; }
+  #screen-menu .hud-stats { margin-top:16px; padding-top:15px; }
+  #screen-menu .hud-stat-val { font-size:21px; }
+  #screen-menu .hud-stat-lbl { font-size:8.5px; letter-spacing:.65px; }
+  #screen-menu .menu-character-card { width:100%; max-width:440px; min-height:142px; margin:0 0 22px; padding:10px 18px 10px 6px; grid-template-columns:152px 1fr; gap:8px; border-radius:24px; border-color:rgba(50,197,255,.25); background:radial-gradient(circle at 17% 55%,rgba(50,197,255,.22),transparent 35%),radial-gradient(circle at 95% 0,rgba(139,92,246,.14),transparent 40%),linear-gradient(135deg,#172332,#10151f); box-shadow:0 20px 50px -30px #000,inset 0 1px 0 rgba(255,255,255,.05); transition:transform .18s ease,border-color .18s ease; }
+  #screen-menu .menu-character-card:hover { border-color:rgba(50,197,255,.46); transform:translateY(-1px); }
+  #screen-menu .menu-character-card::before { content:"ПЕРСОНАЖ"; position:absolute; top:13px; right:15px; padding:4px 7px; border-radius:7px; color:#68d8ff; background:rgba(50,197,255,.08); font-size:7px; font-weight:900; letter-spacing:1px; }
+  #screen-menu .menu-character-card::after { right:-62px; top:-82px; border-color:rgba(50,197,255,.07); }
+  #screen-menu #menu-character-canvas { width:146px; height:116px; }
+  #screen-menu .menu-character-kicker { font-size:8px; color:#67d7ff; letter-spacing:1.5px; }
+  #screen-menu .menu-character-title { font-size:22px; }
+  #screen-menu .menu-character-sub { font-size:10.5px; line-height:1.45; }
+  #screen-menu .menu-character-link { margin-top:10px; color:#6cdbff; font-size:11px; }
+  #screen-menu .section-label { max-width:440px; display:flex; align-items:end; justify-content:space-between; margin:0 0 12px; color:#f4f7fb; font-size:15px; font-weight:900; letter-spacing:.9px; }
+  #screen-menu .section-label::after { content:"ОБЕРИ РЕЖИМ"; color:#637086; font-size:8px; font-weight:800; letter-spacing:1.2px; }
+  #screen-menu .mode-cards { max-width:440px; }
+  @media(max-width:390px){
+    #screen-menu{padding-left:14px;padding-right:14px}
+    #screen-menu .hud-card{padding:15px}
+    #screen-menu .hud-avatar-wrap{width:64px;height:64px}
+    #screen-menu .hud-name{font-size:17px}
+    #screen-menu .cur-chip{padding-right:7px}
+    #screen-menu .menu-character-card{grid-template-columns:128px 1fr;padding-left:2px}
+    #screen-menu #menu-character-canvas{width:128px;height:108px}
+  }
+  @media(min-width:700px){ #screen-menu{padding-top:30px} }
+
+  /* ===== Featured modes refresh ===== */
+  #screen-menu .mode-card-badge { display:none !important; }
+  #screen-menu .featured-mode {
+    grid-column:1/-1; min-height:0; padding:0; gap:0; display:grid;
+    grid-template-columns:74px minmax(0,1fr) 48px; align-items:center;
+    border:1px solid rgba(255,255,255,.09); border-radius:22px;
+    background:linear-gradient(145deg,rgba(25,33,45,.97),rgba(13,17,24,.98));
+    box-shadow:0 16px 36px -28px #000,inset 0 1px rgba(255,255,255,.045);
+    overflow:hidden; transition:transform .18s ease,border-color .18s ease;
+  }
+  #screen-menu .featured-mode:active { transform:scale(.985); }
+  #screen-menu .featured-mode::after { content:""; position:absolute; width:140px; height:140px; right:-80px; top:-82px; border-radius:50%; border:1px solid rgba(255,255,255,.045); box-shadow:0 0 0 18px rgba(255,255,255,.012),0 0 0 38px rgba(255,255,255,.008); pointer-events:none; }
+  #screen-menu .featured-mode__visual { width:52px; height:52px; margin-left:16px; display:grid; place-items:center; border-radius:16px; position:relative; overflow:hidden; }
+  #screen-menu .featured-mode__visual svg { width:27px; height:27px; position:relative; z-index:2; }
+  #screen-menu .featured-mode__copy { min-width:0; padding:16px 12px 16px 10px; }
+  #screen-menu .featured-mode__eyebrow { display:block; margin-bottom:4px; font-size:8px; line-height:1; font-weight:900; letter-spacing:1.35px; text-transform:uppercase; }
+  #screen-menu .featured-mode .mode-card-title { margin:0 0 4px; font-size:18px; line-height:1.12; }
+  #screen-menu .featured-mode .mode-card-desc { max-width:none; min-height:0; margin:0; color:#8f9bad; font-size:10px; line-height:1.4; }
+  #screen-menu .featured-mode__go { width:38px; height:38px; min-height:38px; padding:0; margin-right:12px; border-radius:13px; display:grid; place-items:center; position:relative; z-index:3; }
+  #screen-menu .featured-mode__go svg { width:17px; height:17px; }
+  #screen-menu .featured-mode--tournament { border-color:rgba(251,191,36,.19); background:radial-gradient(circle at 8% 50%,rgba(251,191,36,.11),transparent 25%),linear-gradient(145deg,#1c2028,#101217); }
+  #screen-menu .featured-mode--tournament .featured-mode__visual { color:#ffdc69; background:linear-gradient(145deg,rgba(251,191,36,.2),rgba(245,158,11,.07)); border:1px solid rgba(251,191,36,.2); box-shadow:0 10px 24px rgba(245,158,11,.08); }
+  #screen-menu .featured-mode--tournament .featured-mode__eyebrow { color:#eebd45; }
+  #screen-menu .featured-mode--tournament .featured-mode__go { color:#211500; background:linear-gradient(135deg,#ffd45c,#f59e0b); box-shadow:0 8px 20px rgba(245,158,11,.22); }
+  #screen-menu .featured-mode--friends { border-color:rgba(50,197,255,.17); background:radial-gradient(circle at 8% 50%,rgba(50,197,255,.1),transparent 25%),linear-gradient(145deg,#18222d,#0e131a); }
+  #screen-menu .featured-mode--friends .featured-mode__visual { color:#72dcff; background:linear-gradient(145deg,rgba(50,197,255,.18),rgba(59,130,246,.07)); border:1px solid rgba(50,197,255,.19); box-shadow:0 10px 24px rgba(14,165,233,.08); }
+  #screen-menu .featured-mode--friends .featured-mode__eyebrow { color:#63d4ff; }
+  #screen-menu .featured-mode--friends .featured-mode__go { color:#04131c; background:linear-gradient(135deg,#67e8f9,#38bdf8); box-shadow:0 8px 20px rgba(14,165,233,.2); }
+  @media(max-width:360px){
+    #screen-menu .featured-mode{grid-template-columns:66px minmax(0,1fr) 44px}
+    #screen-menu .featured-mode__visual{width:46px;height:46px;margin-left:12px}
+    #screen-menu .featured-mode__copy{padding-left:8px;padding-right:8px}
+    #screen-menu .featured-mode .mode-card-title{font-size:16px}
+    #screen-menu .featured-mode__go{width:35px;height:35px;min-height:35px;margin-right:9px}
+  }
+
+  /* ===== Main tournament hero ===== */
+  #screen-menu .tournament-hero { grid-column:1/-1; min-height:190px; padding:18px; display:grid; grid-template-columns:112px minmax(0,1fr); grid-template-rows:1fr auto; gap:14px 16px; border:1px solid rgba(251,191,36,.28); border-radius:26px; overflow:hidden; background:radial-gradient(circle at 17% 35%,rgba(251,191,36,.18),transparent 28%),radial-gradient(circle at 100% 0,rgba(249,115,22,.12),transparent 43%),linear-gradient(145deg,#211e19,#121419 63%); box-shadow:0 22px 50px -32px #000,inset 0 1px rgba(255,255,255,.07); }
+  #screen-menu .tournament-hero::before { content:""; position:absolute; inset:-70px auto auto -42px; width:230px; height:230px; border-radius:50%; background:repeating-conic-gradient(from 8deg,rgba(255,215,94,.08) 0 7deg,transparent 7deg 19deg); animation:spinSlow 36s linear infinite; mask-image:radial-gradient(circle,#000 0 48%,transparent 72%); }
+  #screen-menu .tournament-hero::after { content:""; position:absolute; inset:0; pointer-events:none; background:linear-gradient(115deg,transparent 48%,rgba(255,255,255,.025) 49%,transparent 50%); background-size:23px 23px; }
+  #screen-menu .tournament-hero__emblem { grid-row:1/3; align-self:center; width:106px; height:132px; position:relative; z-index:2; display:grid; place-items:center; }
+  #screen-menu .tournament-hero__halo { position:absolute; width:96px; height:96px; border-radius:50%; border:1px solid rgba(255,218,102,.24); box-shadow:0 0 0 9px rgba(251,191,36,.04),0 0 34px rgba(245,158,11,.18),inset 0 0 30px rgba(251,191,36,.08); }
+  #screen-menu .tournament-hero__crest { width:76px; height:88px; position:relative; display:grid; place-items:center; color:#3a2200; clip-path:polygon(50% 0,91% 15%,86% 68%,50% 100%,14% 68%,9% 15%); background:linear-gradient(145deg,#fff0a2 0,#ffc83d 38%,#e88705 100%); filter:drop-shadow(0 12px 16px rgba(0,0,0,.35)); }
+  #screen-menu .tournament-hero__crest::before { content:""; position:absolute; inset:5px; clip-path:inherit; border:1px solid rgba(91,49,0,.28); }
+  #screen-menu .tournament-hero__crest svg { width:40px; height:40px; position:relative; z-index:2; }
+  #screen-menu .tournament-hero__star { position:absolute; bottom:2px; padding:3px 8px; border-radius:10px; color:#2b1900; background:#ffe47c; font-size:7px; font-weight:1000; letter-spacing:1px; box-shadow:0 5px 14px rgba(0,0,0,.32); }
+  #screen-menu .tournament-hero__copy { align-self:end; position:relative; z-index:2; text-align:left; }
+  #screen-menu .tournament-hero__kicker { display:block; margin-bottom:5px; color:#f9c74e; font-size:8px; font-weight:950; letter-spacing:1.5px; text-transform:uppercase; }
+  #screen-menu .tournament-hero .mode-card-title { margin:0 0 6px; font-size:25px; line-height:1; }
+  #screen-menu .tournament-hero .mode-card-desc { max-width:245px; margin:0; min-height:0; font-size:10.5px; line-height:1.45; color:#a6adba; }
+  #screen-menu .tournament-hero__features { display:flex; flex-wrap:wrap; gap:5px; margin-top:10px; }
+  #screen-menu .tournament-hero__features span { padding:4px 7px; border:1px solid rgba(251,191,36,.13); border-radius:8px; color:#d7c58d; background:rgba(251,191,36,.055); font-size:7.5px; font-weight:800; letter-spacing:.25px; }
+  #screen-menu .tournament-hero__start { width:100%; min-height:45px; margin:0; padding:0 14px; display:flex; justify-content:center; align-items:center; gap:8px; border-radius:14px; color:#251600; background:linear-gradient(135deg,#ffe170,#ffb21c); box-shadow:0 10px 24px rgba(245,158,11,.2); font-size:12px; font-weight:950; position:relative; z-index:3; }
+  #screen-menu .tournament-hero__start svg { width:16px; height:16px; }
+  @media(max-width:380px){ #screen-menu .tournament-hero{grid-template-columns:90px minmax(0,1fr);padding:15px;gap:10px 12px}.tournament-hero__emblem{transform:scale(.88)}#screen-menu .tournament-hero .mode-card-title{font-size:22px} }
+
+  /* ===== Friends hub 2026 ===== */
+  #screen-friends { justify-content:flex-start; align-items:center; padding:26px 18px calc(98px + env(safe-area-inset-bottom)); background:radial-gradient(85% 34% at 50% 0,rgba(50,197,255,.12),transparent 72%),linear-gradient(180deg,#0d131d,#090c12 62%); }
+  #screen-friends::before { content:""; position:absolute; inset:0; opacity:.16; pointer-events:none; background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px); background-size:32px 32px; mask-image:linear-gradient(#000,transparent 45%); }
+  #screen-friends > * { position:relative; z-index:1; }
+  #screen-friends .friends-hero { width:100%; max-width:440px; padding:2px 2px 16px; text-align:left; }
+  #screen-friends .friends-hero__icon { width:42px; height:42px; margin-bottom:12px; display:grid; place-items:center; border-radius:14px; color:#6edcff; background:linear-gradient(145deg,rgba(50,197,255,.18),rgba(59,130,246,.07)); border:1px solid rgba(50,197,255,.18); }
+  #screen-friends .friends-hero__icon svg { width:23px; height:23px; }
+  #screen-friends .friends-hero h1 { margin:0 0 5px; color:#f3f7fb; background:none; font-size:28px; letter-spacing:-.5px; }
+  #screen-friends .friends-hero p { max-width:330px; margin:0; color:#8d99aa; font-size:11px; line-height:1.5; }
+  #screen-friends .friends-tag-panel { width:100%; max-width:440px; margin-bottom:12px; padding:15px 16px; display:flex; align-items:center; justify-content:space-between; gap:12px; border-radius:20px; border:1px solid rgba(50,197,255,.18); background:radial-gradient(circle at 100% 0,rgba(50,197,255,.13),transparent 48%),linear-gradient(145deg,#182331,#10151f); box-shadow:0 18px 38px -30px #000,inset 0 1px rgba(255,255,255,.05); }
+  #screen-friends .friends-tag-panel__label { display:block; color:#7d899a; font-size:8px; font-weight:900; letter-spacing:1.15px; text-transform:uppercase; }
+  #screen-friends .friends-tag-panel__hint { display:block; margin-top:4px; color:#d9e1eb; font-size:11px; font-weight:700; }
+  #screen-friends .friends-tag-box { flex-shrink:0; min-width:118px; margin:0; padding:12px 13px; border-radius:14px; text-align:center; font-size:21px; letter-spacing:4px; color:#63d7ff; background:rgba(6,13,22,.42); border-color:rgba(50,197,255,.16); box-shadow:inset 0 1px rgba(255,255,255,.035); }
+  #screen-friends .friends-add-panel { width:100%; max-width:440px; padding:16px; margin-bottom:12px; border:1px solid rgba(255,255,255,.075); border-radius:20px; background:linear-gradient(145deg,rgba(27,34,46,.96),rgba(15,19,27,.96)); }
+  #screen-friends .friends-add-panel__title { display:block; margin-bottom:10px; text-align:left; color:#eef3f8; font-size:12px; font-weight:900; }
+  #screen-friends .friends-add-row { max-width:none; margin:0; padding:0; gap:8px; }
+  #screen-friends .lobby-link-input { height:44px; padding:0 13px; border-radius:12px; font-size:12px; text-transform:uppercase; letter-spacing:1px; background:rgba(5,10,17,.4); }
+  #screen-friends #btn-friends-add { min-width:105px; min-height:44px; padding:0 15px; border-radius:12px; color:#05131b; background:linear-gradient(135deg,#67e8f9,#38bdf8); border:0; font-size:12px; }
+  #screen-friends .friends-tools { width:100%; max-width:440px; margin:0 0 18px; }
+  #screen-friends .friends-requests-link { width:100%; margin:0; }
+  #screen-friends #btn-friends-requests { width:100%; min-height:46px; border-radius:15px; display:flex; align-items:center; justify-content:space-between; padding:0 15px; background:rgba(255,255,255,.045); border-color:rgba(255,255,255,.08); color:#cdd5df; font-size:11px; }
+  #screen-friends #btn-friends-requests::after { content:"›"; color:#69778b; font-size:21px; font-weight:400; }
+  #screen-friends .friends-list-head { width:100%; max-width:440px; margin:0 0 9px; display:flex; align-items:center; justify-content:space-between; }
+  #screen-friends .friends-section-label { width:auto; max-width:none; margin:0; padding:0; color:#f0f4f9; font-size:11px; letter-spacing:.8px; }
+  #screen-friends .friends-list-head span { color:#637086; font-size:8px; font-weight:800; letter-spacing:.8px; text-transform:uppercase; }
+  #screen-friends #friends-list { width:100%; max-width:440px !important; margin:0 auto 20px !important; }
+  #screen-friends #friends-list .lobby-slot { min-height:58px; border-radius:17px; background:linear-gradient(145deg,#181e29,#10141c); }
+  #screen-friends #friends-list .lobby-slot:only-child:not(.filled) { min-height:112px; justify-content:center; text-align:center; border-style:dashed; background:rgba(255,255,255,.025); }
+  #screen-friends #friends-list .lobby-slot:only-child:not(.filled)::after { content:"Додай друга за тегом — і він з’явиться тут"; display:block; max-width:210px; color:#697589; font-size:9px; line-height:1.4; }
+  #screen-friends #friends-list .lobby-slot:only-child:not(.filled) .lobby-slot-name { display:none; }
+
+  /* ===== Tournament hero v2: midnight championship ===== */
+  #screen-menu .tournament-hero-v2 { grid-column:1/-1; min-height:206px; padding:20px; display:grid; grid-template-columns:116px minmax(0,1fr); grid-template-rows:1fr auto; gap:15px 18px; border:1px solid rgba(115,137,255,.28); border-radius:27px; overflow:hidden; background:radial-gradient(circle at 5% 4%,rgba(79,209,255,.16),transparent 35%),radial-gradient(circle at 96% 94%,rgba(124,92,255,.17),transparent 42%),linear-gradient(145deg,#172131 0,#101621 52%,#121220 100%); box-shadow:0 24px 54px -34px #000,inset 0 1px rgba(255,255,255,.07); }
+  #screen-menu .tournament-hero-v2::before { content:""; position:absolute; inset:0; pointer-events:none; opacity:.34; background-image:linear-gradient(115deg,transparent 0 47%,rgba(255,255,255,.025) 48%,transparent 49%); background-size:25px 25px; }
+  #screen-menu .tournament-hero-v2::after { content:""; position:absolute; width:190px; height:190px; right:-110px; top:-115px; border:1px solid rgba(128,150,255,.11); border-radius:50%; box-shadow:0 0 0 23px rgba(128,150,255,.025),0 0 0 48px rgba(128,150,255,.015); }
+  #screen-menu .tournament-mark { grid-row:1/3; align-self:center; width:116px; height:144px; display:grid; place-items:center; position:relative; z-index:2; }
+  #screen-menu .tournament-mark__orbit { position:absolute; width:108px; height:108px; border-radius:50%; border:1px solid rgba(100,213,255,.2); box-shadow:0 0 0 8px rgba(77,187,255,.035),0 0 38px rgba(60,178,255,.13),inset 0 0 30px rgba(93,75,255,.1); }
+  #screen-menu .tournament-mark__orbit::before,.tournament-mark__orbit::after { content:""; position:absolute; border-radius:50%; background:#79d9ff; box-shadow:0 0 10px #4bc8ff; }
+  #screen-menu .tournament-mark__orbit::before { width:5px;height:5px;left:8px;top:20px; }
+  #screen-menu .tournament-mark__orbit::after { width:4px;height:4px;right:9px;bottom:20px;background:#9c8cff;box-shadow:0 0 10px #806bff; }
+  #screen-menu .tournament-mark__core { width:78px;height:78px;display:grid;place-items:center;position:relative;border-radius:25px;transform:rotate(45deg);color:#e9f8ff;background:linear-gradient(145deg,#2d8bb8,#5a4ccb 62%,#312c76);border:1px solid rgba(255,255,255,.2);box-shadow:0 16px 30px rgba(6,10,25,.48),inset 0 1px rgba(255,255,255,.18),inset 0 -12px 24px rgba(15,12,59,.22); }
+  #screen-menu .tournament-mark__core svg { width:40px;height:40px;transform:rotate(-45deg);filter:drop-shadow(0 3px 5px rgba(0,0,0,.25)); }
+  #screen-menu .tournament-mark__label { position:absolute;bottom:5px;padding:4px 9px;border:1px solid rgba(116,216,255,.18);border-radius:999px;color:#a8e9ff;background:#111827;font-size:7px;font-weight:950;letter-spacing:1.3px;box-shadow:0 7px 16px rgba(0,0,0,.35); }
+  #screen-menu .tournament-hero-v2__copy { align-self:center;position:relative;z-index:2;text-align:left; }
+  #screen-menu .tournament-hero-v2__topline { display:flex;align-items:center;gap:7px;margin-bottom:6px;color:#72d7ff;font-size:8px;font-weight:950;letter-spacing:1.5px;text-transform:uppercase; }
+  #screen-menu .tournament-hero-v2__topline::before { content:"";width:15px;height:2px;border-radius:2px;background:linear-gradient(90deg,#5bd7ff,#8b72ff);box-shadow:0 0 8px rgba(91,215,255,.5); }
+  #screen-menu .tournament-hero-v2 .mode-card-title { margin:0 0 7px;font-size:27px;line-height:1;color:#f5f8ff;letter-spacing:-.55px; }
+  #screen-menu .tournament-hero-v2 .mode-card-desc { max-width:245px;min-height:0;margin:0;color:#9aa8bb;font-size:10.5px;line-height:1.48; }
+  #screen-menu .tournament-meta { display:grid;grid-template-columns:repeat(3,auto);justify-content:start;gap:13px;margin-top:12px; }
+  #screen-menu .tournament-meta span { display:flex;flex-direction:column;gap:2px;color:#f0f4fb;font-size:10px;font-weight:900;font-variant-numeric:tabular-nums; }
+  #screen-menu .tournament-meta small { color:#66758a;font-size:6.5px;font-weight:850;letter-spacing:.65px;text-transform:uppercase; }
+  #screen-menu .tournament-hero-v2__start { width:100%;min-height:47px;margin:0;padding:0 15px;display:flex;align-items:center;justify-content:space-between;border-radius:15px;color:#f7fbff;background:linear-gradient(105deg,#278fc0,#5962dd 62%,#7255dc);box-shadow:0 11px 25px rgba(57,79,196,.26),inset 0 1px rgba(255,255,255,.18);font-size:12px;font-weight:950;position:relative;z-index:3; }
+  #screen-menu .tournament-hero-v2__start span { display:flex;align-items:center;gap:8px; }
+  #screen-menu .tournament-hero-v2__start span::before { content:"";width:6px;height:6px;border-radius:50%;background:#b7efff;box-shadow:0 0 10px rgba(183,239,255,.8); }
+  #screen-menu .tournament-hero-v2__start svg { width:17px;height:17px; }
+  @media(max-width:380px){ #screen-menu .tournament-hero-v2{grid-template-columns:92px minmax(0,1fr);padding:16px;gap:12px}.tournament-mark{transform:scale(.84)}#screen-menu .tournament-hero-v2 .mode-card-title{font-size:23px}#screen-menu .tournament-meta{gap:9px} }
 </style>
 </head>
 <body>
@@ -1378,30 +1544,42 @@
 
     <div class="section-label">Міні-ігри</div>
     <div class="mode-cards">
-      <div class="mode-card mode-card--tourney mode-card--wide" data-mode="tournament">
-        <div class="mode-card-preview">
-          <div class="tourney-art">
-            <div class="tourney-rays"></div><div class="tourney-ring"></div>
-            <div class="trophy-cup"><div class="trophy-bowl"></div><div class="trophy-stem"></div></div>
-            <div class="tourney-podium"><i class="p2">2</i><i class="p1">1</i><i class="p3">3</i></div>
-            <b class="confetti c1"></b><b class="confetti c2"></b><b class="confetti c3"></b><b class="confetti c4"></b>
+      <div class="mode-card tournament-hero-v2" data-mode="tournament">
+        <div class="tournament-mark" aria-hidden="true">
+          <span class="tournament-mark__orbit"></span>
+          <span class="tournament-mark__core">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 9h18v8c0 8-3.8 13-9 15-5.2-2-9-7-9-15V9Z"/><path d="M15 13H8v4c0 7 4.5 10 10 10M33 13h7v4c0 7-4.5 10-10 10M24 32v6M17 42h14M20 38h8v4"/></svg>
+          </span>
+          <span class="tournament-mark__label">CHAMPIONSHIP</span>
+        </div>
+        <div class="tournament-hero-v2__copy">
+          <span class="tournament-hero-v2__topline">Головний режим</span>
+          <div class="mode-card-title">Турнір</div>
+          <div class="mode-card-desc">Серія динамічних мініігор. Набирай очки, піднімайся в таблиці та стань чемпіоном арени.</div>
+          <div class="tournament-meta">
+            <span>5<small>ігор</small></span>
+            <span>XP<small>рейтинг</small></span>
+            <span>★<small>кубок</small></span>
           </div>
         </div>
-        <div class="wide-content">
-          <div class="mode-card-badge">Ти + 5 ботів</div>
-          <div class="mode-card-title">Турнір</div>
-          <div class="mode-card-desc">5 випадкових ігор поспіль. Збирай очки й борись за 1 місце!</div>
-        </div>
-        <button class="mode-card-play wide-play" data-mode="tournament">Старт</button>
+        <button class="mode-card-play tournament-hero-v2__start" data-mode="tournament">
+          <span>Увійти в турнір</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        </button>
       </div>
 
-      <div class="mode-card mode-card--tourney mode-card--wide" id="mode-card-friends">
-        <div class="wide-content">
-          <div class="mode-card-badge">Живий мультиплеєр</div>
-          <div class="mode-card-title">Грати з друзями</div>
-          <div class="mode-card-desc">Запроси друзів у свою арену. Порожні місця — боти.</div>
+      <div class="mode-card featured-mode featured-mode--friends" id="mode-card-friends">
+        <div class="featured-mode__visual" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3.5 19c0-3.2 2.3-5.5 5.5-5.5s5.5 2.3 5.5 5.5"/><circle cx="17" cy="9" r="2.3"/><path d="M15.5 14.2c2.8.3 4.5 2.1 4.5 4.8"/></svg>
         </div>
-        <button class="mode-card-play wide-play" id="btn-open-friends">Грати</button>
+        <div class="featured-mode__copy">
+          <span class="featured-mode__eyebrow">Приватна арена</span>
+          <div class="mode-card-title">Грати з друзями</div>
+          <div class="mode-card-desc">Створи кімнату, запроси друзів і запускай власний матч.</div>
+        </div>
+        <button class="mode-card-play featured-mode__go" id="btn-open-friends" aria-label="Відкрити гру з друзями">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        </button>
       </div>
 
       <div class="mode-card mode-card--colorpanic selected" data-mode="colorPanic">
@@ -1800,19 +1978,30 @@
   </div>
 
   <div id="screen-friends" class="screen screen--with-nav">
-    <div class="lobby-head">
-      <h1 class="draft-title">Друзі</h1>
-      <p class="draft-sub">Твій тег — покажи його другу, щоб він міг тебе додати.</p>
+    <div class="friends-hero">
+      <div class="friends-hero__icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3.5 19c0-3.2 2.3-5.5 5.5-5.5s5.5 2.3 5.5 5.5"/><circle cx="17" cy="9" r="2.3"/><path d="M15.5 14.2c2.8.3 4.5 2.1 4.5 4.8"/></svg>
+      </div>
+      <h1>Друзі</h1>
+      <p>Збирай свою команду, запрошуй друзів і виходьте на арену разом.</p>
+    </div>
+    <div class="friends-tag-panel">
+      <div><span class="friends-tag-panel__label">Твій особистий тег</span><span class="friends-tag-panel__hint">Поділись ним із другом</span></div>
       <div class="friends-tag-box" id="friends-my-tag">----</div>
     </div>
-    <div class="friends-add-row">
-      <input id="friends-add-input" class="lobby-link-input" maxlength="4" placeholder="ТЕГ ДРУГА" autocomplete="off">
-      <button id="btn-friends-add" class="btn-secondary">Додати</button>
+    <div class="friends-add-panel">
+      <span class="friends-add-panel__title">Додати нового друга</span>
+      <div class="friends-add-row">
+        <input id="friends-add-input" class="lobby-link-input" maxlength="4" placeholder="Введи тег" autocomplete="off">
+        <button id="btn-friends-add" class="btn-secondary">Додати</button>
+      </div>
     </div>
-    <div class="result-buttons friends-requests-link">
-      <button id="btn-friends-requests" class="btn-secondary">Заявки в друзі<span class="req-badge is-hidden" id="friends-requests-badge"></span></button>
+    <div class="friends-tools">
+      <div class="result-buttons friends-requests-link">
+        <button id="btn-friends-requests" class="btn-secondary"><span>Заявки в друзі <span class="req-badge is-hidden" id="friends-requests-badge"></span></span></button>
+      </div>
     </div>
-    <div class="friends-section-label">Твої друзі</div>
+    <div class="friends-list-head"><div class="friends-section-label">Твої друзі</div><span>Команда арени</span></div>
     <div class="lobby-roster" id="friends-list" style="max-width:360px;margin:0 auto 20px;"></div>
   </div>
 
