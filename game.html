@@ -4929,8 +4929,12 @@
     prevSnapshot = null; lastSnapshot = null;
   }
 
-  function renderLobbyRoster(containerEl, roster, selfSlot) {
+  function renderLobbyRoster(containerEl, roster, selfSlot, hostLabel) {
     containerEl.innerHTML = '';
+    const hostRow = document.createElement('div');
+    hostRow.className = 'lobby-slot filled';
+    hostRow.innerHTML = `<span class="lobby-slot-dot"></span><span class="lobby-slot-name">${escapeHtml(hostLabel)}</span><span class="lobby-slot-tag">Хост</span>`;
+    containerEl.appendChild(hostRow);
     roster.forEach(slot => {
       const row = document.createElement('div');
       const isMe = slot.slot === selfSlot;
@@ -4945,12 +4949,12 @@
   function renderLobbyHost() {
     document.getElementById('lobby-host-code').textContent = net.roomCode || '-----';
     document.getElementById('lobby-host-link').value = net.roomCode ? `https://t.me/MiniArena1_bot?start=${net.roomCode}` : '';
-    renderLobbyRoster(document.getElementById('lobby-host-roster'), net.roster, -1);
+    renderLobbyRoster(document.getElementById('lobby-host-roster'), net.roster, -1, `${myIdentity.name} (ти)`);
   }
 
   function renderLobbyGuest() {
     document.getElementById('lobby-guest-code').textContent = net.roomCode || '-----';
-    renderLobbyRoster(document.getElementById('lobby-guest-roster'), net.roster, net.selfSlot);
+    renderLobbyRoster(document.getElementById('lobby-guest-roster'), net.roster, net.selfSlot, net.hostName || 'Хост');
   }
 
   function handleRelayMessage(msg) {
@@ -4963,7 +4967,7 @@
         break;
       case 'joined':
         net.role = 'guest'; net.roomCode = msg.code; net.selfId = msg.selfId;
-        net.selfSlot = msg.slot; net.roster = msg.roster;
+        net.selfSlot = msg.slot; net.roster = msg.roster; net.hostName = msg.hostName;
         renderLobbyGuest();
         showScreen('lobbyGuest');
         break;
@@ -4975,6 +4979,7 @@
       }
       case 'roster':
         net.roster = msg.roster;
+        if (msg.hostName) net.hostName = msg.hostName;
         if (net.role === 'host') renderLobbyHost();
         else if (net.role === 'guest') renderLobbyGuest();
         break;
@@ -5021,7 +5026,7 @@
         phase: g.phase,
         round: g.round,
         timeRemaining: g.timeRemaining,
-        player: { x: g.player.x, y: g.player.y, alpha: g.player.alpha },
+        player: { x: g.player.x, y: g.player.y, alpha: g.player.alpha, alive: g.player.alive !== false },
         bots: g.bots.map((b, i) => ({ slot: i, x: b.x, y: b.y, alive: b.alive, alpha: b.alpha })),
       },
     });
@@ -5099,6 +5104,7 @@
     if (meSrc) {
       game.player.targetX = meSrc.x; game.player.targetY = meSrc.y;
       game.player.alpha = meSrc.alpha;
+      game.player.alive = meSrc.alive;
     }
     guestBotSources.forEach((src, i) => {
       const bot = game.bots[i];
@@ -5293,7 +5299,7 @@
       mode,
       phase: 'playing',
       phaseTime: 0,
-      player: { x: 0.5, y: 0.85, vx: 0, vy: 0, alpha: 1 },
+      player: { x: 0.5, y: 0.85, vx: 0, vy: 0, alpha: 1, alive: true },
       bots,
       floatingTexts: [],
       particles: [],
@@ -5572,8 +5578,19 @@
     return a;
   }
 
+  // Only Color Panic has been wired for live multiplayer (network input +
+  // state broadcast) so far. Other modes have no such hook yet, so a
+  // friends match must stick to this pool or guests would hang forever
+  // waiting for a round-start that never comes.
+  const MULTIPLAYER_MODE_POOL = ['colorPanic'];
+
   function startTournament(friendRoster) {
-    const sequence = shuffled(TOURNEY_MODE_POOL).slice(0, TOURNEY_ROUNDS);
+    const pool = friendRoster ? MULTIPLAYER_MODE_POOL : TOURNEY_MODE_POOL;
+    const sequence = [];
+    while (sequence.length < TOURNEY_ROUNDS) {
+      sequence.push(...shuffled(pool));
+    }
+    sequence.length = TOURNEY_ROUNDS;
     const names = shuffled(TOURNEY_BOT_NAMES);
     const rosterSkins = shuffled(SKINS.filter(s => s.id !== profile.activeSkin));
     const rosterAccessories = shuffled(ACCESSORIES.filter(a => a.id !== 'none'));
@@ -6184,7 +6201,9 @@
       const c = cellOf(px, py);
       return tileAt(g, c.row, c.col).alive;
     };
-    g.playerSurvived = survivalRatio(g.player.x, g.player.y, PLAYER_RADIUS, isSafe) >= SAFE_OVERLAP_THRESHOLD;
+    if (g.player.alive !== false) {
+      g.playerSurvived = survivalRatio(g.player.x, g.player.y, PLAYER_RADIUS, isSafe) >= SAFE_OVERLAP_THRESHOLD;
+    }
 
     g.bots.forEach(bot => {
       if (!bot.alive) return;
@@ -6198,10 +6217,20 @@
   }
 
   function afterResolve(g) {
-    if (!g.playerSurvived) { triggerGameOver(g, false); return; }
+    const multiplayer = net.role === 'host' && net.roomCode;
+    if (!g.playerSurvived && g.player.alive !== false) {
+      if (!multiplayer) { triggerGameOver(g, false); return; }
+      // Host is out, but friends/bots may still be playing — keep the
+      // simulation (and the broadcast to guests) running instead of
+      // ending the match for everyone the instant the host loses.
+      g.player.alive = false;
+      g.player.alpha = 0;
+    }
     const botsLeft = g.bots.filter(b => b.alive).length;
+    const playerAlive = g.player.alive !== false;
+    if (!playerAlive && botsLeft === 0) { triggerGameOver(g, false); return; }
     if (botsLeft === 0) { triggerGameOver(g, true); return; }
-    if (g.round >= MAX_ROUNDS) { triggerGameOver(g, true); return; }
+    if (g.round >= MAX_ROUNDS) { triggerGameOver(g, playerAlive); return; }
     g.round += 1;
     startRound(g);
   }

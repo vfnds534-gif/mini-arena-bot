@@ -73,10 +73,11 @@ async def handle_relay_message(ws, data):
             "selfId": data.get("userId"),
             "slot": slot,
             "roster": room.roster(),
+            "hostName": room.host.name,
         })
         await broadcast(
             [room.host.ws] + [g.ws for g in room.guests.values()],
-            {"type": "roster", "roster": room.roster()},
+            {"type": "roster", "roster": room.roster(), "hostName": room.host.name},
         )
         return
 
@@ -134,7 +135,7 @@ async def handle_disconnect(ws):
     if kind == "room_closed":
         await broadcast(targets, {"type": "room_closed"})
     else:
-        await broadcast(targets, {"type": "roster", "roster": room.roster()})
+        await broadcast(targets, {"type": "roster", "roster": room.roster(), "hostName": room.host.name})
 
 
 async def ws_relay(request):
