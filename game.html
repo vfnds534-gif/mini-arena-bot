@@ -629,6 +629,21 @@
   }
   .lobby-join-input:focus { outline:none; border-color: rgba(42,171,238,0.55); box-shadow: 0 0 0 3px rgba(42,171,238,0.15); }
 
+  .lobby-divider {
+    display:flex; align-items:center; gap:12px; width:100%; max-width:300px; margin: 6px 0 18px;
+    color: var(--muted); font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.6px;
+  }
+  .lobby-divider::before, .lobby-divider::after { content:""; flex:1; height:1px; background: rgba(255,255,255,0.1); }
+  .lobby-join-row { display:flex; gap:10px; width:100%; max-width:320px; align-items:stretch; margin-bottom: 16px; }
+  .lobby-join-row .lobby-join-input { flex:1; min-width:0; max-width:none; margin-bottom:0; }
+  .lobby-join-row .btn-sm { align-self:center; }
+  .lobby-link-back {
+    appearance:none; border:none; background:none; color:var(--muted);
+    font-size:13px; font-weight:700; padding:12px; margin-top:4px; cursor:pointer;
+    text-decoration: underline; text-underline-offset:3px; text-decoration-color: rgba(154,164,178,0.4);
+  }
+  .lobby-link-back:active { color: var(--text); }
+
   .friends-add-row { display:flex; gap:8px; width:100%; max-width:340px; margin:0 auto 14px; padding:0 20px; }
   .friends-requests-link { position:relative; margin:0 0 14px; }
   .req-badge { display:inline-flex; align-items:center; justify-content:center; min-width:18px; height:18px; padding:0 5px; margin-left:6px; border-radius:999px; background:var(--danger); color:#fff; font-size:10px; font-weight:900; box-shadow: 0 0 8px rgba(255,82,82,0.55); }
@@ -1745,13 +1760,14 @@
       <p class="draft-sub">Створи кімнату й запроси друзів, або приєднайся за кодом. Порожні місця займуть боти.</p>
     </div>
     <div class="result-buttons">
-      <button id="btn-lobby-create" class="btn-primary">Створити кімнату</button>
+      <button id="btn-lobby-create" class="btn-primary">🎮 Створити кімнату</button>
     </div>
-    <input id="lobby-join-code" class="lobby-join-input" maxlength="5" placeholder="КОД КІМНАТИ" autocomplete="off">
-    <div class="result-buttons">
-      <button id="btn-lobby-join" class="btn-secondary">Приєднатися за кодом</button>
-      <button id="btn-lobby-mode-back" class="btn-secondary">Назад</button>
+    <div class="lobby-divider"><span>або приєднатися за кодом</span></div>
+    <div class="lobby-join-row">
+      <input id="lobby-join-code" class="lobby-join-input" maxlength="5" placeholder="КОД" autocomplete="off">
+      <button id="btn-lobby-join" class="btn-primary btn-sm">Приєднатися</button>
     </div>
+    <button id="btn-lobby-mode-back" class="lobby-link-back">← Назад</button>
   </div>
 
   <div id="screen-lobby-host" class="screen">
