@@ -395,7 +395,7 @@
   .lb-lava { background: linear-gradient(135deg, #ff7043, #d84315); }
   .lb-magnet { background: linear-gradient(135deg, #5c6bc0, #283593); }
   .lb-memory { background: linear-gradient(135deg, #26c6da, #00838f); }
-  .lb-train { background: linear-gradient(135deg, #66bb6a, #2e7d32); }
+  .lb-train { background: linear-gradient(135deg, #ff7043, #c62828); }
   .lb-snaketrail { background: linear-gradient(135deg, #66bb6a, #2e7d32); }
   .lb-obstacle { background: linear-gradient(135deg, #8d6e63, #4e342e); }
   .preview-emoji { position: absolute; top: 12px; left: 14px; font-size: 36px; line-height: 1; }
@@ -1298,6 +1298,14 @@
     color: var(--muted);
     text-shadow: 0 2px 6px rgba(0,0,0,0.6);
   }
+  #net-latency {
+    position:absolute; right:12px; top:max(16px,env(safe-area-inset-top));
+    display:none; padding:4px 7px; border-radius:999px;
+    background:rgba(12,16,23,.72); border:1px solid rgba(255,255,255,.1);
+    color:#69f0ae; font-size:10px; font-weight:800; letter-spacing:.2px;
+  }
+  #net-latency.warn { color:#ffd54f; }
+  #net-latency.bad { color:#ff6b6b; }
   #joystick-zone {
     position: absolute;
     left: 20px;
@@ -1487,6 +1495,124 @@
   #screen-menu .tournament-hero-v2__start span::before { content:"";width:6px;height:6px;border-radius:50%;background:#b7efff;box-shadow:0 0 10px rgba(183,239,255,.8); }
   #screen-menu .tournament-hero-v2__start svg { width:17px;height:17px; }
   @media(max-width:380px){ #screen-menu .tournament-hero-v2{grid-template-columns:92px minmax(0,1fr);padding:16px;gap:12px}.tournament-mark{transform:scale(.84)}#screen-menu .tournament-hero-v2 .mode-card-title{font-size:23px}#screen-menu .tournament-meta{gap:9px} }
+
+  /* Tournament colorway: emerald circuit */
+  #screen-menu .tournament-hero-v2 { border-color:rgba(65,230,179,.25); background:radial-gradient(circle at 4% 4%,rgba(51,220,176,.15),transparent 35%),radial-gradient(circle at 96% 96%,rgba(20,184,166,.13),transparent 42%),linear-gradient(145deg,#142521 0,#101a1a 54%,#101619 100%); }
+  #screen-menu .tournament-hero-v2::after { border-color:rgba(74,222,185,.1); box-shadow:0 0 0 23px rgba(45,212,170,.024),0 0 0 48px rgba(45,212,170,.014); }
+  #screen-menu .tournament-mark__orbit { border-color:rgba(92,245,201,.22); box-shadow:0 0 0 8px rgba(45,212,170,.035),0 0 38px rgba(45,212,170,.13),inset 0 0 30px rgba(16,185,129,.09); }
+  #screen-menu .tournament-mark__orbit::before { background:#76f5d1;box-shadow:0 0 10px #3de4b5; }
+  #screen-menu .tournament-mark__orbit::after { background:#ccfb8d;box-shadow:0 0 10px #9ee85a; }
+  #screen-menu .tournament-mark__core { color:#effff9;background:linear-gradient(145deg,#1a9c7b,#087f75 62%,#0b504e);border-color:rgba(208,255,240,.22); }
+  #screen-menu .tournament-mark__label { color:#a9f5dc;border-color:rgba(87,237,191,.18);background:#0d1c1a; }
+  #screen-menu .tournament-hero-v2__topline { color:#62e8c0; }
+  #screen-menu .tournament-hero-v2__topline::before { background:linear-gradient(90deg,#58e8bc,#a3e635);box-shadow:0 0 8px rgba(83,232,188,.48); }
+  #screen-menu .tournament-hero-v2__start { color:#06221a;background:linear-gradient(105deg,#67edc3,#52d69f 62%,#a3df55);box-shadow:0 11px 25px rgba(30,190,137,.22),inset 0 1px rgba(255,255,255,.3); }
+  #screen-menu .tournament-hero-v2__start span::before { background:#efffcf;box-shadow:0 0 10px rgba(230,255,191,.8); }
+
+  /* Rail Rush card preview */
+  .mode-card--train { --card-accent:#ff7043;--card-accent2:#e53935; }
+  .mode-card--train .mode-card-preview { background:radial-gradient(circle at 28% 18%,rgba(255,112,67,.25),transparent 42%),linear-gradient(145deg,#1d2028,#0b0f15 72%); }
+  .mode-card--train .rails { left:5px;right:5px;top:18px;height:42px;border:0;background:repeating-linear-gradient(90deg,transparent 0 9px,#504b49 10px 13px,transparent 14px 22px); }
+  .mode-card--train .rails::before,.mode-card--train .rails::after { content:"";position:absolute;left:0;right:0;height:3px;border-radius:4px;background:linear-gradient(#cbd1d8,#66717e);box-shadow:0 1px 2px #000; }
+  .mode-card--train .rails::before{top:4px}.mode-card--train .rails::after{bottom:4px}
+  .mode-card--train .mini-train { left:10px;top:15px;width:61px;height:31px;border-radius:7px 13px 6px 6px;background:linear-gradient(180deg,#ff8a65,#e84732 58%,#9f281e);border:1px solid #6e1f18;box-shadow:0 8px 14px rgba(0,0,0,.5),0 0 12px rgba(255,82,55,.2); }
+  .mode-card--train .mini-train::before { left:8px;top:6px;width:10px;height:8px;background:#c9f4ff;box-shadow:15px 0 #c9f4ff,30px 0 #c9f4ff; }
+  .mode-card--train .mini-train::after { left:9px;bottom:-6px;background:#0b0d11;box-shadow:34px 0 #0b0d11; }
+  /* ===== Final visual system: clean arena ===== */
+  #screen-menu .tournament-hero-v3 { grid-column:1/-1; min-height:188px; padding:18px; display:grid; grid-template-columns:88px minmax(0,1fr); grid-template-rows:auto auto; gap:15px 16px; overflow:hidden; border:1px solid rgba(115,190,225,.2); border-radius:25px; background:radial-gradient(circle at 0 0,rgba(62,178,224,.12),transparent 38%),linear-gradient(145deg,#18222e,#10161f 64%,#0d1219); box-shadow:0 20px 44px -32px #000,inset 0 1px rgba(255,255,255,.055); }
+  #screen-menu .tournament-hero-v3::before { content:""; position:absolute; width:210px;height:210px;right:-132px;top:-135px;border:1px solid rgba(106,190,226,.08);border-radius:50%;box-shadow:0 0 0 24px rgba(83,174,214,.018),0 0 0 49px rgba(83,174,214,.01); }
+  #screen-menu .tournament-v3-logo { grid-row:1; width:88px;height:96px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;position:relative;z-index:2;border:1px solid rgba(103,199,238,.16);border-radius:21px;background:linear-gradient(155deg,rgba(73,181,224,.13),rgba(255,255,255,.025)); }
+  #screen-menu .tournament-v3-logo__icon { width:50px;height:50px;display:grid;place-items:center;border-radius:16px;color:#dff7ff;background:#142d3b;border:1px solid rgba(103,210,248,.24);box-shadow:0 9px 20px rgba(0,0,0,.24); }
+  #screen-menu .tournament-v3-logo__icon svg { width:27px;height:27px; }
+  #screen-menu .tournament-v3-logo small { color:#6ecdeb;font-size:6px;font-weight:900;letter-spacing:1.05px; }
+  #screen-menu .tournament-v3-copy { min-width:0;align-self:center;position:relative;z-index:2;text-align:left; }
+  #screen-menu .tournament-v3-copy__label { display:flex;align-items:center;gap:7px;margin-bottom:5px;color:#68cceb;font-size:7.5px;font-weight:900;letter-spacing:1.2px;text-transform:uppercase; }
+  #screen-menu .tournament-v3-copy__label::before { content:"";width:5px;height:5px;border-radius:50%;background:#69d4f4;box-shadow:0 0 8px rgba(105,212,244,.55); }
+  #screen-menu .tournament-hero-v3 .mode-card-title { margin:0 0 6px;color:#f5f8fc;font-size:25px;line-height:1;letter-spacing:-.45px; }
+  #screen-menu .tournament-hero-v3 .mode-card-desc { max-width:250px;min-height:0;margin:0;color:#94a1b2;font-size:10px;line-height:1.45; }
+  #screen-menu .tournament-v3-footer { grid-column:1/-1;display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;position:relative;z-index:3; }
+  #screen-menu .tournament-v3-stats { height:43px;display:flex;align-items:center;padding:0 12px;border:1px solid rgba(255,255,255,.065);border-radius:13px;background:rgba(5,10,16,.24); }
+  #screen-menu .tournament-v3-stat { display:flex;flex-direction:column;gap:1px;min-width:50px; }
+  #screen-menu .tournament-v3-stat + .tournament-v3-stat { margin-left:10px;padding-left:10px;border-left:1px solid rgba(255,255,255,.07); }
+  #screen-menu .tournament-v3-stat b { color:#e9f0f7;font-size:10px;line-height:1; }
+  #screen-menu .tournament-v3-stat small { color:#627084;font-size:6px;font-weight:800;letter-spacing:.55px;text-transform:uppercase; }
+  #screen-menu .tournament-v3-start { width:auto;min-width:118px;min-height:43px;margin:0;padding:0 15px;display:flex;align-items:center;justify-content:center;gap:9px;border-radius:13px;color:#07151c;background:#70d5f3;box-shadow:0 8px 18px rgba(58,173,216,.17);font-size:11px;font-weight:900; }
+  #screen-menu .tournament-v3-start svg { width:15px;height:15px; }
+
+  /* Rail Rush — restrained blue/amber card */
+  #screen-menu .mode-card--train { --card-accent:#58b9dd;--card-accent2:#347da8;border-color:rgba(89,181,218,.16); }
+  #screen-menu .mode-card--train.selected { border-color:#67c7e8;box-shadow:0 0 0 1px rgba(103,199,232,.55),0 12px 26px -12px rgba(66,164,205,.3); }
+  #screen-menu .mode-card--train .mode-card-preview { background:linear-gradient(150deg,#162631,#0c1219 75%); }
+  #screen-menu .mode-card--train .rails { background:repeating-linear-gradient(90deg,transparent 0 9px,#464e56 10px 13px,transparent 14px 22px); }
+  #screen-menu .mode-card--train .mini-train { background:linear-gradient(180deg,#61bddc,#277ca5 58%,#19506d);border-color:#163f53;box-shadow:0 8px 14px rgba(0,0,0,.5),0 0 12px rgba(66,175,218,.16); }
+  #screen-menu .mode-card--train .mode-card-play { background:linear-gradient(135deg,#62c8e9,#3887b0); }
+  @media(max-width:370px){ #screen-menu .tournament-hero-v3{grid-template-columns:76px minmax(0,1fr);padding:15px;gap:12px}.tournament-v3-logo{transform:scale(.88);transform-origin:left center}#screen-menu .tournament-hero-v3 .mode-card-title{font-size:22px}#screen-menu .tournament-v3-stat:nth-child(2){display:none}#screen-menu .tournament-v3-start{min-width:108px;padding:0 12px} }
+
+  /* Rail Rush original emblem: crossing routes + express nose */
+  #screen-menu .rail-rush-emblem { position:absolute;inset:0;display:grid;place-items:center;overflow:hidden;background:radial-gradient(circle at 50% 46%,rgba(74,191,231,.15),transparent 38%); }
+  #screen-menu .rail-rush-emblem::before,#screen-menu .rail-rush-emblem::after { content:"";position:absolute;background:repeating-linear-gradient(90deg,transparent 0 8px,rgba(106,126,139,.38) 9px 11px,transparent 12px 18px);border-top:2px solid rgba(176,202,215,.65);border-bottom:2px solid rgba(176,202,215,.65); }
+  #screen-menu .rail-rush-emblem::before { width:112px;height:27px;transform:rotate(-14deg); }
+  #screen-menu .rail-rush-emblem::after { width:94px;height:25px;transform:rotate(76deg);opacity:.55; }
+  #screen-menu .rail-rush-emblem svg { width:76px;height:76px;position:relative;z-index:2;filter:drop-shadow(0 8px 10px rgba(0,0,0,.42)); }
+  #screen-menu .rail-rush-emblem__signal { position:absolute;right:13px;top:12px;z-index:3;width:7px;height:7px;border-radius:50%;background:#ffcf5a;box-shadow:0 0 9px rgba(255,207,90,.75),0 10px 0 -2px #53616c; }
+
+  /* Requested final colorway: clean gold tournament */
+  #screen-menu .tournament-hero-v3 { border-color:rgba(255,199,64,.27);background:radial-gradient(circle at 0 0,rgba(255,193,48,.14),transparent 38%),radial-gradient(circle at 100% 100%,rgba(255,166,24,.065),transparent 44%),linear-gradient(145deg,#211f1a,#151719 62%,#101317); }
+  #screen-menu .tournament-hero-v3::before { border-color:rgba(255,204,76,.09);box-shadow:0 0 0 24px rgba(255,193,48,.02),0 0 0 49px rgba(255,193,48,.012); }
+  #screen-menu .tournament-v3-logo { border-color:rgba(255,207,86,.2);background:linear-gradient(155deg,rgba(255,194,45,.13),rgba(255,255,255,.022)); }
+  #screen-menu .tournament-v3-logo__icon { color:#ffe181;background:#342a12;border-color:rgba(255,211,98,.28);box-shadow:0 9px 20px rgba(0,0,0,.25),inset 0 1px rgba(255,243,187,.08); }
+  #screen-menu .tournament-v3-logo small { color:#eabf4b; }
+  #screen-menu .tournament-v3-copy__label { color:#efc44d; }
+  #screen-menu .tournament-v3-copy__label::before { background:#ffd45e;box-shadow:0 0 8px rgba(255,204,73,.55); }
+  #screen-menu .tournament-v3-stats { border-color:rgba(255,211,98,.09);background:rgba(9,9,7,.26); }
+  #screen-menu .tournament-v3-start { color:#261900;background:linear-gradient(135deg,#ffdc67,#ffb82e);box-shadow:0 8px 20px rgba(255,174,28,.19); }
+
+  /* Rail Rush preview in the same scene-based language as other mini-games */
+  #screen-menu .rail-rush-scene { position:absolute;inset:0;overflow:hidden;background:radial-gradient(circle at 50% 50%,rgba(68,142,171,.1),transparent 48%),linear-gradient(145deg,#171d25,#0b0f15); }
+  #screen-menu .rr-track { position:absolute;z-index:1; }
+  #screen-menu .rr-track::before,#screen-menu .rr-track::after { content:"";position:absolute;background:#6e7c86;border-radius:2px;box-shadow:0 1px 2px #000; }
+  #screen-menu .rr-track--h { left:6px;right:6px;top:25px;height:25px;background:repeating-linear-gradient(90deg,transparent 0 10px,#3f474e 11px 14px,transparent 15px 22px); }
+  #screen-menu .rr-track--h::before,#screen-menu .rr-track--h::after { left:0;right:0;height:2px; }
+  #screen-menu .rr-track--h::before{top:3px}.rr-track--h::after{bottom:3px}
+  #screen-menu .rr-track--v { top:5px;bottom:5px;left:62px;width:25px;background:repeating-linear-gradient(180deg,transparent 0 10px,#3f474e 11px 14px,transparent 15px 22px);opacity:.72; }
+  #screen-menu .rr-track--v::before,#screen-menu .rr-track--v::after { top:0;bottom:0;width:2px; }
+  #screen-menu .rr-track--v::before{left:3px}.rr-track--v::after{right:3px}
+  #screen-menu .rr-mini-train { position:absolute;z-index:3;border:1px solid #174a62;background:linear-gradient(180deg,#65c6e4,#267da5 60%,#19516e);box-shadow:0 5px 9px rgba(0,0,0,.45); }
+  #screen-menu .rr-mini-train::before { content:"";position:absolute;border-radius:2px;background:#d9f8ff; }
+  #screen-menu .rr-mini-train--h { left:14px;top:20px;width:48px;height:25px;border-radius:6px 11px 6px 6px; }
+  #screen-menu .rr-mini-train--h::before { left:7px;top:5px;width:8px;height:7px;box-shadow:12px 0 #d9f8ff,24px 0 #d9f8ff; }
+  #screen-menu .rr-mini-train--v { left:64px;bottom:7px;width:21px;height:39px;border-radius:6px 6px 10px 10px;background:linear-gradient(90deg,#ffcb63,#e78f25);border-color:#83531a; }
+  #screen-menu .rr-mini-train--v::before { left:4px;bottom:5px;width:5px;height:8px;box-shadow:8px 0 #fff0b8; }
+  #screen-menu .rr-player { position:absolute;z-index:5;left:49px;top:53px;width:12px;height:12px;border:2px solid rgba(255,255,255,.35);border-radius:50%;background:#fff;box-shadow:0 0 9px rgba(255,255,255,.75); }
+  #screen-menu .rr-warning { position:absolute;z-index:4;right:9px;top:8px;width:5px;height:5px;border-radius:50%;background:#ffcf5a;box-shadow:0 0 8px #ffbd34; }
+
+  /* Tournament player search */
+  #screen-tourney-matchmaking { justify-content:flex-start;padding:28px 18px;background:radial-gradient(circle at 50% -8%,rgba(255,193,49,.16),transparent 38%),linear-gradient(180deg,#141821,#0a0d13 72%); }
+  .tourney-search-head { width:100%;max-width:390px;text-align:center;margin-bottom:17px; }
+  .tourney-search-pulse { width:58px;height:58px;margin:0 auto 12px;display:grid;place-items:center;border:1px solid rgba(255,210,88,.25);border-radius:19px;color:#ffd55f;background:rgba(255,193,49,.09);box-shadow:0 0 0 8px rgba(255,193,49,.025); }
+  .tourney-search-pulse svg { width:29px;height:29px;animation:searchPulse 1.3s ease-in-out infinite; }
+  .tourney-search-title { margin:0 0 6px;color:#f6f7fa;background:none;font-size:25px;letter-spacing:-.4px; }
+  .tourney-search-sub { margin:0;color:#8e99aa;font-size:11px;line-height:1.45; }
+  .tourney-search-status { width:100%;max-width:390px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;color:#dce3eb;font-size:10px;font-weight:800; }
+  .tourney-search-status span:last-child { color:#f0bf43;font-variant-numeric:tabular-nums; }
+  .tourney-search-bar { width:100%;max-width:390px;height:5px;margin-bottom:15px;overflow:hidden;border-radius:5px;background:rgba(255,255,255,.07); }
+  .tourney-search-bar i { display:block;width:0;height:100%;border-radius:inherit;background:linear-gradient(90deg,#f0b62f,#ffe477);box-shadow:0 0 10px rgba(255,204,75,.32);transition:width .35s ease; }
+  .tourney-player-grid { width:100%;max-width:390px;display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:16px; }
+  .tourney-player-slot { min-height:72px;padding:10px;display:flex;align-items:center;gap:10px;position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.065);border-radius:17px;background:linear-gradient(145deg,rgba(27,32,43,.96),rgba(15,18,25,.96));transition:border-color .3s,transform .35s,background .3s; }
+  .tourney-player-slot::after { content:"ПОШУК";margin-left:auto;color:#505b6b;font-size:6px;font-weight:900;letter-spacing:.8px; }
+  .tourney-player-slot.joined { border-color:rgba(255,206,82,.18);background:linear-gradient(145deg,rgba(47,42,28,.72),rgba(17,20,27,.98));animation:playerJoined .4s cubic-bezier(.2,1.4,.4,1) both; }
+  .tourney-player-slot.joined::after { content:"ГОТОВИЙ";color:#d8ab3d; }
+  .tourney-player-avatar { width:43px;height:43px;flex-shrink:0;position:relative;border:3px solid #596273;border-radius:50%;background:#303743;box-shadow:inset 0 0 12px rgba(0,0,0,.22); }
+  .tourney-player-avatar::before,.tourney-player-avatar::after { content:"";position:absolute;top:16px;width:4px;height:4px;border-radius:50%;background:#18202a;opacity:0; }
+  .tourney-player-avatar::before{left:11px}.tourney-player-avatar::after{right:11px}
+  .joined .tourney-player-avatar::before,.joined .tourney-player-avatar::after{opacity:1}
+  .tourney-player-copy { min-width:0;text-align:left; }
+  .tourney-player-copy b { display:block;max-width:88px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#edf1f6;font-size:11px; }
+  .tourney-player-copy small { display:block;margin-top:3px;color:#657183;font-size:7px;font-weight:800;letter-spacing:.5px;text-transform:uppercase; }
+  .tourney-search-actions { width:100%;max-width:390px; }
+  .tourney-search-actions button { width:100%;min-height:43px;border-radius:14px; }
+  @keyframes searchPulse { 0%,100%{opacity:.55;transform:scale(.92)}50%{opacity:1;transform:scale(1.05)} }
+  @keyframes playerJoined { from{opacity:.35;transform:scale(.94)}to{opacity:1;transform:scale(1)} }
 </style>
 </head>
 <body>
@@ -1544,28 +1670,28 @@
 
     <div class="section-label">Міні-ігри</div>
     <div class="mode-cards">
-      <div class="mode-card tournament-hero-v2" data-mode="tournament">
-        <div class="tournament-mark" aria-hidden="true">
-          <span class="tournament-mark__orbit"></span>
-          <span class="tournament-mark__core">
-            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 9h18v8c0 8-3.8 13-9 15-5.2-2-9-7-9-15V9Z"/><path d="M15 13H8v4c0 7 4.5 10 10 10M33 13h7v4c0 7-4.5 10-10 10M24 32v6M17 42h14M20 38h8v4"/></svg>
+      <div class="mode-card tournament-hero-v3" data-mode="tournament">
+        <div class="tournament-v3-logo" aria-hidden="true">
+          <span class="tournament-v3-logo__icon">
+            <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 6h12v6c0 5-2.5 8-6 9.5-3.5-1.5-6-4.5-6-9.5V6Z"/><path d="M10 9H6v2c0 4 2.5 6 6 6M22 9h4v2c0 4-2.5 6-6 6M16 21.5V26M11 28h10M13 26h6"/></svg>
           </span>
-          <span class="tournament-mark__label">CHAMPIONSHIP</span>
+          <small>ARENA SERIES</small>
         </div>
-        <div class="tournament-hero-v2__copy">
-          <span class="tournament-hero-v2__topline">Головний режим</span>
+        <div class="tournament-v3-copy">
+          <span class="tournament-v3-copy__label">Головний режим</span>
           <div class="mode-card-title">Турнір</div>
-          <div class="mode-card-desc">Серія динамічних мініігор. Набирай очки, піднімайся в таблиці та стань чемпіоном арени.</div>
-          <div class="tournament-meta">
-            <span>5<small>ігор</small></span>
-            <span>XP<small>рейтинг</small></span>
-            <span>★<small>кубок</small></span>
-          </div>
+          <div class="mode-card-desc">П’ять різних випробувань, єдина таблиця та фінальна нагорода.</div>
         </div>
-        <button class="mode-card-play tournament-hero-v2__start" data-mode="tournament">
-          <span>Увійти в турнір</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-        </button>
+        <div class="tournament-v3-footer">
+          <div class="tournament-v3-stats">
+            <span class="tournament-v3-stat"><b>5</b><small>раундів</small></span>
+            <span class="tournament-v3-stat"><b>XP</b><small>рейтинг</small></span>
+          </div>
+          <button class="mode-card-play tournament-v3-start" data-mode="tournament">
+            Грати
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+          </button>
+        </div>
       </div>
 
       <div class="mode-card featured-mode featured-mode--friends" id="mode-card-friends">
@@ -1664,10 +1790,19 @@
 
 
       <div class="mode-card mode-card--train" data-mode="trainDodge">
-        <div class="mode-card-preview"><div class="mode-scene"><div class="rails"></div><div class="mini-train"></div><div class="scene-player" style="left:76px;top:57px"></div></div></div>
+        <div class="mode-card-preview">
+          <div class="rail-rush-scene" aria-hidden="true">
+            <span class="rr-track rr-track--h"></span>
+            <span class="rr-track rr-track--v"></span>
+            <span class="rr-mini-train rr-mini-train--h"></span>
+            <span class="rr-mini-train rr-mini-train--v"></span>
+            <span class="rr-player"></span>
+            <span class="rr-warning"></span>
+          </div>
+        </div>
         <div class="mode-card-badge">1-4 гравці</div>
-        <div class="mode-card-title">Потяги</div>
-        <div class="mode-card-desc">Ухиляйся від потягів на рейках. Виживи 60 секунд!</div>
+        <div class="mode-card-title">Rail Rush</div>
+        <div class="mode-card-desc">Читай сигнали, перетинай колії та ухиляйся від експресів.</div>
         <button class="mode-card-play" data-mode="trainDodge">Грати</button>
       </div>
 
@@ -1745,7 +1880,7 @@
       <div class="leaderboard-row">
         <div class="leaderboard-icon lb-train"></div>
         <div class="leaderboard-info">
-          <div class="leaderboard-title">Потяги</div>
+          <div class="leaderboard-title">Rail Rush</div>
           <div class="leaderboard-value"><span id="lb-train-value">0</span> / 60 секунд</div>
         </div>
       </div>
@@ -1760,7 +1895,7 @@
         <div class="leaderboard-icon lb-obstacle"></div>
         <div class="leaderboard-info">
           <div class="leaderboard-title">Obstacle Run</div>
-          <div class="leaderboard-value"><span id="lb-obstacle-value">0</span> / 40 секунд</div>
+          <div class="leaderboard-value"><span id="lb-obstacle-value">0</span> / 60 секунд</div>
         </div>
       </div>
       <div class="leaderboard-row">
@@ -1787,6 +1922,7 @@
   <div id="screen-game" class="screen">
     <canvas id="arena"></canvas>
     <div id="hud">
+      <div id="net-latency"></div>
       <div id="target-label"></div>
       <div id="timer-bar-wrap"><div id="timer-bar"></div></div>
       <div id="round-label"></div>
@@ -1896,6 +2032,20 @@
       <button id="btn-result-again" class="btn-primary">Ще раз</button>
       <button id="btn-result-menu" class="btn-secondary">В меню</button>
     </div>
+  </div>
+
+  <div id="screen-tourney-matchmaking" class="screen">
+    <div class="tourney-search-head">
+      <div class="tourney-search-pulse" aria-hidden="true">
+        <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="6"/><circle cx="23" cy="14" r="4"/><path d="M3 27c0-5 3.5-8 9-8s9 3 9 8M20 20c5 0 8 2.5 8 7"/></svg>
+      </div>
+      <h1 class="tourney-search-title">Набір учасників</h1>
+      <p class="tourney-search-sub">Арена формує склад турніру. Жеребкування почнеться автоматично.</p>
+    </div>
+    <div class="tourney-search-status"><span id="tourney-search-text">Шукаємо гравців…</span><span id="tourney-search-count">0 / 6</span></div>
+    <div class="tourney-search-bar"><i id="tourney-search-progress"></i></div>
+    <div class="tourney-player-grid" id="tourney-player-grid"></div>
+    <div class="tourney-search-actions"><button id="btn-tourney-search-cancel" class="btn-secondary">Скасувати пошук</button></div>
   </div>
 
   <div id="screen-tourney-intro" class="screen">
@@ -2409,9 +2559,10 @@
   const BOT_COUNT = 5;
   const BOT_COLORS = ['#ff8a65', '#7e57c2', '#26a69a', '#ec407a', '#8d6e63'];
   const BOT_NAME_POOL = [
-    'Хижак', 'Комета', 'Блискавка', 'Тінь', 'Вихор', 'Фенікс', 'Дракон', 'Сокіл',
-    'Титан', 'Шторм', 'Вовк', 'Рейд', 'Нео', 'Зевс', 'Ігор', 'Макс', 'Сеня', 'Дюк',
-    'Барс', 'Кобра', 'Юкі', 'Рекс', 'Локі', 'Астра', 'Марс', 'Гриф', 'Ворон', 'Спарк',
+    'Макс', 'Олег', 'Ігор', 'Назар', 'Данило', 'Аня', 'Софія', 'Марія',
+    'Alex', 'Mike', 'Jack', 'John', 'Chris', 'Sam', 'Leo', 'Kate',
+    'Emma', 'Mia', 'Luna', 'Oliver', 'Lucky', 'PlayerOne', 'Nova', 'Shadow',
+    '777', '404', '007', 'PRO100',
   ];
   const PLAYER_SPEED = 0.85;
   const BOT_BASE_SPEED = 0.5;
@@ -2450,9 +2601,11 @@
   const HOTPOTATO_FUSE_MIN = 6;
   const HOTPOTATO_FUSE_STEP = 0.3;
   const HOTPOTATO_TAG_RADIUS = 0.075;
-  const HOTPOTATO_IMMUNITY = 1.0;
+  const HOTPOTATO_IMMUNITY = 1.5;
   const HOTPOTATO_PASS_BONUS = 2;
   const HOTPOTATO_FUSE_CAP = 14;
+  const HOTPOTATO_MIN_HOLD_FOR_BONUS = 0.75;
+  const HOTPOTATO_ROUND_BONUS_CAP = 6;
   const HOTPOTATO_WALL_THICK = 0.016;
   const SHRINK_DURATION = 50;
   const PAINT_DURATION = 35;
@@ -2469,7 +2622,7 @@
   const SNAKE_SEG_DIST = 0.038; // distance between trail segments
   const SNAKE_SEG_RADIUS = 0.028; // trail segment radius (smaller than player)
   const SNAKE_COLLISION_R = 0.025; // collision check radius
-  const OBSTACLE_DURATION = 40;
+  const OBSTACLE_DURATION = 60;
   const OBSTACLE_LIVES = 3;
   const TRAIN_DURATION = 60;
 
@@ -2527,7 +2680,7 @@
     colorPanic: 'Color Panic', fallingTiles: 'Falling Tiles', bombDodge: 'Bomb Dodge',
     mathQuiz: 'Math Arena', balloonFight: 'Balloon Fight', redLight: 'Гаряча бомба',
     paintWar: 'Paint War',
-    trainDodge: 'Потяги',
+    trainDodge: 'Rail Rush',
     snakeTrail: 'Snake Trail', obstacleRun: 'Obstacle Run'
   };
 
@@ -2633,7 +2786,7 @@
     { id: 'winPaint', title: 'Маляр', desc: 'Перемогти у Paint War' },
     { id: 'winLava', title: 'Вогнеходець', desc: 'Перемогти у Lava Rise' },
     { id: 'winMagnet', title: 'Зіркозбирач', desc: 'Перемогти у Magnet Mayhem' },
-    { id: 'winTrain', title: 'Стрілочник', desc: 'Виживи 60с у режимі Потяги' },
+    { id: 'winTrain', title: 'Стрілочник', desc: 'Виживи 60с у режимі Rail Rush' },
     { id: 'winSnake', title: 'Зміюка', desc: 'Перемогти у Snake Trail' },
     { id: 'winObstacle', title: 'Паркурщик', desc: 'Перемогти у Obstacle Run' },
     { id: 'win5modes', title: 'Універсал', desc: 'Перемогти у 5 різних режимах' },
@@ -2671,7 +2824,7 @@
     winRedLight: { category:'Випробування режимів', icon:'●', title:'Гаряча передача', desc:'Переможи у режимі «Гаряча бомба».', target:1, reward:{coins:35} },
     winPaint: { category:'Випробування режимів', icon:'▧', title:'Власник території', desc:'Переможи у Paint War.', target:1, reward:{coins:35} },
     paint25: { category:'Випробування режимів', icon:'25', title:'Тотальне фарбування', desc:'Утримуй щонайменше 25 плиток у Paint War.', target:25, reward:{coins:60} },
-    winTrain: { category:'Випробування режимів', icon:'⇆', title:'Між рейками', desc:'Виживи повну хвилину в режимі «Потяги».', target:60, reward:{coins:70} },
+    winTrain: { category:'Випробування режимів', icon:'⇆', title:'Між рейками', desc:'Виживи повну хвилину в режимі «Rail Rush».', target:60, reward:{coins:70} },
     winSnake: { category:'Випробування режимів', icon:'∿', title:'Останній слід', desc:'Переможи у Snake Trail.', target:1, reward:{coins:35} },
     snake20: { category:'Випробування режимів', icon:'20', title:'Довгий маршрут', desc:'Протримайся 20 секунд у Snake Trail.', target:20, reward:{coins:30} },
     winObstacle: { category:'Випробування режимів', icon:'⇥', title:'Без права на помилку', desc:'Переможи в Obstacle Run.', target:1, reward:{coins:35} },
@@ -2842,17 +2995,36 @@
     let raw = null;
     try { raw = JSON.parse(localStorage.getItem(PROFILE_KEY)); } catch (e) { raw = null; }
     const def = defaultProfile();
-    if (!raw) {
+    if (!raw || typeof raw !== 'object' || Array.isArray(raw)) {
       const legacy = parseInt(localStorage.getItem(LEGACY_BEST_ROUND_KEY) || '0', 10);
       if (legacy > 0) def.bestRound = legacy;
       return def;
     }
     const p = Object.assign({}, def, raw);
-    p.achievements = Object.assign({}, def.achievements, raw.achievements || {});
-    p.settings = Object.assign({}, def.settings, raw.settings || {});
-    p.ownedSkins = Array.isArray(raw.ownedSkins) ? raw.ownedSkins : def.ownedSkins.slice();
-    p.ownedAccessories = Array.isArray(raw.ownedAccessories) ? raw.ownedAccessories : [];
-    p.modesWon = Array.isArray(raw.modesWon) ? raw.modesWon : [];
+    Object.keys(def).forEach(key => {
+      if (typeof def[key] !== 'number') return;
+      const value = Number(raw[key]);
+      p[key] = Number.isFinite(value) ? Math.min(1e9, Math.max(0, value)) : def[key];
+    });
+    p.playerName = typeof raw.playerName === 'string'
+      ? raw.playerName.replace(/[\u0000-\u001f\u007f]/g, '').trim().slice(0, 24) || def.playerName
+      : def.playerName;
+    p.achievements = Object.fromEntries(Object.keys(def.achievements).map(key => [key, raw.achievements?.[key] === true]));
+    p.settings = {
+      vibration: raw.settings?.vibration !== false,
+      sound: raw.settings?.sound !== false,
+    };
+    const skinIds = new Set(SKINS.map(s => s.id));
+    const accessoryIds = new Set(ACCESSORIES.map(a => a.id));
+    const modeIds = new Set(Object.keys(MODE_NAMES));
+    p.ownedSkins = Array.isArray(raw.ownedSkins) ? [...new Set(raw.ownedSkins.filter(id => skinIds.has(id)))] : def.ownedSkins.slice();
+    if (!p.ownedSkins.includes('white')) p.ownedSkins.unshift('white');
+    p.ownedAccessories = Array.isArray(raw.ownedAccessories) ? [...new Set(raw.ownedAccessories.filter(id => accessoryIds.has(id) && id !== 'none'))] : [];
+    p.modesWon = Array.isArray(raw.modesWon) ? [...new Set(raw.modesWon.filter(id => modeIds.has(id)))] : [];
+    p.activeSkin = p.ownedSkins.includes(raw.activeSkin) ? raw.activeSkin : 'white';
+    p.activeAccessory = raw.activeAccessory === 'none' || p.ownedAccessories.includes(raw.activeAccessory) ? raw.activeAccessory : 'none';
+    p.activeAccessory2 = raw.activeAccessory2 === 'none' || p.ownedAccessories.includes(raw.activeAccessory2) ? raw.activeAccessory2 : 'none';
+    p.lastDailyBonusDate = typeof raw.lastDailyBonusDate === 'string' ? raw.lastDailyBonusDate.slice(0, 10) : '';
     return p;
   }
 
@@ -2920,6 +3092,7 @@
     result: document.getElementById('screen-result'),
     leaderboard: document.getElementById('screen-leaderboard'),
     shop: document.getElementById('screen-shop'),
+    tourneyMatchmaking: document.getElementById('screen-tourney-matchmaking'),
     tourneyIntro: document.getElementById('screen-tourney-intro'),
     tourneyStandings: document.getElementById('screen-tourney-standings'),
     lobbyMode: document.getElementById('screen-lobby-mode'),
@@ -2985,6 +3158,7 @@
   const targetLabelEl = document.getElementById('target-label');
   const timerBarEl = document.getElementById('timer-bar');
   const roundLabelEl = document.getElementById('round-label');
+  const netLatencyEl = document.getElementById('net-latency');
   const canvas = document.getElementById('arena');
   const ctx = canvas.getContext('2d');
   const joystickZone = document.getElementById('joystick-zone');
@@ -5165,8 +5339,9 @@
   }
 
   // ---------- Multiplayer / Networking ----------
-  const HOST_TICK_HZ = 18;
-  const GUEST_INPUT_HZ = 20;
+  const HOST_TICK_HZ = 25;
+  const WORLD_STATE_HZ = 12;
+  const GUEST_INPUT_HZ = 30;
   let net = {
     ws: null, role: null, roomCode: null, selfId: null, selfSlot: null,
     roster: [], hostName: null, connected: false,
@@ -5177,7 +5352,15 @@
   let guestBotSources = [];    // guest-only: bots[] index -> 'host' | slot number
   let prevSnapshot = null, lastSnapshot = null, lastSnapshotAt = 0, prevSnapshotAt = 0; // guest-only
   let hostBroadcastTimer = 0;  // host-only
+  let hostWorldTimer = 0;      // host-only: slower mode/world state stream
   let guestInputTimer = 0;     // guest-only
+  let hostSnapshotSeq = 0;
+  let hostWorldSeq = 0;
+  let lastGuestSnapshotSeq = -1;
+  let lastGuestWorldSeq = -1;
+  let guestInputSeq = 0;
+  let pendingGuestInputs = [];
+  let networkRecoveryTimer = null;
 
   function emptyRoster() {
     const arr = [];
@@ -5185,15 +5368,37 @@
     return arr;
   }
 
+  function normalizeRoster(value) {
+    const source = Array.isArray(value) ? value.slice(0, BOT_COUNT) : [];
+    return emptyRoster().map((fallback, index) => {
+      const slot = source[index];
+      if (!slot || typeof slot !== 'object') return fallback;
+      const connected = slot.connected === true;
+      return {
+        slot: index,
+        userId: connected ? String(slot.userId || '').slice(0, 128) : null,
+        name: connected ? String(slot.name || 'Гравець').replace(/[\u0000-\u001f\u007f]/g, '').slice(0, 24) : null,
+        controlType: connected ? 'network' : 'bot',
+        connected,
+      };
+    });
+  }
+
   function wsUrl() {
+    if (!location.host || (location.protocol !== 'http:' && location.protocol !== 'https:')) return null;
     return (location.protocol === 'https:' ? 'wss://' : 'ws://') + location.host + '/ws';
   }
 
+  const RELAY_QUEUE_LIMIT = 100;
   let relayQueue = [];
   function sendRelay(obj) {
     if (net.ws && net.ws.readyState === 1) {
       net.ws.send(JSON.stringify(obj));
     } else {
+      const transient = obj?.type === 'to_host' && obj.payload?.type === 'input'
+        || obj?.type === 'to_guests' && (obj.payload?.type === 'snapshot' || obj.payload?.type === 'world_state');
+      if (transient) return;
+      if (relayQueue.length >= RELAY_QUEUE_LIMIT) relayQueue.shift();
       relayQueue.push(obj);
     }
   }
@@ -5202,6 +5407,11 @@
     const div = document.createElement('div');
     div.textContent = str == null ? '' : str;
     return div.innerHTML;
+  }
+
+  function safeCssColor(value, fallback = '#9aa4b2') {
+    const color = String(value || '').trim();
+    return /^#[0-9a-f]{3,8}$/i.test(color) ? color : fallback;
   }
 
   let netToastTimer = null;
@@ -5218,12 +5428,38 @@
   // whole session — it now carries both room-relay traffic (multiplayer
   // matches) and friends/presence traffic, which needs to work even when
   // the player isn't hosting or in a room at all.
+  let relayReconnectTimer = null;
+  let relayReconnectDelay = 2000;
+  function scheduleRelayReconnect() {
+    if (!wsUrl() || relayReconnectTimer || net.connected) return;
+    relayReconnectTimer = setTimeout(() => {
+      relayReconnectTimer = null;
+      connectRelay();
+    }, relayReconnectDelay);
+    relayReconnectDelay = Math.min(30000, Math.round(relayReconnectDelay * 1.7));
+  }
+
   function connectRelay() {
-    const ws = new WebSocket(wsUrl());
+    const url = wsUrl();
+    if (!url || net.connected || (net.ws && net.ws.readyState === 0)) return;
+    let ws;
+    try { ws = new WebSocket(url); }
+    catch (e) { scheduleRelayReconnect(); return; }
     net.ws = ws;
     ws.onopen = () => {
       net.connected = true;
-      sendRelay({ type: 'identify', telegramId: myIdentity.id, name: myIdentity.name });
+      relayReconnectDelay = 2000;
+      if (relayReconnectTimer) { clearTimeout(relayReconnectTimer); relayReconnectTimer = null; }
+      sendRelay({
+        type: 'identify', telegramId: myIdentity.id, name: myIdentity.name,
+        telegramInitData: tg?.initData || '',
+      });
+      if (net.recovering && net.roomCode) {
+        sendRelay({
+          type: 'resume_room', code: net.roomCode, role: net.role, slot: net.selfSlot,
+          userId: myIdentity.id, name: myIdentity.name,
+        });
+      }
       const queued = relayQueue;
       relayQueue = [];
       queued.forEach(m => sendRelay(m));
@@ -5234,16 +5470,27 @@
       handleRelayMessage(data);
     };
     ws.onclose = () => {
+      if (net.ws === ws) net.ws = null;
       net.connected = false;
       if (net.roomCode) {
-        toastNetworkMessage(net.role === 'guest' ? "З'єднання з хостом втрачено" : "З'єднання втрачено");
-        leaveMultiplayer();
-        renderMenu();
-        showScreen('menu');
+        net.recovering = true;
+        toastNetworkMessage('З’єднання втрачено — відновлюємо матч…');
+        scheduleRelayReconnect();
+        if (!networkRecoveryTimer) {
+          networkRecoveryTimer = setTimeout(() => {
+            networkRecoveryTimer = null;
+            if (!net.recovering) return;
+            toastNetworkMessage('Не вдалося повернутися до матчу');
+            leaveMultiplayer();
+            renderMenu();
+            showScreen('menu');
+          }, 10000);
+        }
       } else {
-        setTimeout(() => { if (!net.connected) connectRelay(); }, 2000);
+        scheduleRelayReconnect();
       }
     };
+    ws.onerror = () => { try { ws.close(); } catch (e) {} };
   }
 
   function createRoom() {
@@ -5274,11 +5521,20 @@
   }
 
   function leaveMultiplayer() {
+    const wasGuest = net.role === 'guest';
     if (net.roomCode) { try { sendRelay({ type: 'leave_room' }); } catch (e) {} }
     net.role = null; net.roomCode = null; net.selfSlot = null; net.roster = []; net.hostName = null;
     networkInputs = {};
     guestBotSources = [];
     prevSnapshot = null; lastSnapshot = null;
+    lastGuestSnapshotSeq = -1;
+    lastGuestWorldSeq = -1;
+    guestInputSeq = 0;
+    pendingGuestInputs = [];
+    net.recovering = false;
+    if (networkRecoveryTimer) { clearTimeout(networkRecoveryTimer); networkRecoveryTimer = null; }
+    if (wasGuest) game = null;
+    if (netLatencyEl) netLatencyEl.style.display = 'none';
     guestLoopRunning = false;
   }
 
@@ -5371,7 +5627,7 @@
       row.className = 'lobby-slot filled';
       row.innerHTML =
         `<span class="lobby-slot-dot"></span>` +
-        `<span class="lobby-slot-name">${escapeHtml(r.name)} <small style="color:var(--muted);">#${r.tag}</small></span>` +
+        `<span class="lobby-slot-name">${escapeHtml(r.name)} <small style="color:var(--muted);">#${escapeHtml(r.tag)}</small></span>` +
         `<button class="btn-primary btn-sm req-accept-btn">✓</button>` +
         `<button class="btn-secondary btn-sm req-decline-btn">✕</button>`;
       row.querySelector('.req-accept-btn').addEventListener('click', () => {
@@ -5388,7 +5644,7 @@
     net.outgoingRequests.forEach(r => {
       const row = document.createElement('div');
       row.className = 'lobby-slot';
-      row.innerHTML = `<span class="lobby-slot-dot"></span><span class="lobby-slot-name">${escapeHtml(r.name)} <small style="color:var(--muted);">#${r.tag}</small></span><span class="lobby-slot-tag">Очікує</span>`;
+      row.innerHTML = `<span class="lobby-slot-dot"></span><span class="lobby-slot-name">${escapeHtml(r.name)} <small style="color:var(--muted);">#${escapeHtml(r.tag)}</small></span><span class="lobby-slot-tag">Очікує</span>`;
       outgoingEl.appendChild(row);
     });
   }
@@ -5405,6 +5661,7 @@
   }
 
   function handleRelayMessage(msg) {
+    if (!msg || typeof msg !== 'object' || typeof msg.type !== 'string') return;
     switch (msg.type) {
       case 'room_created':
         net.role = 'host'; net.roomCode = msg.code; net.selfId = msg.selfId;
@@ -5419,7 +5676,9 @@
       case 'joined':
         clearJoinTimeout();
         net.role = 'guest'; net.roomCode = msg.code; net.selfId = msg.selfId;
-        net.selfSlot = msg.slot; net.roster = msg.roster; net.hostName = msg.hostName;
+        net.selfSlot = clamp(Math.floor(Number(msg.slot) || 0), 0, BOT_COUNT - 1);
+        net.roster = normalizeRoster(msg.roster);
+        net.hostName = String(msg.hostName || 'Хост').slice(0, 24);
         renderLobbyGuest();
         showScreen('lobbyGuest');
         break;
@@ -5431,8 +5690,8 @@
         break;
       }
       case 'roster':
-        net.roster = msg.roster;
-        if (msg.hostName) net.hostName = msg.hostName;
+        net.roster = normalizeRoster(msg.roster);
+        if (msg.hostName) net.hostName = String(msg.hostName).slice(0, 24);
         if (net.role === 'host') renderLobbyHost();
         else if (net.role === 'guest') renderLobbyGuest();
         break;
@@ -5442,9 +5701,31 @@
         renderMenu();
         showScreen('menu');
         break;
+      case 'resumed':
+        net.recovering = false;
+        if (networkRecoveryTimer) { clearTimeout(networkRecoveryTimer); networkRecoveryTimer = null; }
+        if (msg.roster) net.roster = normalizeRoster(msg.roster);
+        toastNetworkMessage('З’єднання відновлено');
+        break;
+      case 'resume_error':
+        net.recovering = false;
+        if (networkRecoveryTimer) { clearTimeout(networkRecoveryTimer); networkRecoveryTimer = null; }
+        toastNetworkMessage('Матч уже недоступний');
+        leaveMultiplayer();
+        renderMenu();
+        showScreen('menu');
+        break;
       case 'from_guest':
         if (net.role === 'host' && msg.payload && msg.payload.type === 'input') {
-          networkInputs[msg.fromId] = { x: msg.payload.x, y: msg.payload.y };
+          const knownGuest = net.roster.some(slot => slot.connected && String(slot.userId) === String(msg.fromId));
+          if (!knownGuest) break;
+          let x = Number(msg.payload.x), y = Number(msg.payload.y);
+          if (!Number.isFinite(x) || !Number.isFinite(y)) break;
+          const magnitude = Math.hypot(x, y);
+          if (magnitude > 1) { x /= magnitude; y /= magnitude; }
+          const seq = Math.max(0, Math.floor(Number(msg.payload.seq) || 0));
+          const sentAt = Math.max(0, Number(msg.payload.sentAt) || 0);
+          networkInputs[String(msg.fromId || '')] = { x: clamp(x, -1, 1), y: clamp(y, -1, 1), seq, sentAt };
         }
         break;
       case 'from_host':
@@ -5515,23 +5796,68 @@
     });
   }
 
+  const NETWORK_WORLD_SKIP = new Set([
+    'mode', 'player', 'bots', 'particles', 'floatingTexts', 'pendingResult', 'lastTs',
+    'gameoverDuration', 'shakeTime', 'shakeDuration', 'shakeMagnitude',
+    'playerPops', 'paintPlayerTiles', 'lives',
+  ]);
+
+  function serializeNetworkWorld(g) {
+    const state = {};
+    Object.entries(g).forEach(([key, value]) => {
+      if (NETWORK_WORLD_SKIP.has(key) || typeof value === 'function' || value === undefined) return;
+      try {
+        const json = JSON.stringify(value, (k, v) => typeof v === 'number' && !Number.isFinite(v) ? 0 : v);
+        if (json && json.length <= 70000) state[key] = JSON.parse(json);
+      } catch (e) {}
+    });
+    return state;
+  }
+
+  function networkParticipantState(entity, slot) {
+    const input = entity.networkUserId ? networkInputs[entity.networkUserId] : null;
+    return {
+      slot,
+      x: entity.x, y: entity.y, vx: entity.vx || entity.hpVx || 0, vy: entity.vy || entity.hpVy || 0,
+      alive: entity.alive !== false && entity.alpha > 0,
+      alpha: entity.alpha,
+      ackSeq: input?.seq || 0,
+      echoSentAt: input?.sentAt || 0,
+      hasBalloon: entity.hasBalloon !== false,
+      lives: entity.lives,
+      facingX: entity.facingX || 0, facingY: entity.facingY || 0,
+      trail: Array.isArray(entity.trail) ? entity.trail : undefined,
+    };
+  }
+
+  function broadcastWorldState(g) {
+    if (net.role !== 'host' || !net.roomCode) return;
+    sendRelay({
+      type: 'to_guests',
+      payload: { type: 'world_state', seq: ++hostWorldSeq, mode: g.mode, state: serializeNetworkWorld(g) },
+    });
+  }
+
   function broadcastSnapshot(g) {
     if (net.role !== 'host' || !net.roomCode) return;
     sendRelay({
       type: 'to_guests',
       payload: {
         type: 'snapshot',
+        seq: ++hostSnapshotSeq,
         mode: g.mode,
         phase: g.phase,
         round: g.round,
         timeRemaining: g.timeRemaining,
-        player: { x: g.player.x, y: g.player.y, alpha: g.player.alpha, alive: g.player.alive !== false },
-        bots: g.bots.map((b, i) => ({ slot: i, x: b.x, y: b.y, alive: b.alive, alpha: b.alpha })),
+        player: networkParticipantState(g.player, -1),
+        bots: g.bots.map((b, i) => networkParticipantState(b, i)),
       },
     });
   }
 
   function hostStartMultiplayerMatch() {
+    hostBroadcastTimer = 0; hostWorldTimer = 0;
+    hostSnapshotSeq = 0; hostWorldSeq = 0;
     startTournament(net.roster);
     sendRelay({
       type: 'start_match',
@@ -5567,8 +5893,12 @@
   }
 
   function startGuestMatch(payload) {
-    net.roster = payload.roster;
-    net.hostName = payload.hostName;
+    net.roster = normalizeRoster(payload.roster);
+    net.hostName = String(payload.hostName || 'Хост').slice(0, 24);
+    lastGuestSnapshotSeq = -1;
+    lastGuestWorldSeq = -1;
+    guestInputSeq = 0;
+    pendingGuestInputs = [];
     guestBotSources = ['host'];
     for (let slot = 0; slot < BOT_COUNT; slot++) {
       if (slot !== net.selfSlot) guestBotSources.push(slot);
@@ -5578,6 +5908,7 @@
 
   let guestLoopRunning = false;
   function applyRoundStartToGuestGame(payload) {
+    if (!MULTIPLAYER_MODE_POOL.includes(payload.mode)) return;
     // startRound() fires this on every internal colorPanic round too, not
     // just once per tournament stage. Only rebuild (fresh bot positions,
     // screen transition) when we're not already mid-match, matching how
@@ -5593,59 +5924,136 @@
         requestAnimationFrame(loop);
       }
     }
-    game.round = payload.round;
-    game.timeLimit = payload.timeLimit;
-    game.timeRemaining = payload.timeLimit;
-    game.targetColor = payload.targetColor;
+    game.round = clamp(Math.floor(Number(payload.round) || 1), 1, MAX_ROUNDS);
+    game.timeLimit = clamp(Number(payload.timeLimit) || computeTimeLimit(game.round), 0.5, 120);
+    game.timeRemaining = game.timeLimit;
+    game.targetColor = TILE_COLORS.includes(payload.targetColor) ? payload.targetColor : game.targetColor;
     game.phase = 'playing';
     game.phaseTime = 0;
     if (payload.tiles && game.tiles && payload.tiles.length === game.tiles.length) {
-      game.tiles.forEach((t, i) => { t.color = payload.tiles[i].color; t.alive = true; t.alpha = 1; t.scale = 1; });
+      game.tiles.forEach((t, i) => { t.color = TILE_COLORS.includes(payload.tiles[i]?.color) ? payload.tiles[i].color : t.color; t.alive = true; t.alpha = 1; t.scale = 1; });
     }
     updateHud(game);
   }
 
   function applySnapshotToGuestGame(payload) {
-    if (!game) return;
-    const meSrc = payload.bots.find(b => b.slot === net.selfSlot);
+    if (!game || !Array.isArray(payload.bots) || !payload.player) return;
+    const finitePosition = data => data && Number.isFinite(Number(data.x)) && Number.isFinite(Number(data.y));
+    const meSrc = payload.bots.find(b => b.slot === net.selfSlot && finitePosition(b));
     if (meSrc) {
-      game.player.targetX = meSrc.x; game.player.targetY = meSrc.y;
-      game.player.alpha = meSrc.alpha;
-      game.player.alive = meSrc.alive;
+      const ackSeq = Math.max(0, Math.floor(Number(meSrc.ackSeq) || 0));
+      pendingGuestInputs = pendingGuestInputs.filter(command => command.seq > ackSeq);
+      let predictedX = clamp(Number(meSrc.x), PLAYER_RADIUS, 1 - PLAYER_RADIUS);
+      let predictedY = clamp(Number(meSrc.y), PLAYER_RADIUS, 1 - PLAYER_RADIUS);
+      let predictedVX = clamp(Number(meSrc.vx) || 0, -PLAYER_SPEED, PLAYER_SPEED);
+      let predictedVY = clamp(Number(meSrc.vy) || 0, -PLAYER_SPEED, PLAYER_SPEED);
+      pendingGuestInputs.forEach(command => {
+        const step = 1 / GUEST_INPUT_HZ;
+        const smooth = Math.min(1, step * 12);
+        predictedVX += (command.x * PLAYER_SPEED - predictedVX) * smooth;
+        predictedVY += (command.y * PLAYER_SPEED - predictedVY) * smooth;
+        predictedX = clamp(predictedX + predictedVX * step, PLAYER_RADIUS, 1 - PLAYER_RADIUS);
+        predictedY = clamp(predictedY + predictedVY * step, PLAYER_RADIUS, 1 - PLAYER_RADIUS);
+      });
+      game.player.serverX = predictedX;
+      game.player.serverY = predictedY;
+      if (!game.player.hasServerState) {
+        game.player.x = game.player.serverX;
+        game.player.y = game.player.serverY;
+        game.player.hasServerState = true;
+      }
+      game.player.alpha = clamp(Number(meSrc.alpha) || 0, 0, 1);
+      game.player.alive = meSrc.alive !== false;
+      game.player.hasBalloon = meSrc.hasBalloon !== false;
+      if (Number.isFinite(Number(meSrc.lives))) game.lives = Math.max(0, Number(meSrc.lives));
+      if (Array.isArray(meSrc.trail)) game.player.trail = meSrc.trail.slice(0, 80);
+      game.player.facingX = Number(meSrc.facingX) || game.player.facingX || 0;
+      game.player.facingY = Number(meSrc.facingY) || game.player.facingY || -1;
+      if (Number(meSrc.echoSentAt) > 0) net.pingMs = Math.max(0, performance.now() - Number(meSrc.echoSentAt));
     }
     guestBotSources.forEach((src, i) => {
       const bot = game.bots[i];
       if (!bot) return;
       const data = src === 'host' ? payload.player : payload.bots.find(b => b.slot === src);
-      if (!data) return;
-      bot.netTargetX = data.x; bot.netTargetY = data.y;
-      bot.alive = data.alive;
-      bot.alpha = data.alpha !== undefined ? data.alpha : (data.alive ? 1 : 0);
+      if (!finitePosition(data)) return;
+      bot.netTargetX = clamp(Number(data.x), 0, 1); bot.netTargetY = clamp(Number(data.y), 0, 1);
+      bot.netVX = clamp(Number(data.vx) || 0, -2, 2);
+      bot.netVY = clamp(Number(data.vy) || 0, -2, 2);
+      bot.alive = data.alive !== false;
+      bot.alpha = clamp(data.alpha !== undefined ? Number(data.alpha) || 0 : (bot.alive ? 1 : 0), 0, 1);
+      bot.hasBalloon = data.hasBalloon !== false;
+      if (Number.isFinite(Number(data.lives))) bot.lives = Math.max(0, Number(data.lives));
+      if (Array.isArray(data.trail)) bot.trail = data.trail.slice(0, 80);
+      bot.facingX = Number(data.facingX) || bot.facingX || 0;
+      bot.facingY = Number(data.facingY) || bot.facingY || 1;
     });
-    game.timeRemaining = payload.timeRemaining;
-    game.round = payload.round;
+    game.timeRemaining = clamp(Number(payload.timeRemaining) || 0, 0, 120);
+    game.round = clamp(Math.floor(Number(payload.round) || 1), 1, MAX_ROUNDS);
+    if (typeof payload.phase === 'string' && payload.phase.length <= 20) game.phase = payload.phase;
+  }
+
+  function hostEntityIndexToGuest(index) {
+    const idx = Number(index);
+    if (!Number.isInteger(idx) || idx < 0) return idx;
+    if (idx === 0) return 1; // host is the first remote bot on every guest
+    const hostSlot = idx - 1;
+    if (hostSlot === net.selfSlot) return 0;
+    const guestBotIndex = guestBotSources.findIndex(source => source === hostSlot);
+    return guestBotIndex >= 0 ? guestBotIndex + 1 : idx;
+  }
+
+  function applyWorldStateToGuest(payload) {
+    if (!game || payload.mode !== game.mode || !payload.state || typeof payload.state !== 'object') return;
+    const seq = Number(payload.seq);
+    if (Number.isFinite(seq) && seq <= lastGuestWorldSeq) return;
+    if (Number.isFinite(seq)) lastGuestWorldSeq = seq;
+    const special = new Set(['bombHolder', 'lastHolder', 'protectedHolders']);
+    Object.entries(payload.state).forEach(([key, value]) => {
+      if (NETWORK_WORLD_SKIP.has(key) || special.has(key) || !(key in game)) return;
+      game[key] = value;
+    });
+    if (Array.isArray(game.tiles)) {
+      game.tiles.forEach(tile => {
+        if (Number.isInteger(tile.owner) && tile.owner >= 0) tile.owner = hostEntityIndexToGuest(tile.owner);
+      });
+    }
+    if (payload.state.bombHolder !== undefined) game.bombHolder = hostEntityIndexToGuest(payload.state.bombHolder);
+    if (payload.state.lastHolder !== undefined) game.lastHolder = hostEntityIndexToGuest(payload.state.lastHolder);
+    if (payload.state.protectedHolders && typeof payload.state.protectedHolders === 'object') {
+      game.protectedHolders = {};
+      Object.entries(payload.state.protectedHolders).forEach(([idx, time]) => {
+        game.protectedHolders[hostEntityIndexToGuest(Number(idx))] = Number(time) || 0;
+      });
+    }
+    updateHud(game);
   }
 
   let guestTournamentFinished = false;
   function handleHostPayload(payload) {
-    if (!payload) return;
+    if (!payload || typeof payload !== 'object' || typeof payload.type !== 'string') return;
     if (payload.type === 'start_match') startGuestMatch(payload);
     else if (payload.type === 'mode_start') applyRoundStartToGuestGame(payload);
     else if (payload.type === 'snapshot') {
+      const seq = Number(payload.seq);
+      if (Number.isFinite(seq) && seq <= lastGuestSnapshotSeq) return;
+      if (Number.isFinite(seq)) lastGuestSnapshotSeq = seq;
       prevSnapshot = lastSnapshot; prevSnapshotAt = lastSnapshotAt;
       lastSnapshot = payload; lastSnapshotAt = performance.now();
       applySnapshotToGuestGame(payload);
+    } else if (payload.type === 'world_state') {
+      applyWorldStateToGuest(payload);
     } else if (payload.type === 'round_result') {
       applyRoundResultToGuest(payload);
     }
   }
 
   function applyRoundResultToGuest(payload) {
-    document.getElementById('tourney-standings-title').textContent = payload.title;
-    document.getElementById('tourney-standings-sub').textContent = payload.sub;
+    if (!payload || !Array.isArray(payload.standings)) return;
+    document.getElementById('tourney-standings-title').textContent = String(payload.title || 'Результати');
+    document.getElementById('tourney-standings-sub').textContent = String(payload.sub || '');
     const listEl = document.getElementById('tourney-standings-list');
     listEl.innerHTML = '';
-    payload.standings.forEach((c, idx) => {
+    payload.standings.slice(0, BOT_COUNT + 1).forEach((c, idx) => {
       const place = idx + 1;
       const medal = place === 1 ? '🥇' : place === 2 ? '🥈' : place === 3 ? '🥉' : place;
       const isMe = c.userId && c.userId === net.selfId;
@@ -5653,15 +6061,16 @@
       row.className = 'tourney-row' + (isMe ? ' me' : '');
       row.innerHTML =
         `<span class="tourney-rank">${medal}</span>` +
-        `<span class="tourney-dot" style="background:${c.color}"></span>` +
+        `<span class="tourney-dot" style="background:${safeCssColor(c.color)}"></span>` +
         `<span class="tourney-name">${escapeHtml(c.name)}${isMe ? ' (ти)' : ''}</span>` +
-        `<span class="tourney-round-pts">+${c.lastPts}</span>` +
-        `<span class="tourney-total">${c.total}</span>`;
+        `<span class="tourney-round-pts">+${Math.max(0, Number(c.lastPts) || 0)}</span>` +
+        `<span class="tourney-total">${Math.max(0, Number(c.total) || 0)}</span>`;
       listEl.appendChild(row);
     });
     const rewardEl = document.getElementById('tourney-reward');
     const btn = document.getElementById('btn-tourney-next');
     guestTournamentFinished = !!payload.finished;
+    game = null;
     if (payload.finished) {
       rewardEl.textContent = 'Матч завершено — дякуємо за гру!';
       btn.textContent = 'В меню';
@@ -5674,37 +6083,95 @@
     showScreen('tourneyStandings');
   }
 
-  // Guest never runs the real physics update() — it just smoothly glides
-  // every entity toward the latest network target each frame and renders.
+  function advanceGuestWorld(g, dt) {
+    if (g.mode === 'trainDodge' && Array.isArray(g.trains)) {
+      g.trains.forEach(train => {
+        if (train.warn > 0) train.warn = Math.max(0, train.warn - dt);
+        else train.pos += train.dir * train.speed * dt;
+      });
+    } else if (g.mode === 'obstacleRun' && Array.isArray(g.walls)) {
+      g.walls.forEach(wall => { wall.x -= wall.speed * dt; });
+    } else if (g.mode === 'redLight' && Array.isArray(g.movingWalls)) {
+      g.movingWalls.forEach(wall => {
+        wall.phase += dt * wall.speed;
+        wall.pos = wall.center + Math.sin(wall.phase) * wall.range;
+      });
+      g.bombFuse = Math.max(0, (g.bombFuse || 0) - dt);
+    } else if (g.mode === 'bombDodge' && Array.isArray(g.bombs)) {
+      g.bombs.forEach(bomb => { bomb.timer = (bomb.timer || 0) + dt; });
+    } else if (g.mode === 'fallingTiles' && Array.isArray(g.tiles)) {
+      g.tiles.forEach(tile => {
+        if (tile.state === 'cracking') tile.crackProgress = Math.min(1, tile.crackProgress + dt / Math.max(0.1, tile.crackDuration || 1));
+        else if (tile.state === 'gone') tile.alpha = Math.max(0, (tile.alpha ?? 1) - dt / GONE_FADE_DURATION);
+      });
+    }
+  }
+
+  // The guest predicts their own movement immediately and gently reconciles
+  // it with the host. Remote entities extrapolate between network snapshots.
   function guestTick(ts) {
-    if (!game) { requestAnimationFrame(loop); return; }
+    if (!game) { guestLoopRunning = false; return; }
     const dt = Math.min(0.05, (ts - game.lastTs) / 1000);
     game.lastTs = ts;
 
+    const input = getInputVector();
     guestInputTimer += dt;
     if (guestInputTimer >= 1 / GUEST_INPUT_HZ) {
-      guestInputTimer = 0;
-      const input = getInputVector();
-      sendRelay({ type: 'to_host', payload: { type: 'input', x: input.x, y: input.y } });
+      guestInputTimer %= 1 / GUEST_INPUT_HZ;
+      const command = { seq: ++guestInputSeq, x: input.x, y: input.y, sentAt: performance.now() };
+      pendingGuestInputs.push(command);
+      if (pendingGuestInputs.length > 120) pendingGuestInputs.splice(0, pendingGuestInputs.length - 120);
+      sendRelay({ type: 'to_host', payload: { type: 'input', ...command } });
     }
 
-    const glide = Math.min(1, dt * 14);
-    if (game.player.targetX !== undefined) {
-      game.player.x += (game.player.targetX - game.player.x) * glide;
-      game.player.y += (game.player.targetY - game.player.y) * glide;
+    if (game.phase === 'playing' && game.player.alive !== false) {
+      const localSmooth = Math.min(1, dt * 12);
+      game.player.vx += (input.x * PLAYER_SPEED - game.player.vx) * localSmooth;
+      game.player.vy += (input.y * PLAYER_SPEED - game.player.vy) * localSmooth;
+      game.player.x = clamp(game.player.x + game.player.vx * dt, PLAYER_RADIUS, 1 - PLAYER_RADIUS);
+      game.player.y = clamp(game.player.y + game.player.vy * dt, PLAYER_RADIUS, 1 - PLAYER_RADIUS);
     }
+
+    if (game.player.serverX !== undefined) {
+      const dx = game.player.serverX - game.player.x;
+      const dy = game.player.serverY - game.player.y;
+      const error = Math.hypot(dx, dy);
+      if (error > 0.32) {
+        game.player.x = game.player.serverX;
+        game.player.y = game.player.serverY;
+        game.player.vx = 0;
+        game.player.vy = 0;
+      } else {
+        const reconcile = Math.min(1, dt * (error > 0.12 ? 8 : 3));
+        game.player.x += dx * reconcile;
+        game.player.y += dy * reconcile;
+      }
+    }
+
+    const snapshotAge = Math.min(0.12, Math.max(0, (performance.now() - lastSnapshotAt) / 1000));
+    const glide = Math.min(1, dt * 20);
     game.bots.forEach(bot => {
       if (bot.netTargetX !== undefined) {
-        bot.x += (bot.netTargetX - bot.x) * glide;
-        bot.y += (bot.netTargetY - bot.y) * glide;
+        const predictedX = clamp(bot.netTargetX + (bot.netVX || 0) * snapshotAge, BOT_RADIUS, 1 - BOT_RADIUS);
+        const predictedY = clamp(bot.netTargetY + (bot.netVY || 0) * snapshotAge, BOT_RADIUS, 1 - BOT_RADIUS);
+        bot.x += (predictedX - bot.x) * glide;
+        bot.y += (predictedY - bot.y) * glide;
       }
     });
 
+    advanceGuestWorld(game, dt);
+    game.timeRemaining = Math.max(0, game.timeRemaining - dt);
     updateFloatingTexts(game, dt);
     updateBotFades(game, dt);
     updateParticles(game, dt);
     const pct = (game.timeRemaining / game.timeLimit) * 100;
     timerBarEl.style.width = clamp(pct, 0, 100) + '%';
+    if (netLatencyEl) {
+      const ping = Math.round(Number(net.pingMs) || 0);
+      netLatencyEl.style.display = 'block';
+      netLatencyEl.textContent = ping > 0 ? `${ping} ms` : 'sync';
+      netLatencyEl.className = ping > 280 ? 'bad' : ping > 150 ? 'warn' : '';
+    }
     render(game);
     requestAnimationFrame(loop);
   }
@@ -5713,6 +6180,8 @@
   let game = null;
   window.__miniArenaDebug = () => ({
     role: net.role, roomCode: net.roomCode, selfId: net.selfId, selfSlot: net.selfSlot,
+    pingMs: Math.round(Number(net.pingMs) || 0), pendingInputs: pendingGuestInputs.length,
+    snapshotSeq: lastGuestSnapshotSeq, worldSeq: lastGuestWorldSeq,
     activeScreen: document.querySelector('.screen.active') ? document.querySelector('.screen.active').id : null,
     player: game ? { x: game.player.x, y: game.player.y, alive: game.player.alive, alpha: game.player.alpha } : null,
     bots: game ? game.bots.map(b => ({ name: b.name, controlType: b.controlType, networkUserId: b.networkUserId, x: b.x, y: b.y, alive: b.alive })) : null,
@@ -5807,6 +6276,7 @@
         vx: 0, vy: 0,               // real momentum, like the player
         alive: true,
         alpha: 1,
+        eliminatedAtTime: null,
         skill,
         // personality
         archetype: brain.archetype,
@@ -5939,6 +6409,9 @@
         bombHolder: Math.floor(Math.random() * (BOT_COUNT + 1)),
         lastHolder: -1,
         passImmunityTimer: 0,
+        protectedHolders: {},
+        bombHoldTime: 0,
+        roundBonusAdded: 0,
         roundNum: 1,
         playersAliveCount: BOT_COUNT + 1,
       });
@@ -5966,11 +6439,19 @@
       });
     }
     if (mode === 'obstacleRun') {
-      return Object.assign(base, {
+      const obstacleGame = Object.assign(base, {
         tiles: createObstacleGrid(),
         survivalTime: 0, timeLimit: OBSTACLE_DURATION, timeRemaining: OBSTACLE_DURATION,
         walls: [], wallTimer: 2.0, lives: OBSTACLE_LIVES,
       });
+      obstacleGame.bots.forEach(bot => {
+        bot.lives = OBSTACLE_LIVES;
+        bot.obstacleTargetX = bot.x;
+        bot.obstacleTargetY = bot.y;
+        bot.obstacleDecisionTimer = 0;
+        bot.obstacleInvuln = 0;
+      });
+      return obstacleGame;
     }
     // fallback
     return Object.assign(base, {
@@ -6092,6 +6573,9 @@
 
   function launchMode(mode) {
     game = createGame(mode);
+    if (net.role === 'host' && net.roomCode) {
+      hostBroadcastTimer = 0; hostWorldTimer = 0;
+    }
     SFX.play.roundStart();
     if (mode === 'colorPanic') {
       startRound(game);
@@ -6101,6 +6585,8 @@
     } else {
       updateHud(game);
     }
+    if (mode !== 'colorPanic') broadcastRoundStart(game);
+    broadcastWorldState(game);
     showScreen('game');
     resizeCanvas();
     game.lastTs = performance.now();
@@ -6115,7 +6601,7 @@
   const TOURNEY_ROUNDS = 5;
   const TOURNEY_POINTS = [10, 8, 6, 4, 2, 1];
   const TOURNEY_CHAMPION_CRYSTALS = 1;
-  const TOURNEY_BOT_NAMES = ['Вихор', 'Тінь', 'Комета', 'Блискавка', 'Фенікс', 'Рубін', 'Шторм', 'Сокіл', 'Астра', 'Грім'];
+  const TOURNEY_BOT_NAMES = BOT_NAME_POOL;
   let tournamentActive = false;
   let tournament = null;
 
@@ -6128,24 +6614,22 @@
     return a;
   }
 
-  // Only Color Panic has been wired for live multiplayer (network input +
-  // state broadcast) so far. Other modes have no such hook yet, so a
-  // friends match must stick to this pool or guests would hang forever
-  // waiting for a round-start that never comes.
-  const MULTIPLAYER_MODE_POOL = ['colorPanic'];
+  const MULTIPLAYER_MODE_POOL = ['colorPanic','fallingTiles','bombDodge','balloonFight','redLight','trainDodge','obstacleRun'];
 
   function startTournament(friendRoster) {
     const pool = friendRoster ? MULTIPLAYER_MODE_POOL : TOURNEY_MODE_POOL;
+    const roundCount = TOURNEY_ROUNDS;
     const sequence = [];
-    while (sequence.length < TOURNEY_ROUNDS) {
+    while (sequence.length < roundCount) {
       sequence.push(...shuffled(pool));
     }
-    sequence.length = TOURNEY_ROUNDS;
+    sequence.length = roundCount;
     const names = shuffled(TOURNEY_BOT_NAMES);
     const rosterSkins = shuffled(SKINS.filter(s => s.id !== profile.activeSkin));
     const rosterAccessories = shuffled(ACCESSORIES.filter(a => a.id !== 'none'));
     const competitors = [{
       id: 'player', name: 'Ти', isPlayer: true, skill: 0,
+      skin: activeSkinDef(), accessory: profile.activeAccessory || null,
       total: 0, lastPts: 0, lastPlace: 0, color: activeSkinDef().color,
     }];
     for (let i = 0; i < BOT_COUNT; i++) {
@@ -6163,10 +6647,61 @@
         networkUserId: isFriend ? friendSlot.userId : null,
       });
     }
-    tournament = { sequence, index: 0, competitors, lastMode: null, finalReward: null, meRank: 0, playerRoundPlaces: [], rankAfterThree: 0 };
+    tournament = { sequence, roundCount, isFriendly: !!friendRoster, index: 0, competitors, lastMode: null, finalReward: null, meRank: 0, playerRoundPlaces: [], rankAfterThree: 0 };
     tournamentActive = true;
-    renderTournamentIntro();
-    showScreen('tourneyIntro');
+    renderTournamentMatchmaking();
+    showScreen('tourneyMatchmaking');
+  }
+
+  function renderTournamentMatchmaking() {
+    if (!tournament) return;
+    clearDrawTimers();
+    const grid = document.getElementById('tourney-player-grid');
+    const countEl = document.getElementById('tourney-search-count');
+    const textEl = document.getElementById('tourney-search-text');
+    const progressEl = document.getElementById('tourney-search-progress');
+    grid.innerHTML = '';
+    countEl.textContent = `0 / ${tournament.competitors.length}`;
+    textEl.textContent = 'Шукаємо гравців…';
+    progressEl.style.width = '0%';
+
+    const slots = tournament.competitors.map(() => {
+      const slot = document.createElement('div');
+      slot.className = 'tourney-player-slot';
+      slot.innerHTML = `<span class="tourney-player-avatar"></span>` +
+        `<span class="tourney-player-copy"><b>Вільне місце</b><small>Очікування</small></span>`;
+      grid.appendChild(slot);
+      return slot;
+    });
+
+    tournament.competitors.forEach((competitor, index) => {
+      const joinDelay = index === 0 ? 120 : 780 + index * 680 + Math.random() * 220;
+      const timer = setTimeout(() => {
+        if (!tournamentActive || !tournament) return;
+        const slot = slots[index];
+        const avatar = slot.querySelector('.tourney-player-avatar');
+        const skin = competitor.isPlayer ? activeSkinDef() : (competitor.skin || SKINS[0]);
+        applySkinAvatar(avatar, skin);
+        avatar.style.borderColor = skin.ring || competitor.color || '#ffd54f';
+        slot.querySelector('b').textContent = competitor.isPlayer ? (profile.playerName || myIdentity.name || 'Ти') : competitor.name;
+        slot.querySelector('small').textContent = competitor.isPlayer ? 'Твій боєць' : (competitor.controlType === 'network' ? 'Друг' : 'Суперник');
+        slot.classList.add('joined');
+        const joined = index + 1;
+        countEl.textContent = `${joined} / ${tournament.competitors.length}`;
+        progressEl.style.width = `${joined / tournament.competitors.length * 100}%`;
+        SFX.play.drawLock();
+        if (joined === tournament.competitors.length) {
+          textEl.textContent = 'Склад сформовано';
+          const nextTimer = setTimeout(() => {
+            if (!tournamentActive || !tournament) return;
+            showScreen('tourneyIntro');
+            renderTournamentIntro();
+          }, 1050);
+          drawTimers.push(nextTimer);
+        }
+      }, joinDelay);
+      drawTimers.push(timer);
+    });
   }
 
   function cancelTournament() {
@@ -6211,31 +6746,28 @@
     const player = t.competitors.find(c => c.isPlayer);
     const rivals = t.competitors.filter(c => !c.isPlayer);
     const aliveState = Array.isArray(r.botAlive) ? r.botAlive : rivals.map(() => true);
-    const eliminatedAt = Array.isArray(r.botEliminatedAtRound) ? r.botEliminatedAtRound : rivals.map(() => 0);
+    const botMetrics = Array.isArray(r.botMetrics) ? r.botMetrics : rivals.map(() => 0);
 
-    // Surviving bots are always ranked above eliminated bots. Within each
-    // group, whoever actually lasted more rounds ranks higher — this is
-    // real gameplay data for modes that track it (colorPanic); for modes
-    // that don't yet, roundReached is 0 for everyone and the tiebreaker
-    // below (stable skill + a little noise) decides order same as before.
+    // Rank everyone by real round data: survival state first, then the
+    // mode-specific score/time. Bot skill is only a deterministic tiebreaker.
     const orderedBots = rivals.map((c, i) => ({
       c,
       alive: aliveState[i] !== false,
-      roundReached: eliminatedAt[i] || 0,
-      tiebreak: c.skill + (Math.random() - 0.5) * 0.06,
-    })).sort((a, b) => Number(b.alive) - Number(a.alive) || b.roundReached - a.roundReached || b.tiebreak - a.tiebreak);
+      metric: Number(botMetrics[i]) || 0,
+      tiebreak: c.skill,
+    })).sort((a, b) => Number(b.alive) - Number(a.alive) || b.metric - a.metric || b.tiebreak - a.tiebreak);
 
     let playerPlace;
     if (r.win) {
       playerPlace = 1;
     } else {
-      const eliminationModes = ['balloonFight','redLight','snakeTrail','colorPanic','fallingTiles','bombDodge','trainDodge'];
-      if (eliminationModes.includes(r.mode)) {
-        playerPlace = clamp((BOT_COUNT - (r.botsEliminated || 0)) + 1, 2, BOT_COUNT + 1);
-      } else {
-        const performance = clamp(tourneyNormalizedMetric(r), 0, 1);
-        playerPlace = clamp(2 + Math.floor((1 - performance) * 4), 2, BOT_COUNT + 1);
-      }
+      const participants = orderedBots.concat({
+        c: player,
+        alive: r.playerAlive !== false,
+        metric: Number(r.metric) || 0,
+        tiebreak: 0.5,
+      }).sort((a, b) => Number(b.alive) - Number(a.alive) || b.metric - a.metric || b.tiebreak - a.tiebreak);
+      playerPlace = participants.findIndex(entry => entry.c === player) + 1;
     }
 
     const ordered = orderedBots.map(x => x.c);
@@ -6287,11 +6819,11 @@
     let title, sub;
     if (finished) {
       const meRank = sorted.findIndex(c => c.isPlayer) + 1;
-      title = meRank === 1 ? '🏆 Хост переміг!' : 'Турнір завершено';
+      title = t.isFriendly ? 'Дружній матч завершено' : (meRank === 1 ? '🏆 Хост переміг!' : 'Турнір завершено');
       sub = `${playedName} — остання гра.`;
     } else {
       const next = MODE_NAMES[t.sequence[t.index]] || t.sequence[t.index];
-      title = `Раунд ${t.index} / ${TOURNEY_ROUNDS} завершено`;
+      title = `Раунд ${t.index} / ${t.roundCount || TOURNEY_ROUNDS} завершено`;
       sub = `${playedName} зіграно. Далі: ${next}`;
     }
     sendRelay({ type: 'to_guests', payload: { type: 'round_result', title, sub, standings, finished } });
@@ -6346,7 +6878,7 @@
     balloonFight: { color:'#ef5350', svg:'<svg viewBox="0 0 48 48"><ellipse cx="16" cy="17" rx="10" ry="12" fill="#ff5252"/><path d="M16 29c-2 6 6 6 1 13" fill="none" stroke="#ffcdd2" stroke-width="2"/><ellipse cx="34" cy="14" rx="8" ry="10" fill="#448aff"/><path d="M34 24c1 5-5 7-1 12M24 31l16-5" fill="none" stroke="#fff" stroke-width="2"/><path d="m39 24 5 1-4 4Z" fill="#fff"/></svg>' },
     redLight: { color:'#ff5252', svg:'<svg viewBox="0 0 48 48"><circle cx="22" cy="26" r="14" fill="#252b32" stroke="#0b0d10" stroke-width="3"/><path d="M30 15c1-7 7-7 9-10" fill="none" stroke="#ffb300" stroke-width="3"/><path d="m40 4 2 4 4 1-4 2-2 4-1-4-4-2 4-1Z" fill="#ff5252"/><path d="M8 8 4 13l5 1m31 21 4-5-5-1" fill="none" stroke="#ff8a80" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>' },
     paintWar: { color:'#66bb6a', svg:'<svg viewBox="0 0 48 48"><path d="M8 33 31 10l8 8-23 23H8Z" fill="#e9eef5"/><path d="m31 10 5-5 8 8-5 5Z" fill="#69f0ae"/><path d="M8 33c8-2 11 2 8 8H8Z" fill="#448aff"/><circle cx="12" cy="37" r="3" fill="#ff5252"/></svg>' },
-    trainDodge: { color:'#69f0ae', svg:'<svg viewBox="0 0 48 48"><rect x="8" y="7" width="32" height="30" rx="8" fill="#20bf6b" stroke="#0d5031" stroke-width="3"/><rect x="13" y="12" width="9" height="9" rx="2" fill="#dff9ff"/><rect x="26" y="12" width="9" height="9" rx="2" fill="#dff9ff"/><path d="M13 29h22M15 39l-5 5m23-5 5 5M5 43h38" stroke="#d8e1e8" stroke-width="3" stroke-linecap="round"/><circle cx="16" cy="29" r="3" fill="#ffe082"/><circle cx="32" cy="29" r="3" fill="#ffe082"/></svg>' },
+    trainDodge: { color:'#ff7043', svg:'<svg viewBox="0 0 48 48"><path d="M5 39h38M9 44l7-7m23 7-7-7" stroke="#aab7c3" stroke-width="3" stroke-linecap="round"/><rect x="7" y="6" width="34" height="30" rx="10" fill="#e94e3d" stroke="#76251f" stroke-width="3"/><path d="M11 10h26v13H11z" fill="#162b37"/><path d="M14 13h8v7h-8zm12 0h8v7h-8z" fill="#c9f4ff"/><path d="M12 27h24" stroke="#8f2a22" stroke-width="3"/><circle cx="16" cy="29" r="3" fill="#fff2ad"/><circle cx="32" cy="29" r="3" fill="#fff2ad"/></svg>' },
     snakeTrail: { color:'#43e97b', svg:'<svg viewBox="0 0 48 48"><path d="M7 36c9 6 20 2 17-7-3-8 5-17 17-13" fill="none" stroke="#43e97b" stroke-width="8" stroke-linecap="round" stroke-dasharray="2 3"/><circle cx="39" cy="16" r="7" fill="#b9ffce"/><circle cx="41" cy="14" r="1.5" fill="#10251a"/><path d="m45 18 3 2-3 1" fill="none" stroke="#ff5252" stroke-width="1.5"/></svg>' },
     obstacleRun: { color:'#bcaaa4', svg:'<svg viewBox="0 0 48 48"><path d="M7 8h34M7 40h34" stroke="#55606d" stroke-width="3" stroke-dasharray="4 4"/><path d="M5 16h22v7H5zm18 11h20v7H23z" fill="#8d6e63"/><circle cx="20" cy="25" r="6" fill="#fff"/><path d="M20 31v8" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg>' },
   };
@@ -6403,7 +6935,7 @@
         row.classList.remove('rolling');
         row.classList.add('locked');
         setTourneyModeVisual(row, iconEls[i], nameEls[i], m);
-        statusEl.textContent = `Обрано ігор: ${i + 1} / ${TOURNEY_ROUNDS}`;
+        statusEl.textContent = `Обрано ігор: ${i + 1} / ${tournament.roundCount || TOURNEY_ROUNDS}`;
         SFX.play.drawLock();
         vibrate(30);
         if (i === tournament.sequence.length - 1) {
@@ -6450,8 +6982,8 @@
       row.style.animationDelay = (idx * 0.05) + 's';
       row.innerHTML =
         `<span class="tourney-rank">${medal}</span>` +
-        `<span class="tourney-dot" style="background:${c.color}"></span>` +
-        `<span class="tourney-name">${c.name}</span>` +
+        `<span class="tourney-dot" style="background:${safeCssColor(c.color)}"></span>` +
+        `<span class="tourney-name">${escapeHtml(c.name)}</span>` +
         `<span class="tourney-round-pts">+${c.lastPts}</span>` +
         `<span class="tourney-total">${c.total}</span>`;
       listEl.appendChild(row);
@@ -6467,21 +6999,21 @@
         { coins: 20, xp: 15, crystals: 0 },
         { coins: 15, xp: 10, crystals: 0 },
       ];
-      const rw = rewards[meRank - 1] || rewards[5];
+      const rw = t.isFriendly ? { coins: 10, xp: 10, crystals: 0 } : (rewards[meRank - 1] || rewards[5]);
       t.finalReward = rw;
       t.meRank = meRank;
-      titleEl.textContent = meRank === 1 ? '🏆 Ти чемпіон!' : 'Турнір завершено';
+      titleEl.textContent = t.isFriendly ? 'Дружній матч завершено' : (meRank === 1 ? '🏆 Ти чемпіон!' : 'Турнір завершено');
       subEl.textContent = `${playedName} — остання гра. Твоє місце: ${meRank} з ${BOT_COUNT + 1}`;
       const crystalsText = rw.crystals > 0 ? ` · +${rw.crystals}💎` : '';
       rewardEl.textContent = `Нагорода: +${rw.coins} монет · +${rw.xp} XP${crystalsText}`;
       btn.textContent = 'Забрати нагороду';
-      if (meRank === 1 && !t.victoryShown) {
+      if (!t.isFriendly && meRank === 1 && !t.victoryShown) {
         t.victoryShown = true;
         setTimeout(showTournamentVictoryCelebration, 180);
       }
     } else {
       const next = MODE_NAMES[t.sequence[t.index]] || t.sequence[t.index];
-      titleEl.textContent = `Раунд ${t.index} / ${TOURNEY_ROUNDS} завершено`;
+      titleEl.textContent = `Раунд ${t.index} / ${t.roundCount || TOURNEY_ROUNDS} завершено`;
       subEl.textContent = `${playedName} зіграно. Далі: ${next}`;
       rewardEl.textContent = '';
       btn.textContent = 'Наступна гра';
@@ -6494,6 +7026,14 @@
     profile.coins += rw.coins;
     profile.xp += rw.xp;
     profile.crystals += rw.crystals;
+    if (t.isFriendly) {
+      saveProfile();
+      tournamentActive = false;
+      tournament = null;
+      renderMenu();
+      showScreen('menu');
+      return;
+    }
     profile.tournamentsPlayed = (profile.tournamentsPlayed || 0) + 1;
     profile.tournamentsWon = profile.tournamentsWon || 0;
     profile.tournamentPodiums = profile.tournamentPodiums || 0;
@@ -6512,7 +7052,7 @@
       if (profile.tournamentWinStreak >= 3) unlockAchievement('tournamentStreak3');
       const roundWins = (t.playerRoundPlaces || []).filter(place => place === 1).length;
       if (roundWins <= 1) unlockAchievement('tournamentUnderdog');
-      if (roundWins === TOURNEY_ROUNDS) unlockAchievement('tournamentPerfect');
+      if (roundWins === (t.roundCount || TOURNEY_ROUNDS)) unlockAchievement('tournamentPerfect');
     } else {
       profile.tournamentWinStreak = 0;
     }
@@ -6535,14 +7075,14 @@
     return 0;
   }
 
-  function computeRewards(mode, win, metric, botsEliminated) {
+  function computeRewards(mode, win, metric, playerEliminations) {
     const roundBased = ['colorPanic', 'memoryFlash'];
     const timeBased = ['fallingTiles', 'mathQuiz', 'obstacleRun'];
     const scoreBased = ['paintWar'];
 
     // One transparent coin economy for every mode:
     // 4 for finishing + up to 12 for performance + 8 for a win
-    // + 1 for each eliminated bot. A normal match therefore pays 4-29 coins.
+    // + 1 for each bot personally eliminated by the player.
     const targets = {
       colorPanic: MAX_ROUNDS,
       memoryFlash: MEMORY_ROUNDS,
@@ -6559,7 +7099,7 @@
     const target = targets[mode] || 45;
     const performance = clamp((Number(metric) || 0) / target, 0, 1);
     const coinsGained = 4 + Math.round(performance * 12) + (win ? 8 : 0)
-      + clamp(Math.floor(Number(botsEliminated) || 0), 0, BOT_COUNT);
+      + clamp(Math.floor(Number(playerEliminations) || 0), 0, BOT_COUNT);
 
     if (roundBased.includes(mode)) {
       return {
@@ -6588,7 +7128,7 @@
     // bombDodge and fallback
     const tenSecBlocks = Math.floor(metric / 10);
     return {
-      xpGained: tenSecBlocks * XP_PER_10_SEC + botsEliminated * XP_PER_BOT_BOMB + (win ? XP_WIN_BONUS : 0),
+      xpGained: tenSecBlocks * XP_PER_10_SEC + playerEliminations * XP_PER_BOT_BOMB + (win ? XP_WIN_BONUS : 0),
       coinsGained,
     };
   }
@@ -6629,8 +7169,27 @@
     }
   }
 
+  function eliminateHostedPlayer(g) {
+    if (net.role !== 'host' || !net.roomCode) return false;
+    g.player.alive = false;
+    g.player.alpha = 0;
+    g.player.hasBalloon = false;
+    if (g.lives !== undefined) g.lives = 0;
+    return true;
+  }
+
+  function finishHostedRoundIfReady(g) {
+    if (net.role !== 'host' || !net.roomCode) return false;
+    const playerAlive = g.player.alive !== false && g.player.alpha > 0;
+    const totalAlive = g.bots.filter(bot => bot.alive).length + (playerAlive ? 1 : 0);
+    if (totalAlive > 1) return false;
+    triggerGameOver(g, playerAlive);
+    return true;
+  }
+
   function triggerGameOver(g, win) {
     const botsEliminated = BOT_COUNT - g.bots.filter(b => b.alive).length;
+    const playerEliminations = Math.max(0, Number(g.playerPops) || 0);
     let metric;
     if (g.mode === 'colorPanic') metric = win ? MAX_ROUNDS : g.round - 1;
     else if (g.mode === 'mathQuiz') metric = g.metric !== undefined ? g.metric : (win ? MATH_TOTAL_ROUNDS : g.mathRound - 1);
@@ -6639,11 +7198,18 @@
       metric = g.playerPops || 0;
     else if (g.mode === 'paintWar') metric = g.paintPlayerTiles || g.tiles.filter(t => t.owner === 0).length;
     else if (g.mode === 'redLight') metric = botsEliminated;
-    else metric = win ? Math.max(g.survivalTime || 0, modeDuration(g.mode)) : (g.survivalTime || 0);
-    const { xpGained, coinsGained } = computeRewards(g.mode, win, metric, botsEliminated);
+    else metric = g.survivalTime || 0;
+    const botMetrics = g.bots.map((bot, index) => {
+      if (g.mode === 'paintWar') return g.tiles.filter(t => t.owner === index + 1).length;
+      if (g.mode === 'colorPanic' || g.mode === 'memoryFlash') return bot.eliminatedAtRound || g.round || 0;
+      return bot.alive ? (g.survivalTime || 0) : (bot.eliminatedAtTime || 0);
+    });
+    const { xpGained, coinsGained } = computeRewards(g.mode, win, metric, playerEliminations);
     g.pendingResult = {
-      mode: g.mode, win, metric, botsEliminated, xpGained, coinsGained,
+      mode: g.mode, win, metric, botsEliminated, playerEliminations, xpGained, coinsGained,
+      playerAlive: g.player.alive !== false && g.player.alpha > 0,
       botAlive: g.bots.map(bot => bot.alive),
+      botMetrics,
       botEliminatedAtRound: g.bots.map(bot => bot.eliminatedAtRound || g.round),
     };
     g.phase = 'gameover';
@@ -6659,19 +7225,9 @@
     }
   }
 
-  function finishMatch(g) {
-    const r = g.pendingResult;
-    if (tournamentActive) {
-      game = null;
-      onTournamentRoundComplete(r);
-      return;
-    }
+  function recordMatchStats(r) {
     profile.matchesPlayed += 1;
     if (r.win) profile.wins += 1;
-    const prevLevel = levelForXp(profile.xp);
-    profile.xp += r.xpGained;
-    profile.coins += r.coinsGained;
-    if (levelForXp(profile.xp) > prevLevel) SFX.play.levelUp();
     if (r.mode === 'colorPanic' && r.metric > profile.bestRound) profile.bestRound = r.metric;
     if (r.mode === 'fallingTiles' && r.metric > profile.bestFallingTime) profile.bestFallingTime = r.metric;
     if (r.mode === 'bombDodge' && r.metric > profile.bestBombTime) profile.bestBombTime = r.metric;
@@ -6683,13 +7239,28 @@
     if (r.mode === 'snakeTrail' && r.metric > (profile.bestSnakeTime||0)) profile.bestSnakeTime = r.metric;
     if (r.mode === 'obstacleRun' && r.metric > (profile.bestObstacleTime||0)) profile.bestObstacleTime = r.metric;
     if (r.mode === 'trainDodge' && r.metric > (profile.bestTrainTime||0)) profile.bestTrainTime = r.metric;
-
     if (r.win && !profile.modesWon.includes(r.mode)) profile.modesWon.push(r.mode);
+  }
+
+  function finishMatch(g) {
+    const r = g.pendingResult;
+    if (tournamentActive) {
+      recordMatchStats(r);
+      saveProfile();
+      game = null;
+      onTournamentRoundComplete(r);
+      return;
+    }
+    recordMatchStats(r);
+    const prevLevel = levelForXp(profile.xp);
+    profile.xp += r.xpGained;
+    profile.coins += r.coinsGained;
+    if (levelForXp(profile.xp) > prevLevel) SFX.play.levelUp();
 
     const unlocked = [];
     if (unlockAchievement('firstMatch')) unlocked.push('firstMatch');
     if (r.win && unlockAchievement('winMatch')) unlocked.push('winMatch');
-    if (r.botsEliminated >= BOT_COUNT && unlockAchievement('allBotsEliminated')) unlocked.push('allBotsEliminated');
+    if (r.playerEliminations >= BOT_COUNT && unlockAchievement('allBotsEliminated')) unlocked.push('allBotsEliminated');
     if (profile.coins >= 100 && unlockAchievement('coins100')) unlocked.push('coins100');
     if (profile.modesWon.length >= 5 && unlockAchievement('win5modes')) unlocked.push('win5modes');
 
@@ -6804,6 +7375,7 @@
       const ratio = survivalRatio(bot.x, bot.y, BOT_RADIUS, isSafe);
       if (ratio < SAFE_OVERLAP_THRESHOLD) {
         bot.alive = false;
+        bot.eliminatedAtTime = g.survivalTime || 0;
         bot.eliminatedAtRound = g.round;
         g.floatingTexts.push({ x: bot.x, y: bot.y, alpha: 1, vy: 0.18, text: 'OUT', color: '#ff5252' });
         spawnBotEliminationParticles(g, bot.x, bot.y, bot.color);
@@ -6891,22 +7463,21 @@
       const c = cellOf(px, py);
       return tileAt(g, c.row, c.col).state !== 'gone';
     };
-    if (survivalRatio(g.player.x, g.player.y, PLAYER_RADIUS, isSafe) < SAFE_OVERLAP_THRESHOLD) {
-      triggerGameOver(g, false);
-      return;
+    if (g.player.alive !== false && survivalRatio(g.player.x, g.player.y, PLAYER_RADIUS, isSafe) < SAFE_OVERLAP_THRESHOLD) {
+      if (!eliminateHostedPlayer(g)) { triggerGameOver(g, false); return; }
     }
     g.bots.forEach(bot => {
       if (!bot.alive) return;
       if (survivalRatio(bot.x, bot.y, BOT_RADIUS, isSafe) < SAFE_OVERLAP_THRESHOLD) {
         bot.alive = false;
+        bot.eliminatedAtTime = g.survivalTime || 0;
         g.floatingTexts.push({ x: bot.x, y: bot.y, alpha: 1, vy: 0.18, text: 'OUT', color: '#ff5252' });
         spawnBotEliminationParticles(g, bot.x, bot.y, bot.color);
       }
     });
+    if (finishHostedRoundIfReady(g)) return;
     const botsLeft = g.bots.filter(b => b.alive).length;
-    if (botsLeft === 0) {
-      triggerGameOver(g, true);
-    }
+    if (botsLeft === 0) triggerGameOver(g, g.player.alive !== false);
   }
 
   function updateFallingTilesPlaying(g, dt) {
@@ -6935,13 +7506,16 @@
       }
     });
 
-    g.bots.forEach(bot => updateFallingBot(g, bot, dt));
+    g.bots.forEach(bot => {
+      if (bot.controlType === 'network') driveNetworkBot(bot, dt, g);
+      else updateFallingBot(g, bot, dt);
+    });
     checkFallingElimination(g);
     updateHud(g);
 
     if (g.phase !== 'playing') return;
     if (g.survivalTime >= FALLING_DURATION) {
-      triggerGameOver(g, true);
+      triggerGameOver(g, g.player.alive !== false);
     }
   }
 
@@ -7044,23 +7618,22 @@
       return !bomb.affectedCells.some(cell => cell.row === c.row && cell.col === c.col);
     };
     const hitPlayer = survivalRatio(g.player.x, g.player.y, PLAYER_RADIUS, isSafe) < SAFE_OVERLAP_THRESHOLD;
-    if (hitPlayer) {
-      triggerGameOver(g, false);
-      return;
+    if (g.player.alive !== false && hitPlayer) {
+      if (!eliminateHostedPlayer(g)) { triggerGameOver(g, false); return; }
     }
     g.bots.forEach(bot => {
       if (!bot.alive) return;
       const hit = survivalRatio(bot.x, bot.y, BOT_RADIUS, isSafe) < SAFE_OVERLAP_THRESHOLD;
       if (hit) {
         bot.alive = false;
+        bot.eliminatedAtTime = g.survivalTime || 0;
         g.floatingTexts.push({ x: bot.x, y: bot.y, alpha: 1, vy: 0.18, text: 'OUT', color: '#ff5252' });
         spawnBotEliminationParticles(g, bot.x, bot.y, bot.color);
       }
     });
+    if (finishHostedRoundIfReady(g)) return;
     const botsLeft = g.bots.filter(b => b.alive).length;
-    if (botsLeft === 0) {
-      triggerGameOver(g, true);
-    }
+    if (botsLeft === 0) triggerGameOver(g, g.player.alive !== false);
   }
 
   function dangerousCellSet(g) {
@@ -7145,13 +7718,16 @@
 
     if (g.phase === 'playing') {
       const dangerSet = dangerousCellSet(g);
-      g.bots.forEach(bot => updateBombDodgeBot(g, bot, dt, dangerSet));
+      g.bots.forEach(bot => {
+        if (bot.controlType === 'network') driveNetworkBot(bot, dt, g);
+        else updateBombDodgeBot(g, bot, dt, dangerSet);
+      });
     }
     updateHud(g);
 
     if (g.phase !== 'playing') return;
     if (g.survivalTime >= BOMB_DURATION) {
-      triggerGameOver(g, true);
+      triggerGameOver(g, g.player.alive !== false);
     }
   }
 
@@ -7367,6 +7943,7 @@
           const bZone = getBotMathZone(bot);
           if (!isMathZoneCorrect(g, bZone)) {
             bot.alive = false;
+            bot.eliminatedAtTime = g.survivalTime || 0;
             g.floatingTexts.push({ x: bot.x, y: bot.y, alpha: 1, vy: 0.18, text: '❌', color: '#ff5252' });
             spawnBotEliminationParticles(g, bot.x, bot.y, bot.color);
           }
@@ -7599,6 +8176,7 @@
             // Pop!
             bot.hasBalloon = false;
             bot.alive = false;
+            bot.eliminatedAtTime = g.survivalTime || 0;
             g.playerPops = (g.playerPops || 0) + 1;
             g.floatingTexts.push({ x: bot.x, y: bot.y - 0.04, alpha: 1, vy: 0.18, text: '💥🎈', color: '#ef5350' });
             spawnBotEliminationParticles(g, bot.x, bot.y, bot.color);
@@ -7619,7 +8197,7 @@
           if (Math.sqrt(dx*dx + dy*dy) < BALLOON_HIT_R) {
             g.player.hasBalloon = false;
             g.floatingTexts.push({ x: g.player.x, y: g.player.y - 0.04, alpha: 1, vy: 0.18, text: '💥🎈', color: '#ef5350' });
-            triggerGameOver(g, false);
+            if (!eliminateHostedPlayer(g)) triggerGameOver(g, false);
             return;
           }
         }
@@ -7632,6 +8210,7 @@
           if (Math.sqrt(dx*dx + dy*dy) < BALLOON_HIT_R) {
             other.hasBalloon = false;
             other.alive = false;
+            other.eliminatedAtTime = g.survivalTime || 0;
             g.floatingTexts.push({ x: other.x, y: other.y - 0.04, alpha: 1, vy: 0.18, text: '💥🎈', color: '#ef5350' });
             spawnBotEliminationParticles(g, other.x, other.y, other.color);
           }
@@ -7642,6 +8221,7 @@
     // Bot AI
     g.bots.forEach((bot, i) => {
       if (!bot.alive) return;
+      if (bot.controlType === 'network') { driveNetworkBot(bot, dt, g); return; }
 
       // During grace period: bots just scatter to random positions
       if (inBalloonGrace) {
@@ -7715,6 +8295,7 @@
       }
     });
 
+    if (finishHostedRoundIfReady(g)) return;
     // Win: all bots dead
     if (g.bots.filter(b => b.alive).length === 0 && g.player.alpha > 0) {
       triggerGameOver(g, true); return;
@@ -7722,7 +8303,7 @@
 
     updateHud(g);
     if (g.survivalTime >= BALLOON_DURATION) {
-      triggerGameOver(g, g.player.hasBalloon);
+      triggerGameOver(g, g.player.alive !== false && g.player.hasBalloon);
     }
   }
 
@@ -7943,18 +8524,29 @@
     });
 
     if (g.passImmunityTimer > 0) g.passImmunityTimer = Math.max(0, g.passImmunityTimer - dt);
+    g.bombHoldTime = (g.bombHoldTime || 0) + dt;
+    if (!g.protectedHolders) g.protectedHolders = {};
+    Object.keys(g.protectedHolders).forEach(idx => {
+      g.protectedHolders[idx] = Math.max(0, g.protectedHolders[idx] - dt);
+      if (g.protectedHolders[idx] <= 0) delete g.protectedHolders[idx];
+    });
 
     const entities = hotPotatoEntities(g);
 
     // ---- Smart bot AI: holder hunts a stable target, others flee and glide around walls ----
     g.bots.forEach((bot, i) => {
       if (!bot.alive) return;
+      if (bot.controlType === 'network') {
+        driveNetworkBot(bot, dt, g);
+        resolveEntityWalls(g, bot, BOT_RADIUS);
+        return;
+      }
       const myIdx = i + 1;
       const isHolder = g.bombHolder === myIdx;
       let tx = bot.x, ty = bot.y;
 
       if (isHolder) {
-        const candidates = entities.filter(e => e.idx !== myIdx && e.alive && !(g.passImmunityTimer > 0 && e.idx === g.lastHolder));
+        const candidates = entities.filter(e => e.idx !== myIdx && e.alive && !(g.protectedHolders[e.idx] > 0));
         if (candidates.length > 0) {
           const distSq = e => (e.obj.x - bot.x) ** 2 + (e.obj.y - bot.y) ** 2;
           const best = candidates.reduce((a, b) => distSq(a) < distSq(b) ? a : b);
@@ -8020,17 +8612,27 @@
     if (holderEntity && holderEntity.alive) {
       for (const e of entities) {
         if (e.idx === g.bombHolder || !e.alive) continue;
-        if (g.passImmunityTimer > 0 && e.idx === g.lastHolder) continue;
+        if (g.protectedHolders[e.idx] > 0) continue;
         const dx = e.obj.x - holderEntity.obj.x, dy = e.obj.y - holderEntity.obj.y;
         if (Math.sqrt(dx * dx + dy * dy) < HOTPOTATO_TAG_RADIUS) {
-          g.lastHolder = g.bombHolder;
+          const previousHolder = g.bombHolder;
+          g.lastHolder = previousHolder;
           g.bombHolder = e.idx;
-          g.bombFuse = Math.min(g.bombFuse + HOTPOTATO_PASS_BONUS, HOTPOTATO_FUSE_CAP);
+          g.protectedHolders[previousHolder] = HOTPOTATO_IMMUNITY;
+          const remainingBonus = Math.max(0, HOTPOTATO_ROUND_BONUS_CAP - (g.roundBonusAdded || 0));
+          const earnedBonus = g.bombHoldTime >= HOTPOTATO_MIN_HOLD_FOR_BONUS
+            ? Math.min(HOTPOTATO_PASS_BONUS, remainingBonus)
+            : 0;
+          if (earnedBonus > 0) {
+            g.bombFuse = Math.min(g.bombFuse + earnedBonus, HOTPOTATO_FUSE_CAP);
+            g.roundBonusAdded = (g.roundBonusAdded || 0) + earnedBonus;
+          }
           g.timeRemaining = g.bombFuse;
           g.timeLimit = Math.max(g.timeLimit, g.bombFuse);
           g.passImmunityTimer = HOTPOTATO_IMMUNITY;
+          g.bombHoldTime = 0;
           vibrate(20); SFX.play.potatoPass();
-          g.floatingTexts.push({ x: e.obj.x, y: e.obj.y - 0.06, alpha: 1, vy: 0.16, text: '💣 +2с', color: '#ffd740' });
+          g.floatingTexts.push({ x: e.obj.x, y: e.obj.y - 0.06, alpha: 1, vy: 0.16, text: earnedBonus > 0 ? `💣 +${earnedBonus}с` : '💣 ПАС', color: earnedBonus > 0 ? '#ffd740' : '#aeb8c5' });
           break;
         }
       }
@@ -8051,24 +8653,27 @@
       if (g.bombHolder === 0) {
         g.player.alpha = 0;
         g.floatingTexts.push({ x: g.player.x, y: g.player.y, alpha: 1, vy: 0.18, text: '💥 БУМ!', color: '#ff5252' });
-        triggerGameOver(g, false);
-        return;
+        if (!eliminateHostedPlayer(g)) { triggerGameOver(g, false); return; }
+      } else {
+        const botIdx = g.bombHolder - 1;
+        g.bots[botIdx].alive = false;
+        g.bots[botIdx].eliminatedAtTime = g.survivalTime || 0;
+        g.floatingTexts.push({ x: g.bots[botIdx].x, y: g.bots[botIdx].y, alpha: 1, vy: 0.18, text: '💥 OUT', color: '#ff5252' });
       }
-
-      const botIdx = g.bombHolder - 1;
-      g.bots[botIdx].alive = false;
-      g.floatingTexts.push({ x: g.bots[botIdx].x, y: g.bots[botIdx].y, alpha: 1, vy: 0.18, text: '💥 OUT', color: '#ff5252' });
 
       const aliveNow = hotPotatoEntities(g).filter(e => e.alive);
       g.playersAliveCount = aliveNow.length;
       g.roundNum++;
 
-      if (aliveNow.length <= 1) { triggerGameOver(g, true); return; }
+      if (aliveNow.length <= 1) { triggerGameOver(g, g.player.alive !== false); return; }
 
       const next = aliveNow[Math.floor(Math.random() * aliveNow.length)];
       g.bombHolder = next.idx;
       g.lastHolder = -1;
       g.passImmunityTimer = 0;
+      g.protectedHolders = {};
+      g.bombHoldTime = 0;
+      g.roundBonusAdded = 0;
       g.roundFuseStart = Math.max(HOTPOTATO_FUSE_MIN, HOTPOTATO_FUSE_START - (g.roundNum - 1) * HOTPOTATO_FUSE_STEP);
       g.bombFuse = g.roundFuseStart;
       g.timeRemaining = g.bombFuse;
@@ -8190,6 +8795,7 @@
       if (!bot.alive) return;
       if (survivalRatio(bot.x, bot.y, BOT_RADIUS, isSafe) < SAFE_OVERLAP_THRESHOLD) {
         bot.alive = false;
+        bot.eliminatedAtTime = g.survivalTime || 0;
         g.floatingTexts.push({ x: bot.x, y: bot.y, alpha: 1, vy: 0.18, text: 'OUT', color: '#ff5252' });
         spawnBotEliminationParticles(g, bot.x, bot.y, bot.color);
       }
@@ -8470,6 +9076,7 @@
       if (!bot.alive) return;
       if (survivalRatio(bot.x, bot.y, BOT_RADIUS, isSafe) < SAFE_OVERLAP_THRESHOLD) {
         bot.alive = false;
+        bot.eliminatedAtTime = g.survivalTime || 0;
         g.floatingTexts.push({ x: bot.x, y: bot.y, alpha: 1, vy: 0.18, text: 'OUT', color: '#ff5252' });
         spawnBotEliminationParticles(g, bot.x, bot.y, bot.color);
       }
@@ -8673,7 +9280,7 @@
 
   // ==================== TRAINS (Потяги) ====================
   const TRAIN_HALF = 0.46 / GRID_SIZE;
-  const TRAIN_COLORS = ['#5d4037', '#455a64', '#6d4c41', '#37474f', '#4e342e'];
+  const TRAIN_COLORS = ['#2f91b8', '#347aa3', '#506fb0', '#278f82'];
 
   function createTrainGrid() {
     const tiles = [];
@@ -8683,21 +9290,17 @@
     return tiles;
   }
 
-  function spawnTrain(g) {
+  function spawnTrain(g, preferredOrient = null) {
     const t = g.survivalTime;
-    // Determine orientation: only allow one orientation while trains are on screen
-    // to prevent trains crossing through each other
-    const activeOrients = new Set();
-    g.trains.forEach(tr => activeOrients.add(tr.orient));
-    let orient;
-    if (activeOrients.size === 0) {
-      orient = Math.random() < 0.5 ? 'h' : 'v';
-    } else if (activeOrients.size === 1) {
-      // Keep same orientation as existing trains
-      orient = activeOrients.values().next().value;
-    } else {
-      // Both orientations somehow exist, skip spawn
-      return;
+    // Each train chooses its own direction. A small bias toward the opposite
+    // orientation prevents long horizontal/vertical streaks while still
+    // allowing both kinds of traffic to be active at the same time.
+    let orient = preferredOrient;
+    if (!orient) {
+      const opposite = g.lastTrainOrient === 'h' ? 'v' : 'h';
+      orient = g.lastTrainOrient && Math.random() < 0.68
+        ? opposite
+        : (Math.random() < 0.5 ? 'h' : 'v');
     }
 
     // Pick lane, avoid lanes that already have a train
@@ -8708,7 +9311,10 @@
     const freeLanes = [];
     for (let i = 0; i < GRID_SIZE; i++) { if (!busyLanes.has(i)) freeLanes.push(i); }
     if (freeLanes.length === 0) return;
-    const lane = freeLanes[Math.floor(Math.random() * freeLanes.length)];
+    const lastLane = g.lastTrainLaneByOrient && g.lastTrainLaneByOrient[orient];
+    const freshLanes = freeLanes.filter(i => i !== lastLane);
+    const pool = freshLanes.length ? freshLanes : freeLanes;
+    const lane = pool[Math.floor(Math.random() * pool.length)];
 
     const dir = Math.random() < 0.5 ? 1 : -1;
     const roll = Math.random();
@@ -8716,21 +9322,24 @@
     if (roll < 0.34) {            // fast & short
       len = 0.16 + Math.random() * 0.1;
       speed = 0.95 + Math.random() * 0.4 + t * 0.004;
-      warn = 0.55;
+      warn = 0.9;
     } else if (roll < 0.67) {     // long & slow
       len = 0.55 + Math.random() * 0.35;
       speed = 0.34 + Math.random() * 0.16 + t * 0.002;
-      warn = 1.0;
+      warn = 1.25;
     } else {                       // normal
       len = 0.3 + Math.random() * 0.15;
       speed = 0.6 + Math.random() * 0.25 + t * 0.003;
-      warn = 0.8;
+      warn = 1.05;
     }
     g.trains.push({
-      orient, lane, dir, len, speed, warn,
+      orient, lane, dir, len, speed, warn, warnTotal: warn,
       pos: dir > 0 ? 0 : 1,
       color: TRAIN_COLORS[Math.floor(Math.random() * TRAIN_COLORS.length)],
     });
+    g.lastTrainOrient = orient;
+    if (!g.lastTrainLaneByOrient) g.lastTrainLaneByOrient = { h: -1, v: -1 };
+    g.lastTrainLaneByOrient[orient] = lane;
     SFX.play.trainWarn();
     // Mark rail on this lane
     if (!g.railTracks) g.railTracks = [];
@@ -8744,7 +9353,7 @@
   }
 
   function trainInterval(g) {
-    return Math.max(0.55, 2.2 - g.survivalTime * 0.022);
+    return Math.max(0.62, 2.05 - g.survivalTime * 0.02);
   }
 
   function trainSpan(tr) {
@@ -8774,7 +9383,11 @@
     g.trainTimer -= dt;
     if (g.trainTimer <= 0) {
       spawnTrain(g);
-      if (g.survivalTime > 28 && Math.random() < 0.4) spawnTrain(g);
+      // Later waves can introduce a crossing route immediately, so horizontal
+      // and vertical traffic naturally overlap instead of arriving in batches.
+      if (g.survivalTime > 10 && Math.random() < Math.min(0.58, 0.25 + g.survivalTime * 0.006)) {
+        spawnTrain(g, g.lastTrainOrient === 'h' ? 'v' : 'h');
+      }
       g.trainTimer = trainInterval(g);
     }
 
@@ -8787,10 +9400,10 @@
     for (const tr of g.trains) {
       if (tr.warn > 0) continue;
       const rc = trainRect(tr);
-      if (circleRectHit(g.player.x, g.player.y, PLAYER_RADIUS * 0.85, rc.x0, rc.y0, rc.x1, rc.y1)) {
+      if (g.player.alive !== false && circleRectHit(g.player.x, g.player.y, PLAYER_RADIUS * 0.85, rc.x0, rc.y0, rc.x1, rc.y1)) {
         g.shakeMagnitude = 8; g.shakeDuration = 0.35; g.shakeTime = 0.35;
-        triggerGameOver(g, false);
-        return;
+        if (!eliminateHostedPlayer(g)) { triggerGameOver(g, false); return; }
+        break;
       }
     }
 
@@ -8802,12 +9415,15 @@
         const rc = trainRect(tr);
         if (circleRectHit(bot.x, bot.y, BOT_RADIUS * 0.85, rc.x0, rc.y0, rc.x1, rc.y1)) {
           bot.alive = false;
+          bot.eliminatedAtTime = g.survivalTime || 0;
           g.floatingTexts.push({ x: bot.x, y: bot.y, alpha: 1, vy: 0.18, text: 'OUT', color: '#ff5252' });
           spawnBotEliminationParticles(g, bot.x, bot.y, bot.color);
           break;
         }
       }
     });
+
+    if (finishHostedRoundIfReady(g)) return;
 
     g.trains = g.trains.filter(tr => {
       const s = trainSpan(tr);
@@ -8827,53 +9443,84 @@
     });
     g.railTracks = g.railTracks.filter(rt => rt.alpha > 0.01);
 
-    // bot AI: escape lanes with an active or warned train nearby
+    // Bot AI: anticipate warned tracks and walk toward a genuinely safe point.
+    // Bots no longer receive a direct coordinate push when rails appear.
     g.bots.forEach(bot => {
       if (!bot.alive) return;
-      // Init roaming target if absent
+      if (bot.controlType === 'network') { driveNetworkBot(bot, dt, g); return; }
       if (bot.trainRoamX === undefined) {
         bot.trainRoamX = 0.15 + Math.random() * 0.7;
         bot.trainRoamY = 0.15 + Math.random() * 0.7;
         bot.trainRoamTimer = 1.5 + Math.random() * 2;
         bot.escapeCooldown = 0;
+        bot.trainEscapeX = bot.x;
+        bot.trainEscapeY = bot.y;
+        bot.trainEscapeTimer = 0;
       }
 
-      // Collect dangerous lanes (any train, warning or active)
       const dangerousLanes = [];
       g.trains.forEach(tr => {
-        dangerousLanes.push({ orient: tr.orient, lane: tr.lane, center: (tr.lane + 0.5) / GRID_SIZE });
+        dangerousLanes.push({ orient: tr.orient, center: (tr.lane + 0.5) / GRID_SIZE, train: tr });
       });
 
-      let escape = 0, moveX = false, threat = false;
+      let threat = false;
       g.trains.forEach(tr => {
         const center = (tr.lane + 0.5) / GRID_SIZE;
         const botPerp = tr.orient === 'h' ? bot.y : bot.x;
         const botAlong = tr.orient === 'h' ? bot.x : bot.y;
-        const dangerZone = TRAIN_HALF + 0.07;
+        const dangerZone = TRAIN_HALF + 0.085;
         if (Math.abs(botPerp - center) < dangerZone) {
           const s = trainSpan(tr);
-          const near = (s.lo - 0.35 < botAlong) && (s.hi + 0.35 > botAlong);
+          const near = (s.lo - 0.42 < botAlong) && (s.hi + 0.42 > botAlong);
           if (tr.warn > 0 || near) {
-            escape = botPerp <= center ? -1 : 1;
-            moveX = tr.orient === 'v';
             threat = true;
           }
         }
       });
+
       if (threat) {
-        // Escape with stronger push to get well clear of the lane
-        const escapeSpeed = bot.speed * 2.0 * dt;
-        if (moveX) bot.x = clamp(bot.x + escape * escapeSpeed, BOT_RADIUS, 1 - BOT_RADIUS);
-        else bot.y = clamp(bot.y + escape * escapeSpeed, BOT_RADIUS, 1 - BOT_RADIUS);
-        bot.escapeCooldown = 0.6; // don't roam back for 0.6s
+        bot.trainEscapeTimer -= dt;
+        if (bot.trainEscapeTimer <= 0) {
+          const candidates = [];
+          const step = 1 / GRID_SIZE;
+          for (let oy = -2; oy <= 2; oy++) {
+            for (let ox = -2; ox <= 2; ox++) {
+              if (ox === 0 && oy === 0) continue;
+              candidates.push({
+                x: clamp(bot.x + ox * step * 0.72, BOT_RADIUS + 0.02, 1 - BOT_RADIUS - 0.02),
+                y: clamp(bot.y + oy * step * 0.72, BOT_RADIUS + 0.02, 1 - BOT_RADIUS - 0.02),
+              });
+            }
+          }
+          let best = null, bestScore = Infinity;
+          candidates.forEach(c => {
+            let score = Math.hypot(c.x - bot.x, c.y - bot.y) * 1.4;
+            dangerousLanes.forEach(dl => {
+              const perp = dl.orient === 'h' ? c.y : c.x;
+              const dist = Math.abs(perp - dl.center);
+              if (dist < TRAIN_HALF + 0.065) score += 50;
+              else score += Math.max(0, 0.2 - dist) * 6;
+            });
+            // Prefer open central spaces and avoid stacking on another bot.
+            score += Math.max(0, 0.055 - c.x) * 5 + Math.max(0, c.x - 0.945) * 5;
+            score += Math.max(0, 0.055 - c.y) * 5 + Math.max(0, c.y - 0.945) * 5;
+            g.bots.forEach(other => {
+              if (other !== bot && other.alive && Math.hypot(c.x - other.x, c.y - other.y) < BOT_RADIUS * 2.4) score += 1.2;
+            });
+            if (score < bestScore) { bestScore = score; best = c; }
+          });
+          if (best) { bot.trainEscapeX = best.x; bot.trainEscapeY = best.y; }
+          bot.trainEscapeTimer = 0.22 + Math.random() * 0.12;
+        }
+        moveBotToward(bot, bot.trainEscapeX, bot.trainEscapeY, dt, bot.speed * 1.35);
+        bot.escapeCooldown = 0.75;
       } else {
         if (bot.escapeCooldown > 0) {
           bot.escapeCooldown -= dt;
+          moveBotToward(bot, bot.trainEscapeX, bot.trainEscapeY, dt, bot.speed * 0.85);
         } else {
-          // Roam independently - pick targets that avoid dangerous lanes
           bot.trainRoamTimer -= dt;
           if (bot.trainRoamTimer <= 0) {
-            // Pick new target avoiding any active rail lane
             for (let attempt = 0; attempt < 8; attempt++) {
               const nx = 0.08 + Math.random() * 0.84;
               const ny = 0.08 + Math.random() * 0.84;
@@ -8896,7 +9543,7 @@
     });
 
     updateHud(g);
-    if (g.survivalTime >= TRAIN_DURATION) triggerGameOver(g, true);
+    if (g.survivalTime >= TRAIN_DURATION) triggerGameOver(g, g.player.alive !== false);
   }
 
   function renderTrainTiles(g, tileSize, gap) {
@@ -8906,10 +9553,10 @@
       const y = layout.arenaY + tile.row * tileSize + gap / 2;
       const s = tileSize - gap;
       drawRoundedRect(x, y, s, s, 8);
-      ctx.fillStyle = (tile.row + tile.col) % 2 === 0 ? '#1f3b26' : '#254429';
+      ctx.fillStyle = (tile.row + tile.col) % 2 === 0 ? '#172128' : '#1a252d';
       ctx.fill();
       if (tile.tree) {
-        ctx.fillStyle = 'rgba(120,200,120,0.32)';
+        ctx.fillStyle = 'rgba(76,175,130,0.22)';
         ctx.beginPath();
         ctx.arc(x + s * 0.5, y + s * 0.5, s * 0.16, 0, Math.PI * 2);
         ctx.fill();
@@ -8924,11 +9571,13 @@
       g.railTracks.forEach(rt => {
         const center = (rt.lane + 0.5) / GRID_SIZE;
         const halfW = TRAIN_HALF * 0.92;
-        const alpha = rt.alpha * 0.6;
+        const alpha = rt.alpha * 0.82;
         // Two rail lines
         const railGap = halfW * 0.75;
-        ctx.strokeStyle = `rgba(150,150,150,${alpha})`;
-        ctx.lineWidth = Math.max(2, arenaSize * 0.006);
+        ctx.strokeStyle = `rgba(184,199,211,${alpha})`;
+        ctx.lineWidth = Math.max(2.2, arenaSize * 0.007);
+        ctx.shadowColor = `rgba(150,210,230,${alpha * 0.25})`;
+        ctx.shadowBlur = 4;
         for (const offset of [-railGap, railGap]) {
           ctx.beginPath();
           if (rt.orient === 'h') {
@@ -8944,8 +9593,9 @@
         }
         // Cross-ties (sleepers)
         const tieCount = 12;
-        ctx.strokeStyle = `rgba(120,100,80,${alpha * 0.8})`;
-        ctx.lineWidth = Math.max(2, arenaSize * 0.008);
+        ctx.shadowBlur = 0;
+        ctx.strokeStyle = `rgba(79,72,70,${alpha})`;
+        ctx.lineWidth = Math.max(2.5, arenaSize * 0.009);
         for (let i = 0; i < tieCount; i++) {
           const frac = (i + 0.5) / tieCount;
           if (rt.orient === 'h') {
@@ -8975,12 +9625,12 @@
         ctx.save();
         drawRoundedRect(layout.arenaX, layout.arenaY, arenaSize, arenaSize, 14);
         ctx.clip();
-        ctx.fillStyle = `rgba(255,193,7,${blink})`;
+        ctx.fillStyle = `rgba(255,174,66,${blink * 0.62})`;
         ctx.fillRect(bx, by, bw, bh);
 
         // Direction arrows
         const arrowAlpha = 0.5 + 0.4 * Math.sin(performance.now() / 150);
-        ctx.fillStyle = `rgba(255,255,255,${arrowAlpha})`;
+        ctx.fillStyle = `rgba(255,247,224,${arrowAlpha})`;
         const arrowSize = Math.min(bw, bh) * 0.35;
         const arrowCount = 3;
         const animOffset = (performance.now() / 400 * tr.dir) % 1;
@@ -9021,18 +9671,52 @@
       ctx.save();
       drawRoundedRect(layout.arenaX, layout.arenaY, arenaSize, arenaSize, 14);
       ctx.clip();
-      drawRoundedRect(px0, py0, w, h, Math.min(w, h) * 0.3);
-      ctx.fillStyle = tr.color;
+      const localW = tr.orient === 'h' ? w : h;
+      const localH = tr.orient === 'h' ? h : w;
+      ctx.translate(px0 + w / 2, py0 + h / 2);
+      if (tr.orient === 'v') ctx.rotate(Math.PI / 2);
+      const lx = -localW / 2, ly = -localH / 2;
+      const radius = Math.min(localH * 0.28, 11);
+      ctx.shadowColor = 'rgba(0,0,0,.48)';
+      ctx.shadowBlur = 10;
+      ctx.shadowOffsetY = 5;
+      drawRoundedRect(lx, ly, localW, localH, radius);
+      const bodyGrad = ctx.createLinearGradient(0, ly, 0, ly + localH);
+      bodyGrad.addColorStop(0, '#c8efff');
+      bodyGrad.addColorStop(0.09, tr.color);
+      bodyGrad.addColorStop(0.58, tr.color);
+      bodyGrad.addColorStop(1, '#171b24');
+      ctx.fillStyle = bodyGrad;
       ctx.fill();
-      ctx.lineWidth = 2;
-      ctx.strokeStyle = 'rgba(0,0,0,0.4)';
+      ctx.shadowBlur = 0; ctx.shadowOffsetY = 0;
+      ctx.lineWidth = Math.max(1.2, localH * 0.045);
+      ctx.strokeStyle = 'rgba(7,10,16,.65)';
       ctx.stroke();
-      ctx.fillStyle = '#ffe082';
-      const hr = Math.min(w, h) * 0.17;
-      let hx, hy;
-      if (tr.orient === 'h') { hx = tr.dir > 0 ? px0 + w - hr * 1.6 : px0 + hr * 1.6; hy = py0 + h / 2; }
-      else { hx = px0 + w / 2; hy = tr.dir > 0 ? py0 + h - hr * 1.6 : py0 + hr * 1.6; }
-      ctx.beginPath(); ctx.arc(hx, hy, hr, 0, Math.PI * 2); ctx.fill();
+
+      // Dark windscreen at the leading end.
+      const frontX = tr.dir > 0 ? lx + localW - localH * 0.38 : lx + localH * 0.38;
+      ctx.fillStyle = '#152936';
+      drawRoundedRect(frontX - localH * 0.18, ly + localH * 0.17, localH * 0.36, localH * 0.34, 4);
+      ctx.fill();
+
+      // Passenger windows and carriage joints scale with train length.
+      const windowCount = Math.max(1, Math.min(7, Math.floor(localW / Math.max(18, localH * 0.55))));
+      const usable = Math.max(1, localW - localH * 1.05);
+      for (let i = 0; i < windowCount; i++) {
+        const wx = lx + localH * 0.52 + (i + 0.5) * usable / windowCount;
+        ctx.fillStyle = i % 2 ? '#b9edff' : '#d9f7ff';
+        drawRoundedRect(wx - localH * 0.12, ly + localH * 0.18, localH * 0.24, localH * 0.26, 3);
+        ctx.fill();
+        if (i > 0) {
+          ctx.strokeStyle = 'rgba(8,12,18,.28)'; ctx.lineWidth = 1;
+          ctx.beginPath(); ctx.moveTo(wx - usable / windowCount / 2, ly + 2); ctx.lineTo(wx - usable / windowCount / 2, ly + localH - 2); ctx.stroke();
+        }
+      }
+
+      // Twin headlights make travel direction readable at a glance.
+      const nose = tr.dir > 0 ? lx + localW - localH * 0.1 : lx + localH * 0.1;
+      ctx.fillStyle = '#fff5b7'; ctx.shadowColor = '#ffe37a'; ctx.shadowBlur = 7;
+      for (const dy of [-0.2, 0.2]) { ctx.beginPath(); ctx.arc(nose, dy * localH, Math.max(2, localH * 0.07), 0, Math.PI * 2); ctx.fill(); }
       ctx.restore();
     });
   }
@@ -9124,6 +9808,7 @@
         const ratio = survivalRatio(bot.x, bot.y, BOT_RADIUS, isSafe);
         if (ratio < SAFE_OVERLAP_THRESHOLD) {
           bot.alive = false;
+          bot.eliminatedAtTime = g.survivalTime || 0;
           g.floatingTexts.push({ x: bot.x, y: bot.y, alpha: 1, vy: 0.18, text: 'OUT', color: '#ff5252' });
           spawnBotEliminationParticles(g, bot.x, bot.y, bot.color);
         }
@@ -9246,6 +9931,7 @@
         if (!bot.alive) return;
         if (checkSnakeCollision(bot.x, bot.y, bot.trail, allTrails)) {
           bot.alive = false;
+          bot.eliminatedAtTime = g.survivalTime || 0;
           bot.trail = [];
           g.floatingTexts.push({ x: bot.x, y: bot.y, alpha: 1, vy: 0.18, text: '💀', color: '#ff5252' });
           spawnBotEliminationParticles(g, bot.x, bot.y, bot.color);
@@ -9442,15 +10128,16 @@
   }
 
   function spawnObstacleWall(g) {
-    const gapRow = Math.floor(Math.random() * GRID_SIZE);
     const gapSize = Math.random() < 0.4 ? 2 : 1;
+    const gapRow = Math.floor(Math.random() * (GRID_SIZE - gapSize + 1));
     const speed = 0.25 + g.survivalTime * 0.005 + Math.random() * 0.1;
-    g.walls.push({ x: 1.05, gapRow, gapSize, speed, hit: false });
+    g.walls.push({ x: 1.05, gapRow, gapSize, speed, playerHit: false, botHits: {} });
   }
 
   function updateObstacleRunPlaying(g, dt) {
     g.survivalTime += dt;
     g.timeRemaining = Math.max(0, OBSTACLE_DURATION - g.survivalTime);
+    g.bots.forEach(bot => { bot.obstacleInvuln = Math.max(0, (bot.obstacleInvuln || 0) - dt); });
 
     // Spawn walls
     g.wallTimer -= dt;
@@ -9465,43 +10152,50 @@
       wall.x -= wall.speed * dt;
     });
 
-    // Check hits
+    // Check hits. Every participant owns three lives and each wall may damage
+    // a participant only once while it crosses their position.
     g.walls.forEach(wall => {
-      if (wall.hit) return;
-      // Wall occupies column at wall.x
       const wallCol = wall.x;
-      const pCell = cellOf(g.player.x, g.player.y);
       const playerCol = g.player.x;
-      // Check if player passes through wall
-      if (Math.abs(playerCol - wallCol) < 0.08) {
+      if (g.lives > 0 && !wall.playerHit && Math.abs(playerCol - wallCol) < 0.08) {
         const playerRow = Math.floor(g.player.y * GRID_SIZE);
         let inGap = false;
         for (let i = 0; i < wall.gapSize; i++) {
           if (playerRow === wall.gapRow + i) inGap = true;
         }
         if (!inGap) {
-          wall.hit = true;
+          wall.playerHit = true;
           g.lives--;
           vibrate([30, 30, 60]); SFX.play.hit();
           g.floatingTexts.push({ x: g.player.x, y: g.player.y, alpha: 1, vy: 0.18, text: `❤️ ${g.lives}`, color: '#ff5252' });
           g.shakeMagnitude = 5; g.shakeDuration = 0.25; g.shakeTime = 0.25;
-          if (g.lives <= 0) { triggerGameOver(g, false); return; }
+          if (g.lives <= 0 && !eliminateHostedPlayer(g)) { triggerGameOver(g, false); return; }
         }
       }
 
       // Check bots
-      g.bots.forEach(bot => {
+      g.bots.forEach((bot, botIndex) => {
         if (!bot.alive) return;
-        if (Math.abs(bot.x - wallCol) < 0.06) {
+        if (!wall.botHits[botIndex] && bot.obstacleInvuln <= 0 && Math.abs(bot.x - wallCol) < 0.07) {
           const botRow = Math.floor(bot.y * GRID_SIZE);
           let inGap = false;
           for (let i = 0; i < wall.gapSize; i++) {
             if (botRow === wall.gapRow + i) inGap = true;
           }
-          if (!inGap && Math.random() < 0.4) {
-            bot.alive = false;
-            g.floatingTexts.push({ x: bot.x, y: bot.y, alpha: 1, vy: 0.18, text: 'OUT', color: '#ff5252' });
-            spawnBotEliminationParticles(g, bot.x, bot.y, bot.color);
+          if (!inGap) {
+            wall.botHits[botIndex] = true;
+            bot.obstacleInvuln = 0.7;
+            bot.lives = Math.max(0, (bot.lives ?? OBSTACLE_LIVES) - 1);
+            g.floatingTexts.push({ x: bot.x, y: bot.y, alpha: 1, vy: 0.18, text: bot.lives > 0 ? `❤️ ${bot.lives}` : 'OUT', color: '#ff6b6b' });
+            if (bot.lives <= 0) {
+              bot.alive = false;
+              bot.eliminatedAtTime = g.survivalTime || 0;
+              spawnBotEliminationParticles(g, bot.x, bot.y, bot.color);
+            } else {
+              // Lose some momentum after impact, but never teleport the bot.
+              bot.vx = (bot.vx || 0) * 0.35;
+              bot.vy = (bot.vy || 0) * 0.35;
+            }
           }
         }
       });
@@ -9509,25 +10203,45 @@
 
     g.walls = g.walls.filter(w => w.x > -0.2);
 
-    // Bot AI: try to align with gap of nearest incoming wall
-    g.bots.forEach(bot => {
+    // Bot AI: look ahead, select the nearest incoming opening, then use the
+    // shared momentum movement system instead of directly changing Y.
+    g.bots.forEach((bot, botIndex) => {
       if (!bot.alive) return;
-      const incoming = g.walls.filter(w => w.x > bot.x && w.x < bot.x + 0.4);
+      if (bot.controlType === 'network') { driveNetworkBot(bot, dt, g); return; }
+      bot.obstacleDecisionTimer = (bot.obstacleDecisionTimer || 0) - dt;
+      const lookAhead = 0.42 + bot.skill * 0.32 + (bot.lookAhead || 0) * 0.08;
+      const incoming = g.walls.filter(w => w.x > bot.x - 0.03 && w.x < bot.x + lookAhead);
       if (incoming.length > 0) {
         const nearest = incoming.reduce((a, b) => a.x < b.x ? a : b);
-        const targetY = (nearest.gapRow + nearest.gapSize / 2 + 0.5) / GRID_SIZE;
-        const dy = targetY - bot.y;
-        bot.y += Math.sign(dy) * Math.min(Math.abs(dy), bot.speed * dt);
+        if (bot.obstacleDecisionTimer <= 0 || bot.obstacleWall !== nearest) {
+          const gapCenter = (nearest.gapRow + nearest.gapSize / 2) / GRID_SIZE;
+          const safeNoise = nearest.gapSize > 1 ? (Math.random() - 0.5) * 0.025 : 0;
+          bot.obstacleTargetY = clamp(gapCenter + safeNoise, BOT_RADIUS, 1 - BOT_RADIUS);
+          // Spread bots horizontally so they do not move as one rigid stack.
+          bot.obstacleTargetX = clamp(0.24 + (botIndex % 3) * 0.18 + (Math.random() - 0.5) * 0.04, BOT_RADIUS, 0.78);
+          bot.obstacleWall = nearest;
+          bot.obstacleDecisionTimer = 0.16 + (1 - bot.skill) * 0.12;
+        }
+        const urgency = clamp(1.18 - (nearest.x - bot.x), 0.85, 1.45);
+        moveBotToward(bot, bot.obstacleTargetX, bot.obstacleTargetY, dt, bot.speed * urgency);
       } else {
-        // Wander toward center
-        const dy = 0.5 - bot.y;
-        bot.y += Math.sign(dy) * Math.min(Math.abs(dy), bot.speed * 0.3 * dt);
+        if (bot.obstacleDecisionTimer <= 0) {
+          bot.obstacleTargetX = 0.2 + (botIndex % 3) * 0.2 + (Math.random() - 0.5) * 0.05;
+          bot.obstacleTargetY = 0.22 + Math.random() * 0.56;
+          bot.obstacleDecisionTimer = 0.8 + Math.random() * 0.8;
+        }
+        moveBotToward(bot, bot.obstacleTargetX, bot.obstacleTargetY, dt, bot.speed * 0.52);
       }
-      bot.y = clamp(bot.y, BOT_RADIUS, 1-BOT_RADIUS);
     });
 
     updateHud(g);
-    if (g.survivalTime >= OBSTACLE_DURATION) triggerGameOver(g, true);
+    const aliveBots = g.bots.filter(bot => bot.alive).length;
+    const totalAlive = aliveBots + (g.lives > 0 ? 1 : 0);
+    if (totalAlive <= 1) {
+      triggerGameOver(g, g.lives > 0);
+      return;
+    }
+    if (g.survivalTime >= OBSTACLE_DURATION) triggerGameOver(g, g.lives > 0);
   }
 
   function renderObstacleTiles(g, tileSize, gap) {
@@ -9552,11 +10266,26 @@
         if (!inGap) {
           const wy = layout.arenaY + (row / GRID_SIZE) * arenaSize;
           const wh = arenaSize / GRID_SIZE;
-          ctx.fillStyle = wall.hit ? 'rgba(141,110,99,0.3)' : '#8d6e63';
+          ctx.fillStyle = wall.playerHit ? 'rgba(141,110,99,0.42)' : '#8d6e63';
           ctx.fillRect(wx - wallWidth/2, wy, wallWidth, wh);
         }
       }
     });
+    // Bot life badges keep the three-life rule readable during the match.
+    ctx.save();
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.font = `800 ${Math.max(8, Math.round(tileSize * 0.17))}px sans-serif`;
+    g.bots.forEach(bot => {
+      if (!bot.alive) return;
+      const bx = layout.arenaX + bot.x * arenaSize;
+      const by = layout.arenaY + bot.y * arenaSize - tileSize * 0.28;
+      const label = `♥ ${bot.lives ?? OBSTACLE_LIVES}`;
+      const bw = ctx.measureText(label).width + 10;
+      drawRoundedRect(bx - bw / 2, by - 8, bw, 16, 8);
+      ctx.fillStyle = 'rgba(13,18,26,.78)'; ctx.fill();
+      ctx.fillStyle = '#ff7a82'; ctx.fillText(label, bx, by);
+    });
+    ctx.restore();
     // Lives
     ctx.font = `bold ${Math.round(tileSize*0.28)}px sans-serif`;
     ctx.fillStyle = '#ff5252'; ctx.textAlign = 'left';
@@ -9666,7 +10395,9 @@
   function driveNetworkBot(bot, dt) {
     if (bot.vx === undefined) { bot.vx = 0; bot.vy = 0; }
     const input = networkInputs[bot.networkUserId] || { x: 0, y: 0 };
-    const speed = bot.speed || BOT_BASE_SPEED;
+    // A real remote player must use the same movement model and top speed as
+    // the host player; AI skill must not make a friend's controls feel heavy.
+    const speed = PLAYER_SPEED;
     const targetVX = input.x * speed, targetVY = input.y * speed;
     const smooth = Math.min(1, dt * 12);
     bot.vx += (targetVX - bot.vx) * smooth;
@@ -10195,9 +10926,14 @@
     if (!game) return;
     if (net.role === 'host' && net.roomCode) {
       hostBroadcastTimer += dt;
+      hostWorldTimer += dt;
       if (hostBroadcastTimer >= 1 / HOST_TICK_HZ) {
-        hostBroadcastTimer = 0;
+        hostBroadcastTimer %= 1 / HOST_TICK_HZ;
         broadcastSnapshot(game);
+      }
+      if (hostWorldTimer >= 1 / WORLD_STATE_HZ) {
+        hostWorldTimer %= 1 / WORLD_STATE_HZ;
+        broadcastWorldState(game);
       }
     }
     const pct = (game.timeRemaining / game.timeLimit) * 100;
@@ -10217,6 +10953,7 @@
 
   document.getElementById('btn-tourney-start').addEventListener('click', startTournamentRound);
   document.getElementById('btn-tourney-cancel').addEventListener('click', cancelTournament);
+  document.getElementById('btn-tourney-search-cancel').addEventListener('click', cancelTournament);
 
   // ---- Multiplayer lobby wiring ----
   document.getElementById('btn-open-friends').addEventListener('click', () => {
